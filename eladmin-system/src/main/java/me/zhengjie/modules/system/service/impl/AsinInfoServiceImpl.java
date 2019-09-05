@@ -82,7 +82,7 @@ public class AsinInfoServiceImpl implements AsinInfoService {
         System.out.println(as);
         return as;
     }
-
+//11
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Token getToken() {
