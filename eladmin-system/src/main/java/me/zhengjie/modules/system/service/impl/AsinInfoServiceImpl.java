@@ -78,7 +78,7 @@ public class AsinInfoServiceImpl implements AsinInfoService {
     @Transactional(rollbackFor = Exception.class)
     public AsinInfo getByAsin(AsinInfo resources) {
         System.out.println("测试11111");
-        AsinInfo as = asinInfoRepository.getByAsin(resources.getAsin(),resources.getSite());
+        AsinInfo as = asinInfoRepository.getByAsin(resources.getAsin(),resources.getSite(),resources.getOpenId());
         System.out.println(as);
         return as;
     }

@@ -16,8 +16,8 @@ import javax.transaction.Transactional;
 public interface AsinInfoRepository extends JpaRepository<AsinInfo, Integer>, JpaSpecificationExecutor {
 
 
-    @Query(value = "SELECT id,asin,title,site,exclude_shop,start_date,update_date,open_id,t.count,start_count,follow_listen,price_listen,title_listen,fivepoint_listen,nick_name,head_imgurl FROM asin_info t where t.asin = ?1 and t.site = ?2",nativeQuery = true)
-    AsinInfo getByAsin(String asin,String site);
+    @Query(value = "SELECT id,asin,title,site,exclude_shop,start_date,update_date,open_id,t.count,start_count,follow_listen,price_listen,title_listen,fivepoint_listen,nick_name,head_imgurl FROM asin_info t where t.asin = ?1 and t.site = ?2 and t.open_id = ?3",nativeQuery = true)
+    AsinInfo getByAsin(String asin,String site,String openId);
 
 
     @Query(value = "SELECT * FROM token where id=1",nativeQuery = true)
