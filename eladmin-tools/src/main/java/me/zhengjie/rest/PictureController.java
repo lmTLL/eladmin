@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,9 +48,9 @@ public class PictureController {
     @Log("上传图片")
     @PreAuthorize("hasAnyRole('ADMIN','PICTURE_ALL','PICTURE_UPLOAD')")
     @PostMapping(value = "/pictures")
-    public ResponseEntity upload(@RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity upload(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
         String userName = SecurityUtils.getUsername();
-        Picture picture = pictureService.upload(file,userName);
+        Picture picture = pictureService.upload(file,userName,request);
         Map map = new HashMap();
         String url = picture.getUrl();
         AipOcr client = Ocr.getInstance();
@@ -65,8 +66,16 @@ public class PictureController {
             }
             //JSONObject jsonObject = wordsResult.getJSONObject(15);
         }
-        JSONObject jsonObject = wordsResult.getJSONObject(index + 1);
-        String words = jsonObject.get("words").toString();
+        JSONObject jsonObject = null;
+        if (wordsResult.length()>0){
+            jsonObject=wordsResult.getJSONObject(index + 1);
+        }
+        String words = "";
+        if (jsonObject!=null){
+            if (jsonObject.get("words")!=null){
+                words=jsonObject.get("words").toString();
+            }
+        }
         System.out.println(words);
         map.put("errno",0);
         map.put("id",picture.getId());

@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -33,7 +34,7 @@ public interface PictureService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    Picture upload(MultipartFile file, String username) throws IOException;
+    Picture upload(MultipartFile file, String username, HttpServletRequest request) throws IOException;
 
     /**
      * 根据ID查询

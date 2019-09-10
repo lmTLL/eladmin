@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -160,8 +161,8 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/users/updateAvatar")
-    public ResponseEntity updateAvatar(@RequestParam MultipartFile file) throws IOException {
-        Picture picture = pictureService.upload(file, SecurityUtils.getUsername());
+    public ResponseEntity updateAvatar(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
+        Picture picture = pictureService.upload(file, SecurityUtils.getUsername(),request);
         userService.updateAvatar(SecurityUtils.getUsername(),picture.getUrl());
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -1,26 +1,21 @@
 package me.zhengjie.service.impl;
 
 import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.domain.Picture;
-import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.repository.PictureRepository;
 import me.zhengjie.service.PictureService;
 import me.zhengjie.service.dto.PictureQueryCriteria;
 import me.zhengjie.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 
 /**
@@ -49,7 +44,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public Picture upload(MultipartFile multipartFile, String username) throws IOException {
+    public Picture upload(MultipartFile multipartFile, String username, HttpServletRequest request) throws IOException {
         String fileOrigName = multipartFile.getOriginalFilename();
         if (!fileOrigName.contains(".")) {
             throw new IllegalArgumentException("缺少后缀名");
@@ -60,6 +55,7 @@ public class PictureServiceImpl implements PictureService {
         FileUtils.saveFile(multipartFile, fullPath);
         long size = multipartFile.getSize();
         String contentType = multipartFile.getContentType();
+        StringBuffer requestURL = request.getRequestURL();
         /*File file = FileUtil.toFile(multipartFile);
         String absolutePath = file.getAbsolutePath();
         System.out.println(absolutePath);
@@ -72,7 +68,7 @@ public class PictureServiceImpl implements PictureService {
         Picture picture = new Picture();
         picture.setFilename(FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename())+"."+FileUtil.getExtensionName(multipartFile.getOriginalFilename()));
         picture.setUsername(username);
-        picture.setUrl("https://eladmin.szsydd.com/statics"+pathName);
+        picture.setUrl(requestURL.substring(0,requestURL.indexOf("/api"))+"/statics"+pathName);
         //picture.setSize(FileUtil.getSize(Integer.valueOf(picture.getSize())));
         /*if(!jsonObject.get(CODE).toString().equals(SUCCESS)){
             System.out.println(jsonObject);
