@@ -61,7 +61,7 @@ public class ZwSaleOrderController {
             if (role.getId()==1||role.getId()==7||role.getId()==4){
                 criteria.setCustomerId(null);
             }
-            if (role.getId()==6){
+            if (role.getId()==8){
                 String openId = byUsername.getOpenId();
                 Long id = byUsername.getId();
                 criteria.setCustomerId(null);
@@ -103,10 +103,12 @@ public class ZwSaleOrderController {
         Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            sendModelMessage(byId.getOpenId(),"亲爱的"+nickName+"，你有一个新的站外订单需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理","","","","");
-            sendModelMessage("oXhzV1NEM5Leb1II8PbXxBcgIFjk","亲爱的"+nickName+"，你有一个新的站外需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date)+"\n客户昵称:"+zwSaleOrderDTO.getCustomerNickname(),"销售:"+zwSaleOrderDTO.getInvitation(),"","");
-            sendModelMessage("oXhzV1CPrtODB3TFWdq2-zjqineE","亲爱的"+nickName+"，你有一个新的站外需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date)+"\n客户昵称:"+zwSaleOrderDTO.getCustomerNickname(),"销售:"+zwSaleOrderDTO.getInvitation(),"","");
-            sendModelMessage(byUsername.getOpenId(),"亲爱的"+nickName+"，你有一个新的站外需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date),"客户昵称:"+zwSaleOrderDTO.getCustomerNickname(),"","");
+           if (!"".equals(zwSaleOrderDTO.getAccountOrder())){
+               sendModelMessage(byId.getOpenId(),"亲爱的"+nickName+"，你有一个新的站外订单需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date),"","","");
+               sendModelMessage("oXhzV1NEM5Leb1II8PbXxBcgIFjk","亲爱的"+nickName+"，你有一个新的站外需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date)+"\n客户昵称:"+zwSaleOrderDTO.getCustomerNickname(),"销售:"+zwSaleOrderDTO.getInvitation(),"","");
+               sendModelMessage("oXhzV1CPrtODB3TFWdq2-zjqineE","亲爱的"+nickName+"，你有一个新的站外需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date)+"\n客户昵称:"+zwSaleOrderDTO.getCustomerNickname(),"销售:"+zwSaleOrderDTO.getInvitation(),"","");
+               sendModelMessage(byUsername.getOpenId(),"亲爱的"+nickName+"，你有一个新的站外需要处理，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","待处理",sdf.format(date),"客户昵称:"+zwSaleOrderDTO.getCustomerNickname(),"","");
+           }
         } catch (Exception e) {
             e.printStackTrace();
         }
