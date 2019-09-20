@@ -5,7 +5,6 @@ import me.zhengjie.modules.system.service.dto.SaleOrderDTO;
 import me.zhengjie.modules.system.service.dto.SaleOrderQueryCriteria;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 
 import java.text.ParseException;
@@ -124,4 +123,11 @@ public interface SaleOrderService {
      * @return
      */
     String getSalesOrderNo();
+
+    /**
+     * cancel
+     * @param ids id集合
+     */
+    @CacheEvict(allEntries = true)
+    void signPayment(Long[] ids);
 }

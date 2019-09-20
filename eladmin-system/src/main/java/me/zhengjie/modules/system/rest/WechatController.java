@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.baidu.aip.ocr.AipOcr;
 import com.google.gson.Gson;
 import io.micrometer.core.instrument.util.StringUtils;
-import me.zhengjie.modules.system.domain.Channel;
-import me.zhengjie.modules.system.domain.Image;
-import me.zhengjie.modules.system.domain.ImageMessage;
-import me.zhengjie.modules.system.domain.TestMessage;
+import me.zhengjie.modules.system.domain.*;
 import me.zhengjie.modules.system.repository.ChannelRepository;
 import me.zhengjie.modules.system.repository.KeyMsgRepository;
 import me.zhengjie.modules.system.repository.SaleOrderRepository;
+import me.zhengjie.modules.system.service.InvitationcodesService;
 import me.zhengjie.modules.system.service.UserService;
+import me.zhengjie.modules.system.service.dto.RoleSmallDTO;
 import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.utils.Ocr;
 import org.apache.commons.httpclient.HttpClient;
@@ -38,10 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*import com.alittle.demo.dao.AsinInfoDao;
 import com.alittle.demo.entity.TestMessage;*/
@@ -62,6 +58,8 @@ public class WechatController {
     RedisTemplate redisTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private InvitationcodesService invitationcodesService;
     @Autowired
     private SaleOrderRepository saleOrderRepository;
     @Autowired
@@ -239,6 +237,46 @@ public class WechatController {
                 sendModelMessage("oXhzV1NEM5Leb1II8PbXxBcgIFjk",callbackMap.get("Content"),"","赶跟卖","","","渠道："+channelByOpenId.get(0).getChannelName(),"","");
                 sendModelMessage("oXhzV1CPrtODB3TFWdq2-zjqineE",callbackMap.get("Content"),"","赶跟卖","","","渠道："+channelByOpenId.get(0).getChannelName(),"","");
             }
+            UserDTO byOpenId = userService.findByOpenId(openId);
+            if (byOpenId!=null){
+                Set<RoleSmallDTO> roles = byOpenId.getRoles();
+                for (RoleSmallDTO role : roles) {
+                    if (role.getId()==5||role.getId()==7){
+                        String string = "";
+                        Date date=new Date();
+                        SimpleDateFormat sdf=new SimpleDateFormat("yyMMddssmm");
+                        // 循环得到10个字母
+                        for (int i = 0; i < 5; i++) {
+
+                            // 得到随机字母
+                            char c = (char) ((Math.random() * 26) + 97);
+                            // 拼接成字符串
+                            string += (c + "");
+                        }
+                        Invitationcodes invitationcodes=new Invitationcodes();
+                        invitationcodes.setUsername(byOpenId.getUsername());
+                        invitationcodes.setInvitationCode(string+sdf.format(date));
+                        invitationcodes.setVxId(callbackMap.get("Content"));
+                        invitationcodes.setEnable("0");
+                        invitationcodesService.create(invitationcodes);
+                        sendMessage(openId,"邀请码："+invitationcodes.getInvitationCode());
+                    }
+                }
+            }
+            if ("oXhzV1NEM5Leb1II8PbXxBcgIFjk".equals(openId)||"oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId)||"oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId)||"oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)){
+                new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    httpClientGet("http://39.98.168.25:8082/member/testSend/"+openId);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                ).start();
+            }
         }else if ("image".equals(callbackMap.get("MsgType"))){
             if ("oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId)||"oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId)||"oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)||"oXhzV1JX_1fr9w30j5T6m99T6hWc".equals(openId)){
                 System.out.println(callbackMap.get("PicUrl"));
@@ -401,7 +439,7 @@ public class WechatController {
 
 
     /**
-     * 微信发送模板消息
+     * 微信发送模板消息-服务提交成功
      * @throws Exception
      */
     public static Object sendModelMessage(String openid,String firstValue,String keyword1Value,String keyword2Value,String keyword3Value,String keyword4Value,String remarkValue,String url,String color) throws Exception {
@@ -442,6 +480,44 @@ public class WechatController {
         System.out.println( map1.get("errcode"));
         return map1.get("errcode");
     }
+
+    /**
+     * 微信发送模板消息-意见反馈通知
+     * @throws Exception
+     */
+    public static Object sendModelMessage(String openid,String firstValue,String keyword1Value,String remarkValue,String url,String color) throws Exception {
+        String accessToken = token;
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //Token token = asinInfoDao.getToken();
+        //String accessToken = token.getToken();
+        JSONObject json=new JSONObject();
+        JSONObject text=new JSONObject();
+        JSONObject keyword1=new JSONObject();
+        JSONObject keyword2=new JSONObject();
+        JSONObject first=new JSONObject();
+        JSONObject remark=new JSONObject();
+        json.put("touser",openid);
+        json.put("template_id","_icVHKlcNKsz_8HDENcUtLpiajo7I-mJ5MiOwQE9-Cg");
+        //String replace = followDetails.getShopName().replace(" ", "");
+        //String replace1 = replace.replace("&", "");
+        json.put("url", url);
+        first.put("value",firstValue);
+        keyword1.put("value",keyword1Value);
+        keyword2.put("value",simpleDateFormat.format(date) );
+        remark.put("value", remarkValue);
+        remark.put("color", color);
+        text.put("keyword1", keyword1);
+        text.put("keyword2", keyword2);
+        text.put("first", first);
+        text.put("remark",remark);
+        json.put("data", text);
+        //log.info("开始发送信息");
+        Map<String, Object> map1 = WechatController.httpClientPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken, json.toJSONString());
+        System.out.println( map1.get("errcode"));
+        return map1.get("errcode");
+    }
+
 
     public static void initImageMessage(String MediaId,String toUserName,String fromUserName){
         String accessToken = token;

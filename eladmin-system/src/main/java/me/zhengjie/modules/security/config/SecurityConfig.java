@@ -115,6 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/statics/**").anonymous()
                //生成Excel
                 .antMatchers("/api/saleOrder/Excel").anonymous()
+                .antMatchers("/api/zwSaleOrder/downloadTxt").anonymous()
                 .antMatchers("/api/waitPayment/getAll").anonymous()
                 .antMatchers("/api/waitPayment/callback").anonymous()
                 .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()

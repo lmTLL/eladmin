@@ -1,9 +1,9 @@
 package me.zhengjie.modules.system.service.dto;
 
 import lombok.Data;
-import java.sql.Timestamp;
-import java.math.BigDecimal;
 import me.zhengjie.annotation.Query;
+
+import java.sql.Timestamp;
 
 /**
  * @author groot
@@ -55,4 +55,7 @@ public class SaleOrderQueryCriteria{
 
     @Query
     private Long channelUserId;
+
+    @Query
+    private String financePayment;
 }

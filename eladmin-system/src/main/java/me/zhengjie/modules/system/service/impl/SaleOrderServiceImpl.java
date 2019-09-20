@@ -1,24 +1,25 @@
 package me.zhengjie.modules.system.service.impl;
 
-import me.zhengjie.modules.system.domain.Channel;
 import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.SaleOrder;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.repository.ChannelRepository;
+import me.zhengjie.modules.system.repository.SaleOrderRepository;
 import me.zhengjie.modules.system.repository.UserRepository;
 import me.zhengjie.modules.system.rest.WechatController;
 import me.zhengjie.modules.system.service.ChannelService;
+import me.zhengjie.modules.system.service.SaleOrderService;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.ChannelDTO;
-import me.zhengjie.modules.system.service.dto.UserDTO;
-import me.zhengjie.utils.*;
-import me.zhengjie.modules.system.repository.SaleOrderRepository;
-import me.zhengjie.modules.system.service.SaleOrderService;
 import me.zhengjie.modules.system.service.dto.SaleOrderDTO;
 import me.zhengjie.modules.system.service.dto.SaleOrderQueryCriteria;
+import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.modules.system.service.mapper.SaleOrderMapper;
+import me.zhengjie.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,9 +29,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import static me.zhengjie.modules.system.rest.WechatController.sendMessage;
 import static me.zhengjie.modules.system.rest.WechatController.sendModelMessage;
@@ -80,6 +78,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     public SaleOrderDTO create(SaleOrder resources) {
         //Date date=new Date();
         //SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+        resources.setFinancePayment("0");
         resources.setSaleNumber(getSalesOrderNo());
         return saleOrderMapper.toDto(saleOrderRepository.save(resources));
     }
@@ -334,5 +333,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             requireNum.append(lastNumStr);
         }
         return requireNum.toString();
+    }
+    @Override
+    public void signPayment(Long[] ids) {
+        for (Long id : ids) {
+            saleOrderRepository.signPayment(id,"1");
+        }
     }
 }

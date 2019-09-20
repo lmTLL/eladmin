@@ -2,10 +2,9 @@ package me.zhengjie.modules.system.service.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.sql.Timestamp;
-import java.math.BigDecimal;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 
 /**
@@ -96,6 +95,8 @@ public class SaleOrderDTO implements Serializable {
     private Long channelUserId;
     //付款备注
     private String paymentRemark;
+
+    private String financePayment;
 
 
 }

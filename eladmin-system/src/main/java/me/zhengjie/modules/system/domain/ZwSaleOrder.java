@@ -88,6 +88,10 @@ public class ZwSaleOrder implements Serializable {
     @Column(name = "start_date")
     private String startDate;
 
+    // 预计发帖时间
+    @Column(name = "estimated_time")
+    private String estimatedTime;
+
     // 结束时间
     @Column(name = "end_date")
     private String endDate;
@@ -133,4 +137,9 @@ public class ZwSaleOrder implements Serializable {
     private String newOrder;
     @Transient
     private String[] effectImgs;
+    @Column(name = "channel_remark")
+    private String channelRemark;
+
+    @Column(name = "finance_payment")
+    private String financePayment;
 }

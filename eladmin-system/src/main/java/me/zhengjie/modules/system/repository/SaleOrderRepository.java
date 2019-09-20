@@ -89,4 +89,16 @@ public interface SaleOrderRepository extends JpaRepository<SaleOrder, Long>, Jpa
     @Modifying
     @Query(value = "update sale_order set site=?2,asin=?3,follow_type=?4,follow_price=?5,follow_time=?6,follow_shop_url=?7,follow_shop_name=?8 where id=?1 ",nativeQuery = true)
     void updateInfo(Long id, String site, String asin, String followType, BigDecimal followPrice, String followTime, String followShopUrl, String followShopName);
+
+    /**
+     * 标记已付款
+     * @param id SaleOrder id
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "update sale_order set finance_payment=?2 where id=?1 ",nativeQuery = true)
+    void signPayment(Long id,String financePayment);
+
+    SaleOrder findBySaleNumber(String saleNumber);
 }

@@ -613,4 +613,11 @@ public class SaleOrderController {
         map.put("IN","https://www.amazon.in/gp/offer-listing/");
         return map.get(site);
     }
+    @Log("标记已付款")
+    @PutMapping(value = "/saleOrder/signPayment")
+    @PreAuthorize("hasAnyRole('ADMIN','SALEORDER_ALL','SALEORDER_SIGNPAYMENT')")
+    public ResponseEntity signPayment(@RequestBody Long[] ids){
+        saleOrderService.signPayment(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

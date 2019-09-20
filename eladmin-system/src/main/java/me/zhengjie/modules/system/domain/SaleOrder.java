@@ -131,4 +131,7 @@ public class SaleOrder implements Serializable {
     //
     @Column(name = "payment_remark")
     private String paymentRemark;
+
+    @Column(name = "finance_payment")
+    private String financePayment;
 }

@@ -63,6 +63,9 @@ public class ZwSaleOrderDTO implements Serializable {
     // 开始时间
     private String startDate;
 
+    //预计发帖时间
+    private String estimatedTime;
+
     // 结束时间
     private String endDate;
 
@@ -93,5 +96,7 @@ public class ZwSaleOrderDTO implements Serializable {
     private String remark;
     //new Order
     private String newOrder;
+    private String channelRemark;
+    private String financePayment;
 
 }

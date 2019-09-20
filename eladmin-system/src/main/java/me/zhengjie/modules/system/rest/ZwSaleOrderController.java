@@ -22,12 +22,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static me.zhengjie.modules.system.rest.WechatController.sendModelMessage;
+import static me.zhengjie.utils.ExportTextUtil.writeToTxt;
 
 
 /**
@@ -53,6 +56,7 @@ public class ZwSaleOrderController {
     @GetMapping(value = "/zwSaleOrder")
     @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_SELECT')")
     public ResponseEntity getZwSaleOrders(ZwSaleOrderQueryCriteria criteria, Pageable pageable){
+        System.out.println(pageable);
         UserDetails userDetails = SecurityUtils.getUserDetails();
         User byUsername = userRepository.findByUsername(userDetails.getUsername());
         criteria.setCustomerId(byUsername.getId());
@@ -184,5 +188,65 @@ public class ZwSaleOrderController {
             e.printStackTrace();
         }
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+    @Log("标记安排")
+    @PutMapping(value = "/zwSaleOrder/arrange")
+    @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_ARRANGE')")
+    public ResponseEntity arrange(@RequestBody Long[] ids){
+        zwSaleOrderService.arrange(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping(value = "/zwSaleOrder/downloadTxt")
+    //@PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_ARRANGE')")
+    public void downloadTxt(HttpServletResponse response){
+        ZwSaleOrderQueryCriteria criteria=new ZwSaleOrderQueryCriteria();
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        criteria.setEstimatedTime(simpleDateFormat.format(date));
+        criteria.setNewOrder("0");
+        criteria.setStatus("1");
+        List<ZwSaleOrderDTO> list=(List<ZwSaleOrderDTO>) zwSaleOrderService.queryAll(criteria);
+        String text="";
+        int i=1;
+        for (ZwSaleOrderDTO sale : list) {
+            text=text+i+".WeChat nickname : "+sale.getInvitation()+"-"+sale.getCustomerNickname()+"\n" +
+                    "Deal站 : "+sale.getDealSite()+"\n" +
+                    "Product name : "+sale.getProductName()+"\n" +
+                    "Link : "+sale.getLink()+"\n" +
+                    "Deal Price : "+sale.getDealPrice()+"\n" +
+                    "Original Price : "+sale.getOriginalPrice()+"\n" +
+                    "Code : "+sale.getCode()+"\n" +
+                    "Discount : "+sale.getDiscount()+"% OFF\n" +
+                    "Start Date : "+sale.getStartDate()+"\n" +
+                    "End Date : "+sale.getEndDate()+"\n\n";
+            i++;
+        }
+       // String list = "";
+        //String s = JSON.toJSONString(list);
+        writeToTxt(response,text,simpleDateFormat.format(date)+"待发帖订单");
+    }
+    @Log("撤销订单")
+    @PutMapping(value = "/zwSaleOrder/revoke")
+    @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_REVOKE')")
+    public ResponseEntity revoke(@RequestBody Long[] ids){
+        zwSaleOrderService.revoke(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @Log("渠道修改备注")
+    @PostMapping(value = "/zwSaleOrder/updateChannelRemark")
+    @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_CHANNEL_REMARK')")
+    public ResponseEntity updateChannelRemark(@Validated @RequestBody ZwSaleOrder resources){
+        zwSaleOrderService.updateChannelRemark(resources);
+        System.out.println(resources);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @Log("标记已付款")
+    @PutMapping(value = "/zwSaleOrder/signPayment")
+    @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_SIGNPAYMENT')")
+    public ResponseEntity signPayment(@RequestBody Long[] ids){
+        zwSaleOrderService.signPayment(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

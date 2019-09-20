@@ -1,14 +1,8 @@
 package me.zhengjie;
 
 import com.baidu.aip.ocr.AipOcr;
-import me.zhengjie.modules.system.domain.Image;
-import me.zhengjie.modules.system.domain.ImageMessage;
-import me.zhengjie.modules.system.domain.LongTimeImage;
-import me.zhengjie.modules.system.domain.TestMessage;
 import me.zhengjie.modules.system.rest.WechatController;
 import me.zhengjie.modules.system.service.UserService;
-import me.zhengjie.modules.system.service.dto.UserDTO;
-import me.zhengjie.utils.EncryptUtils;
 import me.zhengjie.utils.Ocr;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,25 +14,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static me.zhengjie.modules.system.rest.WechatController.httpClientPost;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EladminSystemApplicationTests {
     @Autowired
     private UserService userService;
-    private static String token="24_bpiHyHIoG9x4aFQYAR1lKIiv6PHCnXG8LlMD7Ml0Rz0tvMnh2VcPcz-bMftqGKM-SvnQPB9k74F5aJJ9lTRvf9mmLO5nMrDD_0Ekxv-6wuwRl0-87O7wlqAMd7bJLGQ4L6vKqilG7QRSJk53HNShAFALRW";
+    private static String token="25_pSoW44LgnRP3yX1ah0vQ9fvYyElwjv9sLepCd0Fzz2MtDR5BeyssbVLV-YmfRiKLLYdaKt5TpwRIOSVEIYBVrt8o1MEYIn2rP9QwSzpZcGkRPHbaCi5uF6o02QY6KwF5foajj9LHtpKFFDf8VFOjAJAAKT";
     @Test
     public void contextLoads() throws AWTException, InterruptedException, IOException, JSONException {
             //System.setProperty("java.awt.headless", "true");
@@ -86,11 +77,11 @@ public class EladminSystemApplicationTests {
 
     @Test
     public void contextLoads1() throws Exception {
-        sendModelMessage("oXhzV1KgW4QCwULOkhm4sD2mMmO8","dsdsds","dsdsds","dsdsd","dsds","dsdsds\n三国杀dsdsdsd","dsdsdsd","","");
+        sendModelMessage("oXhzV1KgW4QCwULOkhm4sD2mMmO8","发送者：发帖人\n订单号：ZW190909005","发帖反馈\n反馈内容：亲，这个价格已经是成本价了，不能少了，你直接发吧！","亲，请前往asinone在线下单系统进行沟通","");
     }
 
     public static Object sendModelMessage(String openid,String firstValue,String keyword1Value,String keyword2Value,String keyword3Value,String keyword4Value,String remarkValue,String url,String color) throws Exception {
-        String accessToken = token;
+        String accessToken = "25_pSoW44LgnRP3yX1ah0vQ9fvYyElwjv9sLepCd0Fzz2MtDR5BeyssbVLV-YmfRiKLLYdaKt5TpwRIOSVEIYBVrt8o1MEYIn2rP9QwSzpZcGkRPHbaCi5uF6o02QY6KwF5foajj9LHtpKFFDf8VFOjAJAAKT";
         Date date = new Date();
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
         //Token token = asinInfoDao.getToken();
@@ -126,6 +117,46 @@ public class EladminSystemApplicationTests {
         Map<String, Object> map1 = WechatController.httpClientPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken, json.toJSONString());
         System.out.println( map1.get("errcode"));
         return map1.get("errcode");
+    }
+
+    public static Object sendModelMessage(String openid,String firstValue,String keyword1Value,String remarkValue,String url) throws Exception {
+        String accessToken = token;
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //Token token = asinInfoDao.getToken();
+        //String accessToken = token.getToken();
+        com.alibaba.fastjson.JSONObject json=new com.alibaba.fastjson.JSONObject();
+        com.alibaba.fastjson.JSONObject text=new com.alibaba.fastjson.JSONObject();
+        com.alibaba.fastjson.JSONObject keyword1=new com.alibaba.fastjson.JSONObject();
+        com.alibaba.fastjson.JSONObject keyword2=new com.alibaba.fastjson.JSONObject();
+        com.alibaba.fastjson.JSONObject first=new com.alibaba.fastjson.JSONObject();
+        com.alibaba.fastjson.JSONObject remark=new com.alibaba.fastjson.JSONObject();
+        json.put("touser",openid);
+        json.put("template_id","_icVHKlcNKsz_8HDENcUtLpiajo7I-mJ5MiOwQE9-Cg");
+        //String replace = followDetails.getShopName().replace(" ", "");
+        //String replace1 = replace.replace("&", "");
+        json.put("url", url);
+        first.put("value",firstValue);
+        keyword1.put("value",keyword1Value);
+        keyword2.put("value",simpleDateFormat.format(date) );
+        remark.put("value", remarkValue);
+        text.put("keyword1", keyword1);
+        text.put("keyword2", keyword2);
+        text.put("first", first);
+        text.put("remark",remark);
+        json.put("data", text);
+        //log.info("开始发送信息");
+        Map<String, Object> map1 = WechatController.httpClientPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken, json.toJSONString());
+        System.out.println( map1.get("errcode"));
+        return map1.get("errcode");
+    }
+    @Test
+    public void strings(){
+        String sss="2019-09-18 23:01:00";
+        String substring = sss.substring(8,10);
+        System.out.println(substring);
+        int i = Integer.parseInt(substring);
+        System.out.println(i+1);
     }
 }
 

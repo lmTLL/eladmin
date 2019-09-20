@@ -47,4 +47,13 @@ public class ZwSaleOrderQueryCriteria{
     // 精确
     @Query
     private String dealSite;
+    @Query
+    private String newOrder;
+
+    //预计发帖时间
+    @Query
+    private String estimatedTime;
+
+    @Query
+    private String financePayment;
 }

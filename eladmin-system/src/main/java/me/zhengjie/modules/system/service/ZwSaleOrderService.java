@@ -77,4 +77,33 @@ public interface ZwSaleOrderService {
      */
     @CacheEvict(allEntries = true)
     void feedback(Long id,String[] effectImgs,String effect);
+
+    /**
+     * cancel
+     * @param ids id集合
+     */
+    @CacheEvict(allEntries = true)
+    void arrange(Long[] ids);
+
+    /**
+     * cancel
+     * @param ids id集合
+     */
+    @CacheEvict(allEntries = true)
+    void revoke(Long[] ids);
+
+
+    /**
+     * cancel
+     * @param resources
+     */
+    @CacheEvict(allEntries = true)
+    void updateChannelRemark(ZwSaleOrder resources);
+
+    /**
+     * cancel
+     * @param ids id集合
+     */
+    @CacheEvict(allEntries = true)
+    void signPayment(Long[] ids);
 }
