@@ -1,9 +1,14 @@
 package me.zhengjie;
 
 import com.baidu.aip.ocr.AipOcr;
+import com.google.gson.Gson;
 import me.zhengjie.modules.system.rest.WechatController;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.utils.Ocr;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +34,7 @@ import java.util.Map;
 public class EladminSystemApplicationTests {
     @Autowired
     private UserService userService;
+    private static final Gson gson = new Gson();
     private static String token="25_pSoW44LgnRP3yX1ah0vQ9fvYyElwjv9sLepCd0Fzz2MtDR5BeyssbVLV-YmfRiKLLYdaKt5TpwRIOSVEIYBVrt8o1MEYIn2rP9QwSzpZcGkRPHbaCi5uF6o02QY6KwF5foajj9LHtpKFFDf8VFOjAJAAKT";
     @Test
     public void contextLoads() throws AWTException, InterruptedException, IOException, JSONException {
@@ -157,6 +163,30 @@ public class EladminSystemApplicationTests {
         System.out.println(substring);
         int i = Integer.parseInt(substring);
         System.out.println(i+1);
+    }
+
+    @Test
+    public void stringss() throws Exception {
+        httpClientPost("http://localhost:8001/salesOrders/erpOrder","{\"actualAmount\":300,\"asinInfo\":\"101\",\"auditStatus\":0,\"buyerName\":\"HanaoXhzV1IGP5Lh_lLZF8MhKNbz6ZoAfsd\",\"dataStatus\":1,\"dealTime\":1569209315082,\"issueOrder\":0,\"paymentId\":\"2019080922001464210513541984\",\"paymentStatus\":1,\"projectId\":25,\"quantity\":1,\"rejectReason\":\"mark\",\"remark\":\"在线下单\",\"shopName\":\"~\",\"station\":\"US\",\"wechatName\":\"HanaoXhzV1IGP5Lh_lLZF8MhKNbz6ZoAfsd\"}");
+    }
+
+    public static Map<String, Object> httpClientPost(String url, String params) throws Exception {
+        HttpClient client = new HttpClient();
+        client.getParams().setContentCharset("UTF-8");
+        PostMethod httpPost = new PostMethod(url);
+        httpPost.addParameter("paymentId","485456456456");
+        try {
+            RequestEntity requestEntity = new ByteArrayRequestEntity(params.getBytes("utf-8"));
+            httpPost.setRequestEntity(requestEntity);
+            client.executeMethod(httpPost);
+            String response = httpPost.getResponseBodyAsString();
+            Map<String, Object> map = gson.fromJson(response, Map.class);
+            return map;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            httpPost.releaseConnection();
+        }
     }
 }
 

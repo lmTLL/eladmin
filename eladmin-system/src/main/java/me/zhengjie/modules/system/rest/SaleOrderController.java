@@ -114,7 +114,7 @@ public class SaleOrderController {
         Date date=new Date();
         Timestamp timestamp=new Timestamp(date.getTime());
         if (resources.getAccountOrder()!=null&&!"".equals(resources.getAccountOrder())){
-            resources.setRemark("");
+            //resources.setRemark("");
             resources.setStatus("2");
             resources.setAccountTime(timestamp);
         }

@@ -61,6 +61,7 @@ public class UserController {
     @GetMapping(value = "/users")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT')")
     public ResponseEntity getUsers(UserQueryCriteria criteria, Pageable pageable){
+        System.out.println(criteria);
         Set<Long> deptSet = new HashSet<>();
         Set<Long> result = new HashSet<>();
 

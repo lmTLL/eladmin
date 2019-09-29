@@ -16,6 +16,7 @@ import me.zhengjie.modules.system.service.dto.SaleOrderQueryCriteria;
 import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.modules.system.service.mapper.SaleOrderMapper;
 import me.zhengjie.utils.*;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,13 +26,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static me.zhengjie.modules.system.rest.WechatController.sendMessage;
-import static me.zhengjie.modules.system.rest.WechatController.sendModelMessage;
+import static me.zhengjie.modules.system.rest.WechatController.*;
 
 /**
 * @author groot
@@ -78,8 +79,53 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     public SaleOrderDTO create(SaleOrder resources) {
         //Date date=new Date();
         //SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+        UserDetails userDetails = SecurityUtils.getUserDetails();
+        User customer = userRepository.findByUsername(userDetails.getUsername());
         resources.setFinancePayment("0");
         resources.setSaleNumber(getSalesOrderNo());
+        List<NameValuePair> list=new ArrayList<>();
+        list.add(new NameValuePair("paymentId",resources.getAccountOrder()));
+        list.add(new NameValuePair("wechatId",customer.getVxId()));
+        list.add(new NameValuePair("wechatName",customer.getUsername()));
+        list.add(new NameValuePair("buyerName",customer.getUsername()));
+        list.add(new NameValuePair("projectId","12"));
+        list.add(new NameValuePair("station",resources.getSite()));
+        list.add(new NameValuePair("quantity","1"));
+        list.add(new NameValuePair("actualAmount",new BigDecimal(resources.getRemark().substring(1))+""));
+        //list.add(new NameValuePair("dealTime",new Date().toString()));
+        list.add(new NameValuePair("issueOrder","0"));
+        list.add(new NameValuePair("remark","在线下单"));
+        list.add(new NameValuePair("dataStatus","1"));
+        list.add(new NameValuePair("auditStatus","0"));
+        list.add(new NameValuePair("asinInfo",resources.getAsin()));
+        list.add(new NameValuePair("rejectReason",customer.getInvitation()));
+        list.add(new NameValuePair("shopName","~"));
+        /*erpSalesOrder.setPaymentId(resources.getAccountOrder());
+        erpSalesOrder.setWechatId(customer.getVxId());
+        erpSalesOrder.setWechatName(customer.getUsername());
+        erpSalesOrder.setBuyerName(customer.getUsername());
+        erpSalesOrder.setProjectId(25);
+        erpSalesOrder.setStation(resources.getSite());
+        erpSalesOrder.setQuantity(1);
+        erpSalesOrder.setActualAmount(new BigDecimal(resources.getRemark().substring(1)));
+        erpSalesOrder.setDealTime(new Date());
+        erpSalesOrder.setIssueOrder(0);
+        erpSalesOrder.setPaymentStatus(1);
+        erpSalesOrder.setRemark("在线下单");
+        erpSalesOrder.setDataStatus(1);
+        erpSalesOrder.setAuditStatus(0);
+        erpSalesOrder.setAsinInfo(resources.getLink());
+        erpSalesOrder.setRejectReason("mark");
+        erpSalesOrder.setShopName("~");*/
+        System.out.println(resources.getStatus());
+        if ("2".equals(resources.getStatus())){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder",list);
+                }
+            }).start();
+        }
         return saleOrderMapper.toDto(saleOrderRepository.save(resources));
     }
 
@@ -298,6 +344,50 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     public void upload(Long id, String accountImg, String accountOrder,String status) throws Exception {
         Date date=new Date();
         Timestamp timestamp=new Timestamp(date.getTime());
+        SaleOrderDTO resources = findById(id);
+        List<NameValuePair> list=new ArrayList<>();
+        UserDTO customer = userService.findById(resources.getCustomerId());
+        list.add(new NameValuePair("paymentId",accountOrder));
+        list.add(new NameValuePair("wechatId",customer.getVxId()));
+        list.add(new NameValuePair("wechatName",customer.getUsername()));
+        list.add(new NameValuePair("buyerName",customer.getUsername()));
+        list.add(new NameValuePair("projectId","12"));
+        list.add(new NameValuePair("station",resources.getSite()));
+        list.add(new NameValuePair("quantity","1"));
+        list.add(new NameValuePair("actualAmount",new BigDecimal(resources.getRemark().substring(1))+""));
+        list.add(new NameValuePair("dealTime",new Date().toString()));
+        list.add(new NameValuePair("issueOrder","0"));
+        list.add(new NameValuePair("remark","在线下单"));
+        list.add(new NameValuePair("dataStatus","1"));
+        list.add(new NameValuePair("auditStatus","0"));
+        list.add(new NameValuePair("asinInfo",resources.getAsin()));
+        list.add(new NameValuePair("rejectReason",customer.getInvitation()));
+        list.add(new NameValuePair("shopName","~"));
+        /*erpSalesOrder.setPaymentId(resources.getAccountOrder());
+        erpSalesOrder.setWechatId(customer.getVxId());
+        erpSalesOrder.setWechatName(customer.getUsername());
+        erpSalesOrder.setBuyerName(customer.getUsername());
+        erpSalesOrder.setProjectId(25);
+        erpSalesOrder.setStation(resources.getSite());
+        erpSalesOrder.setQuantity(1);
+        erpSalesOrder.setActualAmount(new BigDecimal(resources.getRemark().substring(1)));
+        erpSalesOrder.setDealTime(new Date());
+        erpSalesOrder.setIssueOrder(0);
+        erpSalesOrder.setPaymentStatus(1);
+        erpSalesOrder.setRemark("在线下单");
+        erpSalesOrder.setDataStatus(1);
+        erpSalesOrder.setAuditStatus(0);
+        erpSalesOrder.setAsinInfo(resources.getLink());
+        erpSalesOrder.setRejectReason("mark");
+        erpSalesOrder.setShopName("~");*/
+        if ("1".equals(resources.getStatus())){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder",list);
+                }
+            }).start();
+        }
         saleOrderRepository.upload(id, accountImg, accountOrder,timestamp,status);
     }
 

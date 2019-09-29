@@ -56,7 +56,7 @@ public class ZwSaleOrderController {
     @GetMapping(value = "/zwSaleOrder")
     @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDER_ALL','ZWSALEORDER_SELECT')")
     public ResponseEntity getZwSaleOrders(ZwSaleOrderQueryCriteria criteria, Pageable pageable){
-        System.out.println(pageable);
+        System.out.println(criteria);
         UserDetails userDetails = SecurityUtils.getUserDetails();
         User byUsername = userRepository.findByUsername(userDetails.getUsername());
         criteria.setCustomerId(byUsername.getId());
@@ -209,7 +209,8 @@ public class ZwSaleOrderController {
         String text="";
         int i=1;
         for (ZwSaleOrderDTO sale : list) {
-            text=text+i+".WeChat nickname : "+sale.getInvitation()+"-"+sale.getCustomerNickname()+"\n" +
+            text=text+i+".订单号：" +sale.getZwSaleNumber()+
+                    "\nWeChat nickname : "+sale.getInvitation()+"-"+sale.getCustomerNickname()+"\n" +
                     "Deal站 : "+sale.getDealSite()+"\n" +
                     "Product name : "+sale.getProductName()+"\n" +
                     "Link : "+sale.getLink()+"\n" +

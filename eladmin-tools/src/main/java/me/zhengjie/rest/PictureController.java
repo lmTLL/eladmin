@@ -68,7 +68,11 @@ public class PictureController {
         }
         JSONObject jsonObject = null;
         if (wordsResult.length()>0){
-            jsonObject=wordsResult.getJSONObject(index + 1);
+            try {
+                jsonObject=wordsResult.getJSONObject(index + 1);
+            }catch (Exception e){
+
+            }
         }
         String words = "";
         if (jsonObject!=null){

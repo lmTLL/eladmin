@@ -76,11 +76,11 @@ public class AmzWebCrawlerServiceImpl implements AmzWebCrawlerService {
                         try {
                             //监控条件：asin启动跟卖监控
                             if (asinInfo.getFollowListen().equals("Yes")){
-                                getAmzValueByUrl(productUrl, asinInfo.getAsin(), asinInfo.getExcludeShop(), "127.0.0.1", 10808, asinInfo.getSite(),asinInfo.getId());
+                                getAmzValueByUrl(productUrl, asinInfo.getAsin(), asinInfo.getExcludeShop(), "127.0.0.1", 24000, asinInfo.getSite(),asinInfo.getId());
                             }//监控条件：asin启动五点，标题，价格监控
                             if (asinInfo.getFivepointListen().equals("Yes")|| asinInfo.getTitleListen().equals("Yes")||asinInfo.getPriceListen().equals("Yes")){
                                 String url = productUrl.replaceFirst("/gp/offer-listing","/dp");
-                                getAmzValueByUrl1(url, asinInfo.getAsin(), asinInfo.getExcludeShop(), "127.0.0.1", 10808, asinInfo.getSite(),asinInfo.getId());
+                                getAmzValueByUrl1(url, asinInfo.getAsin(), asinInfo.getExcludeShop(), "127.0.0.1", 24000, asinInfo.getSite(),asinInfo.getId());
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

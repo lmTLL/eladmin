@@ -5,15 +5,14 @@ import com.baidu.aip.ocr.AipOcr;
 import com.google.gson.Gson;
 import io.micrometer.core.instrument.util.StringUtils;
 import me.zhengjie.modules.system.domain.*;
-import me.zhengjie.modules.system.repository.ChannelRepository;
-import me.zhengjie.modules.system.repository.KeyMsgRepository;
-import me.zhengjie.modules.system.repository.SaleOrderRepository;
+import me.zhengjie.modules.system.repository.*;
 import me.zhengjie.modules.system.service.InvitationcodesService;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.RoleSmallDTO;
 import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.utils.Ocr;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -36,8 +35,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static me.zhengjie.modules.system.rest.MessageController.checkCellphone;
 
 /*import com.alittle.demo.dao.AsinInfoDao;
 import com.alittle.demo.entity.TestMessage;*/
@@ -59,9 +61,13 @@ public class WechatController {
     @Autowired
     private UserService userService;
     @Autowired
+    private MessageRepository messageRepository;
+    @Autowired
     private InvitationcodesService invitationcodesService;
     @Autowired
     private SaleOrderRepository saleOrderRepository;
+    @Autowired
+    private ZwSaleOrderRepository zwSaleOrderRepository;
     @Autowired
     private ChannelRepository channelRepository;
     @Autowired
@@ -113,6 +119,28 @@ public class WechatController {
             httpPost.releaseConnection();
         }
     }
+
+    public static Map<String, Object> httpClientPostParam(String url, List<NameValuePair> list){
+        HttpClient client = new HttpClient();
+        client.getParams().setContentCharset("UTF-8");
+        PostMethod httpPost = new PostMethod(url);
+        try {
+            //RequestEntity requestEntity = new ByteArrayRequestEntity(params.getBytes("utf-8"));
+            //httpPost.setRequestEntity(requestEntity);
+            for (NameValuePair nameValuePair : list) {
+                httpPost.addParameter(nameValuePair);
+            }
+            client.executeMethod(httpPost);
+            String response = httpPost.getResponseBodyAsString();
+            Map<String, Object> map = gson.fromJson(response, Map.class);
+            return map;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            httpPost.releaseConnection();
+        }
+    }
+
     @GetMapping("/test/sss")
     @ResponseBody
     public static String saveAccess_token() throws Exception {
@@ -228,54 +256,153 @@ public class WechatController {
             }
         }
         if("text".equals(callbackMap.get("MsgType"))){
-            List<Channel> channelByOpenId = channelRepository.findChannelByOpenId(openId);
-            if (channelByOpenId.size()>0){
-                Date date=new Date();
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyMM");
-                saleOrderRepository.signHandleBySaleNumber("DGM"+simpleDateFormat.format(date)+callbackMap.get("Content"),channelByOpenId.get(0).getUserId());
-                sendMessage(openId,"温馨提示:订单号-DGM"+simpleDateFormat.format(date)+callbackMap.get("Content")+"在系统内已标记处理，无需打开网页标记。");
-                sendModelMessage("oXhzV1NEM5Leb1II8PbXxBcgIFjk",callbackMap.get("Content"),"","赶跟卖","","","渠道："+channelByOpenId.get(0).getChannelName(),"","");
-                sendModelMessage("oXhzV1CPrtODB3TFWdq2-zjqineE",callbackMap.get("Content"),"","赶跟卖","","","渠道："+channelByOpenId.get(0).getChannelName(),"","");
-            }
-            UserDTO byOpenId = userService.findByOpenId(openId);
-            if (byOpenId!=null){
-                Set<RoleSmallDTO> roles = byOpenId.getRoles();
-                for (RoleSmallDTO role : roles) {
-                    if (role.getId()==5||role.getId()==7){
-                        String string = "";
-                        Date date=new Date();
-                        SimpleDateFormat sdf=new SimpleDateFormat("yyMMddssmm");
-                        // 循环得到10个字母
-                        for (int i = 0; i < 5; i++) {
-
-                            // 得到随机字母
-                            char c = (char) ((Math.random() * 26) + 97);
-                            // 拼接成字符串
-                            string += (c + "");
-                        }
-                        Invitationcodes invitationcodes=new Invitationcodes();
-                        invitationcodes.setUsername(byOpenId.getUsername());
-                        invitationcodes.setInvitationCode(string+sdf.format(date));
-                        invitationcodes.setVxId(callbackMap.get("Content"));
-                        invitationcodes.setEnable("0");
-                        invitationcodesService.create(invitationcodes);
-                        sendMessage(openId,"邀请码："+invitationcodes.getInvitationCode());
-                    }
-                }
-            }
-            if ("oXhzV1NEM5Leb1II8PbXxBcgIFjk".equals(openId)||"oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId)||"oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId)||"oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)){
-                new Thread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    httpClientGet("http://39.98.168.25:8082/member/testSend/"+openId);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+            if (callbackMap.get("Content").startsWith("DGM")){
+                UserDTO byOpenId = userService.findByOpenId(openId);
+                if (byOpenId!=null){
+                    SaleOrder saleOrder = saleOrderRepository.findBySaleNumber(callbackMap.get("Content").substring(0, 12));
+                    if (saleOrder!=null){
+                        Set<RoleSmallDTO> roles = byOpenId.getRoles();
+                        for (RoleSmallDTO role : roles) {
+                            if (role.getId()==2){
+                                System.out.println("getCustomerId:"+saleOrder.getCustomerId());
+                                System.out.println("getId:"+byOpenId.getId());
+                                System.out.println(saleOrder.getCustomerId()==byOpenId.getId());
+                                if (saleOrder.getCustomerId().equals(byOpenId.getId())){
+                                    Message message=new Message();
+                                    message.setMsgKey(callbackMap.get("Content").substring(0, 12));
+                                    message.setMsgName(byOpenId.getUsername());
+                                    message.setMsgValue(callbackMap.get("Content").substring(13));
+                                    message.setMsgTime(new Timestamp(new Date().getTime()));
+                                    UserDTO byId = userService.findById(saleOrder.getChannelUserId());
+                                    messageRepository.save(message);
+                                    String msg = checkCellphone(message.getMsgValue(), message.getMsgName());
+                                    sendModelMessage(byId.getOpenId(),"发送者："+saleOrder.getCustomerNickname()+"\n订单号："+saleOrder.getSaleNumber(),"跟卖信息",msg+"\n【回复公众号"+saleOrder.getSaleNumber()+":+消息内容 即可回复】","","#173177");
+                                    sendMessage(openId,"发送成功！");
+                                }else {
+                                    //System.out.println("该订单不属于该客户");
+                                    sendMessage(openId,"该订单不是您的订单，请查验后重新输入！1");
+                                }
+                            }else if (role.getId()==6){
+                                if (saleOrder.getChannelUserId().equals(byOpenId.getId())){
+                                    Message message=new Message();
+                                    message.setMsgKey(callbackMap.get("Content").substring(0, 12));
+                                    message.setMsgName(saleOrder.getChannelName());
+                                    message.setMsgValue(callbackMap.get("Content").substring(13));
+                                    message.setMsgTime(new Timestamp(new Date().getTime()));
+                                    UserDTO byId = userService.findById(saleOrder.getCustomerId());
+                                    messageRepository.save(message);
+                                    String msg = checkCellphone(message.getMsgValue(), message.getMsgName());
+                                    sendModelMessage(byId.getOpenId(),"发送者："+saleOrder.getChannelName()+"\n订单号："+saleOrder.getSaleNumber(),"跟卖信息",msg+"\n【回复公众号"+saleOrder.getSaleNumber()+":+消息内容 即可回复】","","#173177");
+                                    sendMessage(openId,"发送成功！");
+                                }else {
+                                    //System.out.println("该订单不属于该客户");
+                                    sendMessage(openId,"该订单不是您的订单，请查验后重新输入！2");
                                 }
                             }
                         }
-                ).start();
+                    }else {
+                        sendMessage(openId,"订单号错误，请查验后重新输入！");
+                        //System.out.println("订单号错误");
+                    }
+                }
+                //DGM190925004
+                //ZW190924001
+            }else if (callbackMap.get("Content").startsWith("ZW")){
+                UserDTO byOpenId = userService.findByOpenId(openId);
+                if (byOpenId!=null){
+                    ZwSaleOrder zwSaleOrder = zwSaleOrderRepository.findByZwSaleNumber(callbackMap.get("Content").substring(0, 11));
+                    if (zwSaleOrder!=null){
+                        Set<RoleSmallDTO> roles = byOpenId.getRoles();
+                        for (RoleSmallDTO role : roles) {
+                            if (role.getId()==2){
+                                if (zwSaleOrder.getCustomerId().equals(byOpenId.getId())){
+                                    Message message=new Message();
+                                    message.setMsgKey(callbackMap.get("Content").substring(0, 11));
+                                    message.setMsgName(byOpenId.getUsername());
+                                    message.setMsgValue(callbackMap.get("Content").substring(12));
+                                    message.setMsgTime(new Timestamp(new Date().getTime()));
+                                    UserDTO byId = userService.findById(zwSaleOrder.getZwChannelUserId());
+                                    messageRepository.save(message);
+                                    String msg = checkCellphone(message.getMsgValue(), message.getMsgName());
+                                    sendModelMessage(byId.getOpenId(),"发送者："+zwSaleOrder.getCustomerNickname()+"\n订单号："+zwSaleOrder.getZwSaleNumber(),"发帖反馈",msg+"\n【回复公众号"+zwSaleOrder.getZwSaleNumber()+":+消息内容 即可回复】","","#173177");
+                                    sendMessage(openId,"发送成功！");
+                                }else {
+                                    //System.out.println("该订单不属于该客户");
+                                    sendMessage(openId,"该订单不是您的订单，请查验后重新输入！");
+                                }
+                            }else if (role.getId()==8){
+                                if (zwSaleOrder.getZwChannelUserId().equals(byOpenId.getId())){
+                                    Message message=new Message();
+                                    message.setMsgKey(callbackMap.get("Content").substring(0, 11));
+                                    message.setMsgName("发帖人");
+                                    message.setMsgValue(callbackMap.get("Content").substring(12));
+                                    message.setMsgTime(new Timestamp(new Date().getTime()));
+                                    UserDTO byId = userService.findById(zwSaleOrder.getCustomerId());
+                                    messageRepository.save(message);
+                                    String msg = checkCellphone(message.getMsgValue(), message.getMsgName());
+                                    sendModelMessage(byId.getOpenId(),"发送者：发帖人\n订单号："+zwSaleOrder.getZwSaleNumber(),"发帖反馈",msg+"\n【回复公众号"+zwSaleOrder.getZwSaleNumber()+":+消息内容 即可回复】","","#173177");
+                                    sendMessage(openId,"发送成功！");
+                                }else {
+                                    //System.out.println("该订单不属于该客户");
+                                    sendMessage(openId,"该订单不是您的订单，请查验后重新输入！");
+                                }
+                            }
+                        }
+                    }else {
+                        sendMessage(openId,"订单号错误，请查验后重新输入！");
+                        //System.out.println("订单号错误");
+                    }
+                }
+            }else {
+                List<Channel> channelByOpenId = channelRepository.findChannelByOpenId(openId);
+                if (channelByOpenId.size()>0){
+                    Date date=new Date();
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyMM");
+                    saleOrderRepository.signHandleBySaleNumber("DGM"+simpleDateFormat.format(date)+callbackMap.get("Content"),channelByOpenId.get(0).getUserId());
+                    sendMessage(openId,"温馨提示:订单号-DGM"+simpleDateFormat.format(date)+callbackMap.get("Content")+"在系统内已标记处理，无需打开网页标记。");
+                    sendModelMessage("oXhzV1NEM5Leb1II8PbXxBcgIFjk",callbackMap.get("Content"),"","赶跟卖","","","渠道："+channelByOpenId.get(0).getChannelName(),"","");
+                    sendModelMessage("oXhzV1CPrtODB3TFWdq2-zjqineE",callbackMap.get("Content"),"","赶跟卖","","","渠道："+channelByOpenId.get(0).getChannelName(),"","");
+                }
+                UserDTO byOpenId = userService.findByOpenId(openId);
+                if (byOpenId!=null){
+                    Set<RoleSmallDTO> roles = byOpenId.getRoles();
+                    for (RoleSmallDTO role : roles) {
+                        if (role.getId()==5||role.getId()==7){
+                            String string = "";
+                            Date date=new Date();
+                            SimpleDateFormat sdf=new SimpleDateFormat("yyMMddssmm");
+                            // 循环得到10个字母
+                            for (int i = 0; i < 5; i++) {
+
+                                // 得到随机字母
+                                char c = (char) ((Math.random() * 26) + 97);
+                                // 拼接成字符串
+                                string += (c + "");
+                            }
+                            Invitationcodes invitationcodes=new Invitationcodes();
+                            invitationcodes.setUsername(byOpenId.getUsername());
+                            invitationcodes.setInvitationCode(string+sdf.format(date));
+                            invitationcodes.setVxId(callbackMap.get("Content"));
+                            invitationcodes.setEnable("0");
+                            invitationcodesService.create(invitationcodes);
+                            sendMessage(openId,"邀请码："+invitationcodes.getInvitationCode());
+                        }
+                    }
+                }
+                if ("oXhzV1NEM5Leb1II8PbXxBcgIFjk".equals(openId)||"oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId)||"oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId)||"oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)){
+                    new Thread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        httpClientGet("http://39.98.168.25:8082/member/testSend/"+openId);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    ).start();
+                }
             }
         }else if ("image".equals(callbackMap.get("MsgType"))){
             if ("oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId)||"oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId)||"oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)||"oXhzV1JX_1fr9w30j5T6m99T6hWc".equals(openId)){
