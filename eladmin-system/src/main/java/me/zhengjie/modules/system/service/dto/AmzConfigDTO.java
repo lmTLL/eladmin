@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 
 /**
-* @author groot
-* @date 2019-08-27
-*/
+ * @author groot
+ * @date 2019-08-27
+ */
 @Data
 public class AmzConfigDTO implements Serializable {
 

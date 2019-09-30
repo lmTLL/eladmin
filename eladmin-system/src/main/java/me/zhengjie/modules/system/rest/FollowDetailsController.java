@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-07-23
-*/
+ * @author groot
+ * @date 2019-07-23
+ */
 @RestController
 @RequestMapping("api")
 public class FollowDetailsController {
@@ -27,32 +27,32 @@ public class FollowDetailsController {
     @Log("查询FollowDetails")
     @GetMapping(value = "/followDetails")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_SELECT')")
-    public ResponseEntity getFollowDetailss(FollowDetailsQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(followDetailsService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getFollowDetailss(FollowDetailsQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(followDetailsService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
 
     @Log("查询FollowDetails不分页")
     @GetMapping(value = "/followDetailsAll/{asin}")
     //@PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_SELECT')")
-    public ResponseEntity getFollowDetailssAll(@PathVariable String asin){
-        FollowDetailsQueryCriteria criteria=new FollowDetailsQueryCriteria();
+    public ResponseEntity getFollowDetailssAll(@PathVariable String asin) {
+        FollowDetailsQueryCriteria criteria = new FollowDetailsQueryCriteria();
         criteria.setAsin(asin);
-        return new ResponseEntity(followDetailsService.queryAll(criteria),HttpStatus.OK);
+        return new ResponseEntity(followDetailsService.queryAll(criteria), HttpStatus.OK);
     }
 
 
     @Log("新增FollowDetails")
     @PostMapping(value = "/followDetails")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody FollowDetails resources){
-        return new ResponseEntity(followDetailsService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody FollowDetails resources) {
+        return new ResponseEntity(followDetailsService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改FollowDetails")
     @PutMapping(value = "/followDetails")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody FollowDetails resources){
+    public ResponseEntity update(@Validated @RequestBody FollowDetails resources) {
         followDetailsService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -60,7 +60,7 @@ public class FollowDetailsController {
     @Log("删除FollowDetails")
     @DeleteMapping(value = "/followDetails/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_DELETE')")
-    public ResponseEntity delete(@PathVariable Integer id){
+    public ResponseEntity delete(@PathVariable Integer id) {
         followDetailsService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -1,7 +1,6 @@
 package me.zhengjie.modules.system.domain;
 
 
-
 import java.util.Map;
 
 /**
@@ -19,7 +18,7 @@ public class TestMessage {
     private String msgtype;
 
     //消息内容
-    private Map<String,Object> text ;
+    private Map<String, Object> text;
 
 
     public String getTouser() {

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -27,7 +28,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     private JwtPermissionService permissionService;
 
     @Override
-    public UserDetails loadUserByUsername(String username){
+    public UserDetails loadUserByUsername(String username) {
 
         UserDTO user = userService.findByName(username);
         if (user == null) {

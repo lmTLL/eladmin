@@ -1,17 +1,18 @@
 package me.zhengjie.modules.system.domain;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
-* @author groot
-* @date 2019-07-22
-*/
+ * @author groot
+ * @date 2019-07-22
+ */
 @Entity
 @Data
-@Table(name="asin_info")
+@Table(name = "asin_info")
 public class AsinInfo implements Serializable {
 
     @Id
@@ -34,7 +35,7 @@ public class AsinInfo implements Serializable {
     @Column(name = "start_date")
     private Timestamp startDate;
 
-    @Column(name = "update_date",nullable = false)
+    @Column(name = "update_date", nullable = false)
     private Timestamp updateDate;
 
     @Column(name = "open_Id")

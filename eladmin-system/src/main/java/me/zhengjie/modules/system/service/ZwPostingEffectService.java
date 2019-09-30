@@ -8,31 +8,34 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Pageable;
 
 /**
-* @author groot
-* @date 2019-09-19
-*/
+ * @author groot
+ * @date 2019-09-19
+ */
 @CacheConfig(cacheNames = "zwPostingEffect")
 public interface ZwPostingEffectService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @CacheEvict(allEntries = true)
     Object queryAll(ZwPostingEffectQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @CacheEvict(allEntries = true)
     public Object queryAll(ZwPostingEffectQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -41,6 +44,7 @@ public interface ZwPostingEffectService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -49,6 +53,7 @@ public interface ZwPostingEffectService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -56,6 +61,7 @@ public interface ZwPostingEffectService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)

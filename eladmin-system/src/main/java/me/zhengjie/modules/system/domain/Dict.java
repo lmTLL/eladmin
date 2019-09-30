@@ -2,6 +2,7 @@ package me.zhengjie.modules.system.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Data
-@Table(name="dict")
+@Table(name = "dict")
 public class Dict implements Serializable {
 
     @Id
@@ -27,7 +28,7 @@ public class Dict implements Serializable {
     /**
      * 字典名称
      */
-    @Column(name = "name",nullable = false,unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     @NotBlank
     private String name;
 
@@ -37,8 +38,9 @@ public class Dict implements Serializable {
     @Column(name = "remark")
     private String remark;
 
-    @OneToMany(mappedBy = "dict",cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "dict", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<DictDetail> dictDetails;
 
-    public @interface Update {}
+    public @interface Update {
+    }
 }

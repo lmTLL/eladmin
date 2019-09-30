@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
-* @author groot
-* @date 2019-09-19
-*/
+ * @author groot
+ * @date 2019-09-19
+ */
 @Entity
 @Data
-@Table(name="zw_posting_effect")
+@Table(name = "zw_posting_effect")
 public class ZwPostingEffect implements Serializable {
 
     @Id
@@ -20,7 +20,7 @@ public class ZwPostingEffect implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "zw_sale_id",nullable = false)
+    @Column(name = "zw_sale_id", nullable = false)
     private Long zwSaleId;
 
     @Column(name = "posting_effect")

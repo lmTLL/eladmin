@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * @date 2019-07-09
  */
 @Data
-public class SaleOrderQueryCriteria{
+public class SaleOrderQueryCriteria {
 
     // 精确
     @Query

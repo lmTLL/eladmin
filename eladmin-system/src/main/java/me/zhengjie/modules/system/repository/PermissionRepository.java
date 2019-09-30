@@ -17,6 +17,7 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, J
 
     /**
      * findByName
+     *
      * @param name
      * @return
      */
@@ -24,6 +25,7 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, J
 
     /**
      * findByPid
+     *
      * @param pid
      * @return
      */

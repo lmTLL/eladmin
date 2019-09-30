@@ -16,6 +16,7 @@ public interface DictService {
 
     /**
      * 查询
+     *
      * @param dict
      * @param pageable
      * @return
@@ -25,6 +26,7 @@ public interface DictService {
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -33,6 +35,7 @@ public interface DictService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -41,6 +44,7 @@ public interface DictService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -48,6 +52,7 @@ public interface DictService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)

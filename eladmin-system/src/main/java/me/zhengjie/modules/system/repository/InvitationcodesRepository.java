@@ -9,14 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-07-05
-*/
+ * @author groot
+ * @date 2019-07-05
+ */
 public interface InvitationcodesRepository extends JpaRepository<Invitationcodes, Long>, JpaSpecificationExecutor {
-    @Query(value = "select * from invitationcodes where invitation_code = ?1",nativeQuery = true)
+    @Query(value = "select * from invitationcodes where invitation_code = ?1", nativeQuery = true)
     Optional<Invitationcodes> findByInvitationCode(String invitationCode);
 
     @Modifying
-    @Query(value = "update invitationcodes set enable='1' where id = ?1",nativeQuery = true)
+    @Query(value = "update invitationcodes set enable='1' where id = ?1", nativeQuery = true)
     void updateEnable(Long id);
 }

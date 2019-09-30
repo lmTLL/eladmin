@@ -8,6 +8,6 @@ import javax.persistence.Entity;
 
 @Data
 public class Image {
-    @JSONField(name="media_id")
+    @JSONField(name = "media_id")
     private String mediaid;
 }

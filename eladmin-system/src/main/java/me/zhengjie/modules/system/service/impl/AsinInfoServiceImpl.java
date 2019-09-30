@@ -1,4 +1,5 @@
 package me.zhengjie.modules.system.service.impl;
+
 import me.zhengjie.modules.system.domain.AsinInfo;
 import me.zhengjie.modules.system.domain.Token;
 import me.zhengjie.modules.system.repository.AsinInfoRepository;
@@ -19,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-07-22
-*/
+ * @author groot
+ * @date 2019-07-22
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class AsinInfoServiceImpl implements AsinInfoService {
@@ -33,20 +34,20 @@ public class AsinInfoServiceImpl implements AsinInfoService {
     private AsinInfoMapper asinInfoMapper;
 
     @Override
-    public Object queryAll(AsinInfoQueryCriteria criteria, Pageable pageable){
-        Page<AsinInfo> page = asinInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(AsinInfoQueryCriteria criteria, Pageable pageable) {
+        Page<AsinInfo> page = asinInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(asinInfoMapper::toDto));
     }
 
     @Override
-    public Object queryAll(AsinInfoQueryCriteria criteria){
-        return asinInfoMapper.toDto(asinInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(AsinInfoQueryCriteria criteria) {
+        return asinInfoMapper.toDto(asinInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public AsinInfoDTO findById(Integer id) {
         Optional<AsinInfo> asinInfo = asinInfoRepository.findById(id);
-        ValidationUtil.isNull(asinInfo,"AsinInfo","id",id);
+        ValidationUtil.isNull(asinInfo, "AsinInfo", "id", id);
         return asinInfoMapper.toDto(asinInfo.get());
     }
 
@@ -60,7 +61,7 @@ public class AsinInfoServiceImpl implements AsinInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void update(AsinInfo resources) {
         Optional<AsinInfo> optionalAsinInfo = asinInfoRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalAsinInfo,"AsinInfo","id",resources.getId());
+        ValidationUtil.isNull(optionalAsinInfo, "AsinInfo", "id", resources.getId());
 
         AsinInfo asinInfo = optionalAsinInfo.get();
         // 此处需自己修改
@@ -78,11 +79,12 @@ public class AsinInfoServiceImpl implements AsinInfoService {
     @Transactional(rollbackFor = Exception.class)
     public AsinInfo getByAsin(AsinInfo resources) {
         System.out.println("测试11111");
-        AsinInfo as = asinInfoRepository.getByAsin(resources.getAsin(),resources.getSite(),resources.getOpenId());
+        AsinInfo as = asinInfoRepository.getByAsin(resources.getAsin(), resources.getSite(), resources.getOpenId());
         System.out.println(as);
         return as;
     }
-//11
+
+    //11
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Token getToken() {
@@ -92,7 +94,7 @@ public class AsinInfoServiceImpl implements AsinInfoService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateCount(int count, Integer id) {
-        return asinInfoRepository.updateCount(count,id);
+        return asinInfoRepository.updateCount(count, id);
     }
 
 }

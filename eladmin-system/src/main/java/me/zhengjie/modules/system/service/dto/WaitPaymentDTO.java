@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 
 
 /**
-* @author groot
-* @date 2019-08-01
-*/
+ * @author groot
+ * @date 2019-08-01
+ */
 @Data
 public class WaitPaymentDTO implements Serializable {
 

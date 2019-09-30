@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-07-24
-*/
+ * @author groot
+ * @date 2019-07-24
+ */
 @RestController
 @RequestMapping("api")
 public class FileStatusController {
@@ -27,21 +27,21 @@ public class FileStatusController {
     @Log("查询FileStatus")
     @GetMapping(value = "/fileStatus")
     @PreAuthorize("hasAnyRole('ADMIN','FILESTATUS_ALL','FILESTATUS_SELECT')")
-    public ResponseEntity getFileStatuss(FileStatusQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(fileStatusService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getFileStatuss(FileStatusQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(fileStatusService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("新增FileStatus")
     @PostMapping(value = "/fileStatus")
     @PreAuthorize("hasAnyRole('ADMIN','FILESTATUS_ALL','FILESTATUS_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody FileStatus resources){
-        return new ResponseEntity(fileStatusService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody FileStatus resources) {
+        return new ResponseEntity(fileStatusService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改FileStatus")
     @PutMapping(value = "/fileStatus")
     @PreAuthorize("hasAnyRole('ADMIN','FILESTATUS_ALL','FILESTATUS_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody FileStatus resources){
+    public ResponseEntity update(@Validated @RequestBody FileStatus resources) {
         fileStatusService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -49,7 +49,7 @@ public class FileStatusController {
     @Log("删除FileStatus")
     @DeleteMapping(value = "/fileStatus/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','FILESTATUS_ALL','FILESTATUS_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         fileStatusService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

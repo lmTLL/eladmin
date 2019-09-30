@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ConfigurerAdapter implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedHeaders("*")
                 .allowedOrigins("*")
-                .allowedMethods("GET","POST","PUT","DELETE");
+                .allowedMethods("GET", "POST", "PUT", "DELETE");
 
     }
 

@@ -15,6 +15,6 @@ import java.util.List;
 public interface FollowOthersRepository extends JpaRepository<FollowOthers, Integer>, JpaSpecificationExecutor {
 
 
-    @Query(value = "select id,title,price,asin,five_points,start_date from follow_others t where t.asin = ?1 ",nativeQuery = true)
-    List<FollowOthers> getByAsin(String  asin);
+    @Query(value = "select id,title,price,asin,five_points,start_date from follow_others t where t.asin = ?1 ", nativeQuery = true)
+    List<FollowOthers> getByAsin(String asin);
 }

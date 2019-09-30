@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-08-27
-*/
+ * @author groot
+ * @date 2019-08-27
+ */
 @Entity
 @Data
-@Table(name="amz_config")
+@Table(name = "amz_config")
 public class AmzConfig implements Serializable {
 
     // ID
@@ -25,7 +25,7 @@ public class AmzConfig implements Serializable {
     private String amzAccount;
 
     // 画布随机数
-    @Column(name = "num",nullable = false)
+    @Column(name = "num", nullable = false)
     private Long num;
 
     // ip地址

@@ -7,9 +7,9 @@ import java.sql.Timestamp;
 
 
 /**
-* @author groot
-* @date 2019-07-22
-*/
+ * @author groot
+ * @date 2019-07-22
+ */
 @Data
 public class AsinInfoDTO implements Serializable {
 

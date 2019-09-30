@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 /**
  * 邮件配置类，数据存覆盖式存入数据存
+ *
  * @author Zheng Jie
  * @date 2018-12-26
  */
@@ -20,7 +21,7 @@ public class EmailConfig implements Serializable {
     private Long id;
 
     /**
-     *邮件服务器SMTP地址
+     * 邮件服务器SMTP地址
      */
     @NotBlank
     private String host;

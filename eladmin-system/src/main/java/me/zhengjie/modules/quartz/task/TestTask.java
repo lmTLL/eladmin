@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 测试用
+ *
  * @author Zheng Jie
  * @date 2019-01-08
  */
@@ -18,13 +19,14 @@ import org.springframework.stereotype.Component;
 public class TestTask {
     @Autowired
     private TokenRepository tokenRepository;
+
     public void run() throws Exception {
         String token1 = WechatController.saveAccess_token();
         tokenRepository.upload(token1);
         log.info("执行成功");
     }
 
-    public void run1(String str){
+    public void run1(String str) {
         log.info("执行成功，参数为： {}" + str);
     }
 }

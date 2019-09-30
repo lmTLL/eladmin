@@ -25,14 +25,14 @@ public class RedisController {
     @Log("查询Redis缓存")
     @GetMapping(value = "/redis")
     @PreAuthorize("hasAnyRole('ADMIN','REDIS_ALL','REDIS_SELECT')")
-    public ResponseEntity getRedis(String key, Pageable pageable){
-        return new ResponseEntity(redisService.findByKey(key,pageable), HttpStatus.OK);
+    public ResponseEntity getRedis(String key, Pageable pageable) {
+        return new ResponseEntity(redisService.findByKey(key, pageable), HttpStatus.OK);
     }
 
     @Log("删除Redis缓存")
     @DeleteMapping(value = "/redis")
     @PreAuthorize("hasAnyRole('ADMIN','REDIS_ALL','REDIS_DELETE')")
-    public ResponseEntity delete(@RequestBody RedisVo resources){
+    public ResponseEntity delete(@RequestBody RedisVo resources) {
         redisService.delete(resources.getKey());
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -40,7 +40,7 @@ public class RedisController {
     @Log("清空Redis缓存")
     @DeleteMapping(value = "/redis/all")
     @PreAuthorize("hasAnyRole('ADMIN','REDIS_ALL','REDIS_DELETE')")
-    public ResponseEntity deleteAll(){
+    public ResponseEntity deleteAll() {
         redisService.flushdb();
         return new ResponseEntity(HttpStatus.OK);
     }

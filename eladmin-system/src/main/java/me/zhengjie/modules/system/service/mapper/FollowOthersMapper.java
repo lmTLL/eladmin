@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
  * @author handsome
  * @date 2019-08-28
  */
-@Mapper(componentModel = "spring",uses = {},unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FollowOthersMapper extends EntityMapper<FollowOthersDTO, FollowOthers> {
 
 }

@@ -31,18 +31,19 @@ public class Test {
     @Autowired
     private WechatController wechatController;
     private String TOKEN = "pangxianwei";
+
     @GetMapping("/weChat/callback")
     public String test(@RequestParam("signature") String signature,
                        @RequestParam("timestamp") String timestamp,
                        @RequestParam("nonce") String nonce,
-                       @RequestParam("echostr")String echostr) {
+                       @RequestParam("echostr") String echostr) {
 
         //排序
         String sortString = sort(TOKEN, timestamp, nonce);
         //加密
         String myString = sha1(sortString);
         //校验
-        if (myString != null && myString !="" && myString.equals(signature)) {
+        if (myString != null && myString != "" && myString.equals(signature)) {
             System.out.println("签名校验通过");
             //如果检验成功原样返回echostr，微信服务器接收到此输出，才会确认检验完成。
             return echostr;
@@ -85,48 +86,49 @@ public class Test {
         }
         return "";
     }
+
     @GetMapping("/MP_verify_27cPHIW5VRtHcomQ.txt")
-    public String get(){
+    public String get() {
         return "27cPHIW5VRtHcomQ";
     }
 
     @GetMapping("/test/sendMessage")
     @ResponseBody
-    public String sendMessage(String openId,String message) throws Exception {
-        String filename = message.substring(message.indexOf("【")+1, message.lastIndexOf("】"));
+    public String sendMessage(String openId, String message) throws Exception {
+        String filename = message.substring(message.indexOf("【") + 1, message.lastIndexOf("】"));
         Map<String, Object> userInfoByOpenid = wechatController.getUserInfoByOpenid(openId);
         Object nickname = userInfoByOpenid.get("nickname");
-        String nicknames="s";
-        if (nickname!=null){
-            nicknames=nickname.toString();
+        String nicknames = "s";
+        if (nickname != null) {
+            nicknames = nickname.toString();
         }
-        fileStatusRepository.sign(filename,nicknames);
+        fileStatusRepository.sign(filename, nicknames);
         System.out.println(filename);
-        Object msg = sendModelMessage(openId, message, "", "", "", "", "", "","");
-            return msg.toString();
+        Object msg = sendModelMessage(openId, message, "", "", "", "", "", "", "");
+        return msg.toString();
     }
 
     @GetMapping("/test/signText")
     //@ResponseBody
     public void signText(String nickname, String filename, HttpServletResponse response) throws IOException {
         FileStatus fileStatusByNickname = fileStatusRepository.findFileStatusByNickname(nickname, filename);
-        if (fileStatusByNickname==null){
-            FileStatus fileStatus=new FileStatus();
+        if (fileStatusByNickname == null) {
+            FileStatus fileStatus = new FileStatus();
             fileStatus.setFilename(filename);
             fileStatus.setNickname(nickname);
             fileStatus.setNewStatus("1");
             fileStatusService.create(fileStatus);
-            response.setHeader("Access-Control-Allow-Origin","*");
+            response.setHeader("Access-Control-Allow-Origin", "*");
             response.getWriter().print("1");
-        }else {
-            response.setHeader("Access-Control-Allow-Origin","*");
+        } else {
+            response.setHeader("Access-Control-Allow-Origin", "*");
             response.getWriter().print(fileStatusByNickname.getNewStatus());
-           // return fileStatusByNickname.getNewStatus();
+            // return fileStatusByNickname.getNewStatus();
         }
     }
 
     @GetMapping("/test/doSign")
-    public void doSign(String nickname,String filename){
+    public void doSign(String nickname, String filename) {
         fileStatusRepository.signByNickname(filename, nickname);
     }
 }

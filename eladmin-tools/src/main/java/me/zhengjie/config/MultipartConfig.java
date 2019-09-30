@@ -11,8 +11,8 @@ import javax.servlet.MultipartConfigElement;
 import java.io.File;
 
 /**
- * @date 2018-12-28
  * @author https://blog.csdn.net/llibin1024530411/article/details/79474953
+ * @date 2018-12-28
  */
 @Configuration
 public class MultipartConfig implements WebMvcConfigurer {
@@ -32,7 +32,8 @@ public class MultipartConfig implements WebMvcConfigurer {
         return factory.createMultipartConfig();
     }
 
-    private String filesPath="d:/files";
+    private String filesPath = "d:/files";
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/statics/**")

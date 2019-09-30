@@ -9,31 +9,34 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 
 /**
-* @author groot
-* @date 2019-07-24
-*/
+ * @author groot
+ * @date 2019-07-24
+ */
 @CacheConfig(cacheNames = "fileStatus")
 public interface FileStatusService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @CacheEvict(allEntries = true)
     Object queryAll(FileStatusQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @CacheEvict(allEntries = true)
     public Object queryAll(FileStatusQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -42,6 +45,7 @@ public interface FileStatusService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -50,6 +54,7 @@ public interface FileStatusService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -57,6 +62,7 @@ public interface FileStatusService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)

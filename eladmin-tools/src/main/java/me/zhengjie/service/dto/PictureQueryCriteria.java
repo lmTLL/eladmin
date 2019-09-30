@@ -10,11 +10,11 @@ import me.zhengjie.annotation.Query;
  * @date 2019-6-4 09:52:09
  */
 @Data
-public class PictureQueryCriteria{
+public class PictureQueryCriteria {
 
     @Query(type = Query.Type.INNER_LIKE)
     private String filename;
-    
+
     @Query(type = Query.Type.INNER_LIKE)
     private String username;
 }

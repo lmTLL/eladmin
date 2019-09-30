@@ -20,6 +20,7 @@ public interface FollowOthersService {
 
     /**
      * queryAll 分页
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -29,6 +30,7 @@ public interface FollowOthersService {
 
     /**
      * queryAll 不分页
+     *
      * @param criteria
      * @return
      */
@@ -38,6 +40,7 @@ public interface FollowOthersService {
 
     /**
      * queryAll 不分页
+     *
      * @param criteria
      * @return
      */
@@ -47,6 +50,7 @@ public interface FollowOthersService {
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -55,6 +59,7 @@ public interface FollowOthersService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -63,6 +68,7 @@ public interface FollowOthersService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -70,6 +76,7 @@ public interface FollowOthersService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -77,8 +84,9 @@ public interface FollowOthersService {
 
     /**
      * getByAsin
+     *
      * @param asin
      */
     @CacheEvict(allEntries = true)
-    List<FollowOthers> getByAsin(String  asin);
+    List<FollowOthers> getByAsin(String asin);
 }

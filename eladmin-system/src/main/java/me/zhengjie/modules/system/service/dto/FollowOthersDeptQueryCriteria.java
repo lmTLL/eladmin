@@ -2,6 +2,7 @@ package me.zhengjie.modules.system.service.dto;
 
 import lombok.Data;
 import me.zhengjie.annotation.Query;
+
 import java.util.Set;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Set;
 @Data
 public class FollowOthersDeptQueryCriteria {
 
-    @Query(type = Query.Type.IN, propName="id")
+    @Query(type = Query.Type.IN, propName = "id")
     private Set<Long> ids;
 
     @Query(type = Query.Type.INNER_LIKE)

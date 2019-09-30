@@ -18,6 +18,7 @@ public interface UserService {
 
     /**
      * get
+     *
      * @param id
      * @return
      */
@@ -26,6 +27,7 @@ public interface UserService {
 
     /**
      * get
+     *
      * @param openId
      * @return
      */
@@ -34,6 +36,7 @@ public interface UserService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -42,6 +45,7 @@ public interface UserService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -49,6 +53,7 @@ public interface UserService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -56,6 +61,7 @@ public interface UserService {
 
     /**
      * findByName
+     *
      * @param userName
      * @return
      */
@@ -64,6 +70,7 @@ public interface UserService {
 
     /**
      * 修改密码
+     *
      * @param username
      * @param encryptPassword
      */
@@ -72,6 +79,7 @@ public interface UserService {
 
     /**
      * 修改头像
+     *
      * @param username
      * @param url
      */
@@ -80,6 +88,7 @@ public interface UserService {
 
     /**
      * 修改邮箱
+     *
      * @param username
      * @param email
      */

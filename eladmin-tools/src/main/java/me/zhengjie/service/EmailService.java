@@ -16,6 +16,7 @@ public interface EmailService {
 
     /**
      * 更新邮件配置
+     *
      * @param emailConfig
      * @param old
      * @return
@@ -25,6 +26,7 @@ public interface EmailService {
 
     /**
      * 查询配置
+     *
      * @return
      */
     @Cacheable(key = "'1'")
@@ -32,6 +34,7 @@ public interface EmailService {
 
     /**
      * 发送邮件
+     *
      * @param emailVo
      * @param emailConfig
      * @throws Exception

@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-09-19
-*/
+ * @author groot
+ * @date 2019-09-19
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ZwPostingEffectServiceImpl implements ZwPostingEffectService {
@@ -33,20 +33,20 @@ public class ZwPostingEffectServiceImpl implements ZwPostingEffectService {
     private ZwPostingEffectMapper zwPostingEffectMapper;
 
     @Override
-    public Object queryAll(ZwPostingEffectQueryCriteria criteria, Pageable pageable){
-        Page<ZwPostingEffect> page = zwPostingEffectRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(ZwPostingEffectQueryCriteria criteria, Pageable pageable) {
+        Page<ZwPostingEffect> page = zwPostingEffectRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(zwPostingEffectMapper::toDto));
     }
 
     @Override
-    public Object queryAll(ZwPostingEffectQueryCriteria criteria){
-        return zwPostingEffectMapper.toDto(zwPostingEffectRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(ZwPostingEffectQueryCriteria criteria) {
+        return zwPostingEffectMapper.toDto(zwPostingEffectRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public ZwPostingEffectDTO findById(Long id) {
         Optional<ZwPostingEffect> zwPostingEffect = zwPostingEffectRepository.findById(id);
-        ValidationUtil.isNull(zwPostingEffect,"ZwPostingEffect","id",id);
+        ValidationUtil.isNull(zwPostingEffect, "ZwPostingEffect", "id", id);
         return zwPostingEffectMapper.toDto(zwPostingEffect.get());
     }
 
@@ -60,7 +60,7 @@ public class ZwPostingEffectServiceImpl implements ZwPostingEffectService {
     @Transactional(rollbackFor = Exception.class)
     public void update(ZwPostingEffect resources) {
         Optional<ZwPostingEffect> optionalZwPostingEffect = zwPostingEffectRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalZwPostingEffect,"ZwPostingEffect","id",resources.getId());
+        ValidationUtil.isNull(optionalZwPostingEffect, "ZwPostingEffect", "id", resources.getId());
 
         ZwPostingEffect zwPostingEffect = optionalZwPostingEffect.get();
         // 此处需自己修改

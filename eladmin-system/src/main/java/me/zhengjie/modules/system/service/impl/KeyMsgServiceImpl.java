@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-07-26
-*/
+ * @author groot
+ * @date 2019-07-26
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class KeyMsgServiceImpl implements KeyMsgService {
@@ -33,20 +33,20 @@ public class KeyMsgServiceImpl implements KeyMsgService {
     private KeyMsgMapper keyMsgMapper;
 
     @Override
-    public Object queryAll(KeyMsgQueryCriteria criteria, Pageable pageable){
-        Page<KeyMsg> page = keyMsgRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(KeyMsgQueryCriteria criteria, Pageable pageable) {
+        Page<KeyMsg> page = keyMsgRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(keyMsgMapper::toDto));
     }
 
     @Override
-    public Object queryAll(KeyMsgQueryCriteria criteria){
-        return keyMsgMapper.toDto(keyMsgRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(KeyMsgQueryCriteria criteria) {
+        return keyMsgMapper.toDto(keyMsgRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public KeyMsgDTO findById(Long id) {
         Optional<KeyMsg> keyMsg = keyMsgRepository.findById(id);
-        ValidationUtil.isNull(keyMsg,"KeyMsg","id",id);
+        ValidationUtil.isNull(keyMsg, "KeyMsg", "id", id);
         return keyMsgMapper.toDto(keyMsg.get());
     }
 
@@ -60,7 +60,7 @@ public class KeyMsgServiceImpl implements KeyMsgService {
     @Transactional(rollbackFor = Exception.class)
     public void update(KeyMsg resources) {
         Optional<KeyMsg> optionalKeyMsg = keyMsgRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalKeyMsg,"KeyMsg","id",resources.getId());
+        ValidationUtil.isNull(optionalKeyMsg, "KeyMsg", "id", resources.getId());
 
         KeyMsg keyMsg = optionalKeyMsg.get();
         // 此处需自己修改

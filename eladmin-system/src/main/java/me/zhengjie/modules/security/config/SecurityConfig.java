@@ -91,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).anonymous()
 
-                .antMatchers( HttpMethod.POST,"/auth/"+loginPath).anonymous()
+                .antMatchers(HttpMethod.POST, "/auth/" + loginPath).anonymous()
                 .antMatchers("/auth/vCode").anonymous()
                 // 支付宝回调
                 .antMatchers("/api/aliPay/return").anonymous()
@@ -113,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**").anonymous()
                 .antMatchers("/api/navigationAll").anonymous()
                 .antMatchers("/statics/**").anonymous()
-               //生成Excel
+                //生成Excel
                 .antMatchers("/api/saleOrder/Excel").anonymous()
                 .antMatchers("/api/zwSaleOrder/downloadTxt").anonymous()
                 .antMatchers("/api/waitPayment/getAll").anonymous()

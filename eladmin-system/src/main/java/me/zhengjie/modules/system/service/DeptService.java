@@ -19,6 +19,7 @@ public interface DeptService {
 
     /**
      * queryAll
+     *
      * @param criteria
      * @return
      */
@@ -27,6 +28,7 @@ public interface DeptService {
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -35,6 +37,7 @@ public interface DeptService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -43,6 +46,7 @@ public interface DeptService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -50,6 +54,7 @@ public interface DeptService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -57,6 +62,7 @@ public interface DeptService {
 
     /**
      * buildTree
+     *
      * @param deptDTOS
      * @return
      */
@@ -65,6 +71,7 @@ public interface DeptService {
 
     /**
      * findByPid
+     *
      * @param pid
      * @return
      */

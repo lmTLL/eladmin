@@ -36,14 +36,14 @@ public class FollowOthersServiceImpl implements FollowOthersService {
     private FollowOthersMapper followOthersMapper;
 
     @Override
-    public Object queryAll(FollowOthersQueryCriteria criteria, Pageable pageable){
-        Page<FollowOthers> page = followOthersRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(FollowOthersQueryCriteria criteria, Pageable pageable) {
+        Page<FollowOthers> page = followOthersRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(followOthersMapper::toDto));
     }
 
     @Override
-    public Object queryAll(FollowOthersQueryCriteria criteria){
-        return followOthersMapper.toDto(followOthersRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(FollowOthersQueryCriteria criteria) {
+        return followOthersMapper.toDto(followOthersRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class FollowOthersServiceImpl implements FollowOthersService {
     @Override
     public FollowOthersDTO findById(Integer id) {
         Optional<FollowOthers> followOthers = followOthersRepository.findById(id);
-        ValidationUtil.isNull(followOthers,"FollowDetails","id",id);
+        ValidationUtil.isNull(followOthers, "FollowDetails", "id", id);
         return followOthersMapper.toDto(followOthers.get());
     }
 
@@ -69,7 +69,7 @@ public class FollowOthersServiceImpl implements FollowOthersService {
     @Transactional(rollbackFor = Exception.class)
     public void update(FollowOthers resources) {
         Optional<FollowOthers> optionalFollowOthers = followOthersRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalFollowOthers,"FollowDetails","id",resources.getId());
+        ValidationUtil.isNull(optionalFollowOthers, "FollowDetails", "id", resources.getId());
 
         FollowOthers followOthers = optionalFollowOthers.get();
         // 此处需自己修改

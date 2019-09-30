@@ -19,9 +19,9 @@ import java.util.List;
 
 
 /**
-* @author groot
-* @date 2019-08-01
-*/
+ * @author groot
+ * @date 2019-08-01
+ */
 @RestController
 @RequestMapping("api")
 public class WaitPaymentController {
@@ -34,28 +34,29 @@ public class WaitPaymentController {
     @Log("查询WaitPayment")
     @GetMapping(value = "/waitPayment")
     @PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_SELECT')")
-    public ResponseEntity getWaitPayments(WaitPaymentQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(waitPaymentService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getWaitPayments(WaitPaymentQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(waitPaymentService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("查询WaitPayment by paymentRemarks")
     @GetMapping(value = "/waitPayment/{paymentRemarks}")
     //@PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_SELECT')")
-    public ResponseEntity getpaymentRemarks(@PathVariable String paymentRemarks){
+    public ResponseEntity getpaymentRemarks(@PathVariable String paymentRemarks) {
         WaitPayment waitPayment = waitPaymentRepository.getwaitPayment(paymentRemarks);
         System.out.println(paymentRemarks);
         System.out.println(waitPayment);
-        if ("1".equals(waitPayment.getPaymentType())||"2".equals(waitPayment.getPaymentType())){
+        if ("1".equals(waitPayment.getPaymentType()) || "2".equals(waitPayment.getPaymentType())) {
             waitPaymentRepository.deleteById(waitPayment.getId());
         }
-        return new ResponseEntity(waitPayment,HttpStatus.OK);
+        return new ResponseEntity(waitPayment, HttpStatus.OK);
     }
+
     @Log("查询所有未查询的WaitPayment")
     @GetMapping(value = "/waitPayment/getAll")
     @ResponseBody
     //@PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_SELECT')")
     public Object getAllWaitPayment(HttpServletResponse response) throws IOException {
-        response.setHeader("Access-Control-Allow-Origin","*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         //response.getWriter().print(waitPaymentRepository.getAllwaitPayment());
         return waitPaymentRepository.getAllwaitPayment();
         //return waitPaymentRepository.getAllwaitPayment();
@@ -64,29 +65,30 @@ public class WaitPaymentController {
     @Log("更新WaitPayment的状态")
     @GetMapping(value = "/waitPayment/callback")
     //@PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_SELECT')")
-    public ResponseEntity callback(String paymentRemarks,String paymentId,String paymentType){
-        waitPaymentRepository.updateType(paymentRemarks,paymentId,paymentType);
+    public ResponseEntity callback(String paymentRemarks, String paymentId, String paymentType) {
+        waitPaymentRepository.updateType(paymentRemarks, paymentId, paymentType);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @Log("更新WaitPayment的状态")
     @GetMapping(value = "/waitPayment/callbackEl/{paymentRemarks}")
     //@PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_SELECT')")
-    public ResponseEntity callbackEl(@PathVariable String paymentRemarks){
-        waitPaymentRepository.updateType(paymentRemarks,"000","2");
+    public ResponseEntity callbackEl(@PathVariable String paymentRemarks) {
+        waitPaymentRepository.updateType(paymentRemarks, "000", "2");
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @Log("新增WaitPayment")
     @PostMapping(value = "/waitPayment")
     //@PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody WaitPayment resources){
-        return new ResponseEntity(waitPaymentService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody WaitPayment resources) {
+        return new ResponseEntity(waitPaymentService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改WaitPayment")
     @PutMapping(value = "/waitPayment")
     @PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody WaitPayment resources){
+    public ResponseEntity update(@Validated @RequestBody WaitPayment resources) {
         waitPaymentService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -94,7 +96,7 @@ public class WaitPaymentController {
     @Log("删除WaitPayment")
     @DeleteMapping(value = "/waitPayment/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','WAITPAYMENT_ALL','WAITPAYMENT_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         waitPaymentService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

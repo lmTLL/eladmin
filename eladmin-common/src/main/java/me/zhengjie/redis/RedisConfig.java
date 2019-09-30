@@ -19,6 +19,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+
 import java.time.Duration;
 
 /**
@@ -34,12 +35,13 @@ import java.time.Duration;
 public class RedisConfig extends CachingConfigurerSupport {
 
     /**
-     *  设置 redis 数据默认过期时间，默认1天
-     *  设置@cacheable 序列化方式
+     * 设置 redis 数据默认过期时间，默认1天
+     * 设置@cacheable 序列化方式
+     *
      * @return
      */
     @Bean
-    public RedisCacheConfiguration redisCacheConfiguration(){
+    public RedisCacheConfiguration redisCacheConfiguration() {
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig();
         configuration = configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer)).entryTtl(Duration.ofDays(1));
@@ -75,6 +77,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     /**
      * 自定义缓存key生成策略
      * 使用方法 @Cacheable(keyGenerator="keyGenerator")
+     *
      * @return
      */
     @Bean

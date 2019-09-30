@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-09-27
-*/
+ * @author groot
+ * @date 2019-09-27
+ */
 @RestController
 @RequestMapping("api")
 public class ZwSaleOrderUpdateController {
@@ -27,21 +27,21 @@ public class ZwSaleOrderUpdateController {
     @Log("查询ZwSaleOrderUpdate")
     @GetMapping(value = "/zwSaleOrderUpdate")
     @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDERUPDATE_ALL','ZWSALEORDERUPDATE_SELECT')")
-    public ResponseEntity getZwSaleOrderUpdates(ZwSaleOrderUpdateQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(zwSaleOrderUpdateService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getZwSaleOrderUpdates(ZwSaleOrderUpdateQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(zwSaleOrderUpdateService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("新增ZwSaleOrderUpdate")
     @PostMapping(value = "/zwSaleOrderUpdate")
     @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDERUPDATE_ALL','ZWSALEORDERUPDATE_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody ZwSaleOrderUpdate resources){
-        return new ResponseEntity(zwSaleOrderUpdateService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody ZwSaleOrderUpdate resources) {
+        return new ResponseEntity(zwSaleOrderUpdateService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改ZwSaleOrderUpdate")
     @PutMapping(value = "/zwSaleOrderUpdate")
     @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDERUPDATE_ALL','ZWSALEORDERUPDATE_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody ZwSaleOrderUpdate resources){
+    public ResponseEntity update(@Validated @RequestBody ZwSaleOrderUpdate resources) {
         zwSaleOrderUpdateService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -49,7 +49,7 @@ public class ZwSaleOrderUpdateController {
     @Log("删除ZwSaleOrderUpdate")
     @DeleteMapping(value = "/zwSaleOrderUpdate/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','ZWSALEORDERUPDATE_ALL','ZWSALEORDERUPDATE_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         zwSaleOrderUpdateService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

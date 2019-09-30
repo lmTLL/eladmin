@@ -17,6 +17,7 @@ public interface DictDetailService {
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -25,6 +26,7 @@ public interface DictDetailService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -33,6 +35,7 @@ public interface DictDetailService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -40,6 +43,7 @@ public interface DictDetailService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)

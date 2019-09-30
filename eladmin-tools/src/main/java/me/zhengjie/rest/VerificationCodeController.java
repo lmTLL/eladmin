@@ -34,7 +34,7 @@ public class VerificationCodeController {
     public ResponseEntity resetEmail(@RequestBody VerificationCode code) throws Exception {
         code.setScenes(ElAdminConstant.RESET_MAIL);
         EmailVo emailVo = verificationCodeService.sendEmail(code);
-        emailService.send(emailVo,emailService.find());
+        emailService.send(emailVo, emailService.find());
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -45,12 +45,12 @@ public class VerificationCodeController {
         code.setValue(email);
         code.setScenes(ElAdminConstant.RESET_MAIL);
         EmailVo emailVo = verificationCodeService.sendEmail(code);
-        emailService.send(emailVo,emailService.find());
+        emailService.send(emailVo, emailService.find());
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(value = "/code/validated")
-    public ResponseEntity validated(VerificationCode code){
+    public ResponseEntity validated(VerificationCode code) {
         verificationCodeService.validated(code);
         return new ResponseEntity(HttpStatus.OK);
     }

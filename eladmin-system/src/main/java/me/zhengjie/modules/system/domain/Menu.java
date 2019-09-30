@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -43,7 +44,7 @@ public class Menu implements Serializable {
     /**
      * 上级菜单ID
      */
-    @Column(name = "pid",nullable = false)
+    @Column(name = "pid", nullable = false)
     private Long pid;
 
     /**
@@ -60,5 +61,6 @@ public class Menu implements Serializable {
     @Column(name = "create_time")
     private Timestamp createTime;
 
-    public interface Update{}
+    public interface Update {
+    }
 }

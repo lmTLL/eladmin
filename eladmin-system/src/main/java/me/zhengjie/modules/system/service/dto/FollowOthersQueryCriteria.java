@@ -8,7 +8,7 @@ import me.zhengjie.annotation.Query;
  * @date 2019-08-28
  */
 @Data
-public class FollowOthersQueryCriteria{
+public class FollowOthersQueryCriteria {
 
     // 精确
     @Query

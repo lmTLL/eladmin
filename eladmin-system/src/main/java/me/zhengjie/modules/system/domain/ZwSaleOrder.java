@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
-* @author groot
-* @date 2019-09-05
-*/
+ * @author groot
+ * @date 2019-09-05
+ */
 @Entity
 @Data
-@Table(name="zw_sale_order")
+@Table(name = "zw_sale_order")
 public class ZwSaleOrder implements Serializable {
 
     // 站外id
@@ -22,7 +22,7 @@ public class ZwSaleOrder implements Serializable {
     private Long id;
 
     // 订单编号
-    @Column(name = "zw_sale_number",nullable = false)
+    @Column(name = "zw_sale_number", nullable = false)
     private String zwSaleNumber;
 
     // 服务项目
@@ -125,7 +125,7 @@ public class ZwSaleOrder implements Serializable {
     private String status;
 
     // 用户id
-    @Column(name = "customer_id",nullable = false)
+    @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
     // 备注

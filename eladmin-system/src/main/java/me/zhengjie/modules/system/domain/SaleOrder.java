@@ -1,18 +1,19 @@
 package me.zhengjie.modules.system.domain;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 @Entity
 @Data
-@Table(name="sale_order")
+@Table(name = "sale_order")
 public class SaleOrder implements Serializable {
 
     // 序号
@@ -31,7 +32,7 @@ public class SaleOrder implements Serializable {
     private String site;
 
     // asin
-    @Column(name = "asin",nullable = false)
+    @Column(name = "asin", nullable = false)
     private String asin;
 
     // 跟卖类型

@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 /**
-* @author groot
-* @date 2019-07-26
-*/
+ * @author groot
+ * @date 2019-07-26
+ */
 public interface KeyMsgRepository extends JpaRepository<KeyMsg, Long>, JpaSpecificationExecutor {
-    @Query(value = "SELECT msg FROM key_msg t WHERE t.key_s=?1 ",nativeQuery = true)
+    @Query(value = "SELECT msg FROM key_msg t WHERE t.key_s=?1 ", nativeQuery = true)
     String findMsgByKey(String key);
 }

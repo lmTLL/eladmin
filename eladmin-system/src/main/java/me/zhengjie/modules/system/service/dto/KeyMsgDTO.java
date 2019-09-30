@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 
 /**
-* @author groot
-* @date 2019-07-26
-*/
+ * @author groot
+ * @date 2019-07-26
+ */
 @Data
 public class KeyMsgDTO implements Serializable {
 

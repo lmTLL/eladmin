@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-07-23
-*/
+ * @author groot
+ * @date 2019-07-23
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class FollowDetailsServiceImpl implements FollowDetailsService {
@@ -35,20 +35,20 @@ public class FollowDetailsServiceImpl implements FollowDetailsService {
     private FollowDetailsMapper followDetailsMapper;
 
     @Override
-    public Object queryAll(FollowDetailsQueryCriteria criteria, Pageable pageable){
-        Page<FollowDetails> page = followDetailsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(FollowDetailsQueryCriteria criteria, Pageable pageable) {
+        Page<FollowDetails> page = followDetailsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(followDetailsMapper::toDto));
     }
 
     @Override
-    public Object queryAll(FollowDetailsQueryCriteria criteria){
-        return followDetailsMapper.toDto(followDetailsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(FollowDetailsQueryCriteria criteria) {
+        return followDetailsMapper.toDto(followDetailsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public FollowDetailsDTO findById(Integer id) {
         Optional<FollowDetails> followDetails = followDetailsRepository.findById(id);
-        ValidationUtil.isNull(followDetails,"FollowDetails","id",id);
+        ValidationUtil.isNull(followDetails, "FollowDetails", "id", id);
         return followDetailsMapper.toDto(followDetails.get());
     }
 
@@ -62,7 +62,7 @@ public class FollowDetailsServiceImpl implements FollowDetailsService {
     @Transactional(rollbackFor = Exception.class)
     public void update(FollowDetails resources) {
         Optional<FollowDetails> optionalFollowDetails = followDetailsRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalFollowDetails,"FollowDetails","id",resources.getId());
+        ValidationUtil.isNull(optionalFollowDetails, "FollowDetails", "id", resources.getId());
 
         FollowDetails followDetails = optionalFollowDetails.get();
         // 此处需自己修改

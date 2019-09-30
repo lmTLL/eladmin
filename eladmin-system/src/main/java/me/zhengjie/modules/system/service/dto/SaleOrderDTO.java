@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 @Data
 public class SaleOrderDTO implements Serializable {
 

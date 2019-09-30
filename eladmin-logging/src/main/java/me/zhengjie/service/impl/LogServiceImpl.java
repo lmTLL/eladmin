@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.lang.reflect.Method;
 
 /**
@@ -40,8 +41,8 @@ public class LogServiceImpl implements LogService {
     private final String LOGINPATH = "login";
 
     @Override
-    public Object queryAll(LogQueryCriteria criteria, Pageable pageable){
-        Page<Log> page = logRepository.findAll(((root, criteriaQuery, cb) -> QueryHelp.getPredicate(root, criteria, cb)),pageable);
+    public Object queryAll(LogQueryCriteria criteria, Pageable pageable) {
+        Page<Log> page = logRepository.findAll(((root, criteriaQuery, cb) -> QueryHelp.getPredicate(root, criteria, cb)), pageable);
         if (criteria.getLogType().equals("ERROR")) {
             return PageUtil.toPage(page.map(logErrorMapper::toDto));
         }
@@ -50,13 +51,13 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public Object queryAllByUser(LogQueryCriteria criteria, Pageable pageable) {
-        Page<Log> page = logRepository.findAll(((root, criteriaQuery, cb) -> QueryHelp.getPredicate(root, criteria, cb)),pageable);
+        Page<Log> page = logRepository.findAll(((root, criteriaQuery, cb) -> QueryHelp.getPredicate(root, criteria, cb)), pageable);
         return PageUtil.toPage(page.map(logSmallMapper::toDto));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(String username, String ip, ProceedingJoinPoint joinPoint, Log log){
+    public void save(String username, String ip, ProceedingJoinPoint joinPoint, Log log) {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
@@ -68,14 +69,14 @@ public class LogServiceImpl implements LogService {
         }
 
         // 方法路径
-        String methodName = joinPoint.getTarget().getClass().getName()+"."+signature.getName()+"()";
+        String methodName = joinPoint.getTarget().getClass().getName() + "." + signature.getName() + "()";
 
         String params = "{";
         //参数值
         Object[] argValues = joinPoint.getArgs();
         //参数名称
-        String[] argNames = ((MethodSignature)joinPoint.getSignature()).getParameterNames();
-        if(argValues != null){
+        String[] argNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
+        if (argValues != null) {
             for (int i = 0; i < argValues.length; i++) {
                 params += " " + argNames[i] + ": " + argValues[i];
             }
@@ -84,11 +85,11 @@ public class LogServiceImpl implements LogService {
         // 获取IP地址
         log.setRequestIp(ip);
 
-        if(LOGINPATH.equals(signature.getName())){
+        if (LOGINPATH.equals(signature.getName())) {
             try {
                 JSONObject jsonObject = new JSONObject(argValues[0]);
                 username = jsonObject.get("username").toString();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -100,6 +101,6 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public Object findByErrDetail(Long id) {
-        return Dict.create().set("exception",logRepository.findExceptionById(id));
+        return Dict.create().set("exception", logRepository.findExceptionById(id));
     }
 }

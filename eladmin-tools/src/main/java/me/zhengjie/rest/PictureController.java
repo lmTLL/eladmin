@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * @author 郑杰
  * @date 2018/09/20 14:13:32
@@ -35,12 +36,13 @@ public class PictureController {
     @Log("查询图片")
     @PreAuthorize("hasAnyRole('ADMIN','PICTURE_ALL','PICTURE_SELECT')")
     @GetMapping(value = "/pictures")
-    public ResponseEntity getRoles(PictureQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(pictureService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getRoles(PictureQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(pictureService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     /**
      * 上传图片
+     *
      * @param file
      * @return
      * @throws Exception
@@ -50,7 +52,7 @@ public class PictureController {
     @PostMapping(value = "/pictures")
     public ResponseEntity upload(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
         String userName = SecurityUtils.getUsername();
-        Picture picture = pictureService.upload(file,userName,request);
+        Picture picture = pictureService.upload(file, userName, request);
         Map map = new HashMap();
         String url = picture.getUrl();
         AipOcr client = Ocr.getInstance();
@@ -67,29 +69,31 @@ public class PictureController {
             //JSONObject jsonObject = wordsResult.getJSONObject(15);
         }
         JSONObject jsonObject = null;
-        if (wordsResult.length()>0){
+        if (wordsResult.length() > 0) {
             try {
-                jsonObject=wordsResult.getJSONObject(index + 1);
-            }catch (Exception e){
+                jsonObject = wordsResult.getJSONObject(index + 1);
+            } catch (Exception e) {
 
             }
         }
         String words = "";
-        if (jsonObject!=null){
-            if (jsonObject.get("words")!=null){
-                words=jsonObject.get("words").toString();
+        if (jsonObject != null) {
+            if (jsonObject.get("words") != null) {
+                words = jsonObject.get("words").toString();
             }
         }
         System.out.println(words);
-        map.put("errno",0);
-        map.put("id",picture.getId());
-        map.put("data",new String[]{picture.getUrl()});
-        map.put("url",url);
-        map.put("msg",words);
-        return new ResponseEntity(map,HttpStatus.OK);
+        map.put("errno", 0);
+        map.put("id", picture.getId());
+        map.put("data", new String[]{picture.getUrl()});
+        map.put("url", url);
+        map.put("msg", words);
+        return new ResponseEntity(map, HttpStatus.OK);
     }
+
     /**
      * 删除图片
+     *
      * @param id
      * @return
      */
@@ -103,6 +107,7 @@ public class PictureController {
 
     /**
      * 删除多张图片
+     *
      * @param ids
      * @return
      */

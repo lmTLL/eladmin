@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -33,14 +34,14 @@ public class DictDetailServiceImpl implements DictDetailService {
 
     @Override
     public Object queryAll(DictDetailQueryCriteria criteria, Pageable pageable) {
-        Page<DictDetail> page = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+        Page<DictDetail> page = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(dictDetailMapper::toDto));
     }
 
     @Override
     public DictDetailDTO findById(Long id) {
         Optional<DictDetail> dictDetail = dictDetailRepository.findById(id);
-        ValidationUtil.isNull(dictDetail,"DictDetail","id",id);
+        ValidationUtil.isNull(dictDetail, "DictDetail", "id", id);
         return dictDetailMapper.toDto(dictDetail.get());
     }
 
@@ -54,7 +55,7 @@ public class DictDetailServiceImpl implements DictDetailService {
     @Transactional(rollbackFor = Exception.class)
     public void update(DictDetail resources) {
         Optional<DictDetail> optionalDictDetail = dictDetailRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalDictDetail,"DictDetail","id",resources.getId());
+        ValidationUtil.isNull(optionalDictDetail, "DictDetail", "id", resources.getId());
 
         DictDetail dictDetail = optionalDictDetail.get();
         // 此处需自己修改

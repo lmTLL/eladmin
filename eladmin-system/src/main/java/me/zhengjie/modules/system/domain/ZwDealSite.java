@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-09-06
-*/
+ * @author groot
+ * @date 2019-09-06
+ */
 @Entity
 @Data
-@Table(name="zw_deal_site")
+@Table(name = "zw_deal_site")
 public class ZwDealSite implements Serializable {
 
     @Id

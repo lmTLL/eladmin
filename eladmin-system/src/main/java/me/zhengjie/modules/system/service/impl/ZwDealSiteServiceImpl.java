@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-09-06
-*/
+ * @author groot
+ * @date 2019-09-06
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ZwDealSiteServiceImpl implements ZwDealSiteService {
@@ -33,20 +33,20 @@ public class ZwDealSiteServiceImpl implements ZwDealSiteService {
     private ZwDealSiteMapper zwDealSiteMapper;
 
     @Override
-    public Object queryAll(ZwDealSiteQueryCriteria criteria, Pageable pageable){
-        Page<ZwDealSite> page = zwDealSiteRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(ZwDealSiteQueryCriteria criteria, Pageable pageable) {
+        Page<ZwDealSite> page = zwDealSiteRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(zwDealSiteMapper::toDto));
     }
 
     @Override
-    public Object queryAll(ZwDealSiteQueryCriteria criteria){
-        return zwDealSiteMapper.toDto(zwDealSiteRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(ZwDealSiteQueryCriteria criteria) {
+        return zwDealSiteMapper.toDto(zwDealSiteRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public ZwDealSiteDTO findById(Long id) {
         Optional<ZwDealSite> zwDealSite = zwDealSiteRepository.findById(id);
-        ValidationUtil.isNull(zwDealSite,"ZwDealSite","id",id);
+        ValidationUtil.isNull(zwDealSite, "ZwDealSite", "id", id);
         return zwDealSiteMapper.toDto(zwDealSite.get());
     }
 
@@ -60,7 +60,7 @@ public class ZwDealSiteServiceImpl implements ZwDealSiteService {
     @Transactional(rollbackFor = Exception.class)
     public void update(ZwDealSite resources) {
         Optional<ZwDealSite> optionalZwDealSite = zwDealSiteRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalZwDealSite,"ZwDealSite","id",resources.getId());
+        ValidationUtil.isNull(optionalZwDealSite, "ZwDealSite", "id", resources.getId());
 
         ZwDealSite zwDealSite = optionalZwDealSite.get();
         // 此处需自己修改

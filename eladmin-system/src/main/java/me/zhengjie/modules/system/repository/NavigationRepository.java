@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
-* @author groot
-* @date 2019-08-14
-*/
+ * @author groot
+ * @date 2019-08-14
+ */
 public interface NavigationRepository extends JpaRepository<Navigation, Integer>, JpaSpecificationExecutor {
 }

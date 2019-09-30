@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-07-26
-*/
+ * @author groot
+ * @date 2019-07-26
+ */
 @RestController
 @RequestMapping("api")
 public class KeyMsgController {
@@ -27,21 +27,21 @@ public class KeyMsgController {
     @Log("查询KeyMsg")
     @GetMapping(value = "/keyMsg")
     @PreAuthorize("hasAnyRole('ADMIN','KEYMSG_ALL','KEYMSG_SELECT')")
-    public ResponseEntity getKeyMsgs(KeyMsgQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(keyMsgService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getKeyMsgs(KeyMsgQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(keyMsgService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("新增KeyMsg")
     @PostMapping(value = "/keyMsg")
     @PreAuthorize("hasAnyRole('ADMIN','KEYMSG_ALL','KEYMSG_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody KeyMsg resources){
-        return new ResponseEntity(keyMsgService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody KeyMsg resources) {
+        return new ResponseEntity(keyMsgService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改KeyMsg")
     @PutMapping(value = "/keyMsg")
     @PreAuthorize("hasAnyRole('ADMIN','KEYMSG_ALL','KEYMSG_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody KeyMsg resources){
+    public ResponseEntity update(@Validated @RequestBody KeyMsg resources) {
         keyMsgService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -49,7 +49,7 @@ public class KeyMsgController {
     @Log("删除KeyMsg")
     @DeleteMapping(value = "/keyMsg/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','KEYMSG_ALL','KEYMSG_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         keyMsgService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

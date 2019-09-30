@@ -34,9 +34,9 @@ import static me.zhengjie.modules.system.rest.WechatController.httpClientPostPar
 import static me.zhengjie.modules.system.rest.WechatController.sendModelMessage;
 
 /**
-* @author groot
-* @date 2019-09-05
-*/
+ * @author groot
+ * @date 2019-09-05
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
@@ -59,20 +59,20 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
     private ZwPostingEffectService zwPostingEffectService;
 
     @Override
-    public Object queryAll(ZwSaleOrderQueryCriteria criteria, Pageable pageable){
-        Page<ZwSaleOrder> page = zwSaleOrderRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(ZwSaleOrderQueryCriteria criteria, Pageable pageable) {
+        Page<ZwSaleOrder> page = zwSaleOrderRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(zwSaleOrderMapper::toDto));
     }
 
     @Override
-    public Object queryAll(ZwSaleOrderQueryCriteria criteria){
-        return zwSaleOrderMapper.toDto(zwSaleOrderRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(ZwSaleOrderQueryCriteria criteria) {
+        return zwSaleOrderMapper.toDto(zwSaleOrderRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public ZwSaleOrderDTO findById(Long id) {
         Optional<ZwSaleOrder> zwSaleOrder = zwSaleOrderRepository.findById(id);
-        ValidationUtil.isNull(zwSaleOrder,"ZwSaleOrder","id",id);
+        ValidationUtil.isNull(zwSaleOrder, "ZwSaleOrder", "id", id);
         return zwSaleOrderMapper.toDto(zwSaleOrder.get());
     }
 
@@ -82,7 +82,7 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         UserDetails userDetails = SecurityUtils.getUserDetails();
         User customer = userRepository.findByUsername(userDetails.getUsername());
         resources.setCustomerId(customer.getId());
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String substring = sss.substring(11, 13);
         String hour = resources.getStartDate().substring(11, 13);
         String day = resources.getStartDate().substring(8, 10);
@@ -91,18 +91,18 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         String format = simpleDateFormat.format(new Date());
         String substring = format.substring(8, 10);
         int i2 = Integer.parseInt(substring);
-        if (i>4&&i1>=i2){
+        if (i > 4 && i1 >= i2) {
             try {
                 Date parse = simpleDateFormat.parse(resources.getStartDate());
-                Long time=parse.getTime()+(1000*60*60*24);
-                Date date=new Date(time);
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                Long time = parse.getTime() + (1000 * 60 * 60 * 24);
+                Date date = new Date(time);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 resources.setEstimatedTime(sdf.format(date));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }else {
-            Date date=new Date();
+        } else {
+            Date date = new Date();
             resources.setEstimatedTime(simpleDateFormat.format(date).substring(0, 10));
         }
         Map<String, Object> userInfoByOpenid = null;
@@ -112,11 +112,11 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
             e.printStackTrace();
         }
         Object nickname = userInfoByOpenid.get("nickname");
-        String nickName=null;
-        if (nickname!=null){
-            nickName=nickname.toString();
-        }else {
-            nickName="";
+        String nickName = null;
+        if (nickname != null) {
+            nickName = nickname.toString();
+        } else {
+            nickName = "";
         }
         resources.setCustomerNickname(nickName);
         resources.setFinancePayment("0");
@@ -127,32 +127,32 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         resources.setZwChannelName(byId.getZwChannelName());
         resources.setZwChannelUserId(byId.getUserId());
         resources.setNewOrder("0");
-        if (!"".equals(resources.getAccountOrder())){
+        if (!"".equals(resources.getAccountOrder())) {
             //初始化时间状态
             resources.setAccountTime(new Timestamp(new Date().getTime()));
             resources.setStatus("1");
-        }else {
+        } else {
             resources.setStatus("0");
         }
         resources.setZwSaleNumber(getSalesOrderNo());
         // ErpSalesOrder erpSalesOrder=new ErpSalesOrder();
-        List<NameValuePair> list=new ArrayList<>();
-        list.add(new NameValuePair("paymentId",resources.getAccountOrder()));
-        list.add(new NameValuePair("wechatId",customer.getVxId()));
-        list.add(new NameValuePair("wechatName",customer.getUsername()));
-        list.add(new NameValuePair("buyerName",customer.getUsername()));
-        list.add(new NameValuePair("projectId","25"));
-        list.add(new NameValuePair("station",resources.getSite()));
-        list.add(new NameValuePair("quantity","1"));
-        list.add(new NameValuePair("actualAmount",new BigDecimal(resources.getRemark().substring(1))+""));
-        list.add(new NameValuePair("dealTime",new Date().toString()));
-        list.add(new NameValuePair("issueOrder","0"));
-        list.add(new NameValuePair("remark","在线下单"));
-        list.add(new NameValuePair("dataStatus","1"));
-        list.add(new NameValuePair("auditStatus","0"));
-        list.add(new NameValuePair("asinInfo",resources.getLink()));
-        list.add(new NameValuePair("rejectReason",resources.getInvitation()));
-        list.add(new NameValuePair("shopName","~"));
+        List<NameValuePair> list = new ArrayList<>();
+        list.add(new NameValuePair("paymentId", resources.getAccountOrder()));
+        list.add(new NameValuePair("wechatId", customer.getVxId()));
+        list.add(new NameValuePair("wechatName", customer.getUsername()));
+        list.add(new NameValuePair("buyerName", customer.getUsername()));
+        list.add(new NameValuePair("projectId", "25"));
+        list.add(new NameValuePair("station", resources.getSite()));
+        list.add(new NameValuePair("quantity", "1"));
+        list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
+        list.add(new NameValuePair("dealTime", new Date().toString()));
+        list.add(new NameValuePair("issueOrder", "0"));
+        list.add(new NameValuePair("remark", "在线下单"));
+        list.add(new NameValuePair("dataStatus", "1"));
+        list.add(new NameValuePair("auditStatus", "0"));
+        list.add(new NameValuePair("asinInfo", resources.getLink()));
+        list.add(new NameValuePair("rejectReason", resources.getInvitation()));
+        list.add(new NameValuePair("shopName", "~"));
         /*erpSalesOrder.setPaymentId(resources.getAccountOrder());
         erpSalesOrder.setWechatId(customer.getVxId());
         erpSalesOrder.setWechatName(customer.getUsername());
@@ -170,11 +170,11 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         erpSalesOrder.setAsinInfo(resources.getLink());
         erpSalesOrder.setRejectReason("mark");
         erpSalesOrder.setShopName("~");*/
-        if ("1".equals(resources.getStatus())){
+        if ("1".equals(resources.getStatus())) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder",list);
+                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder", list);
                 }
             }).start();
         }
@@ -190,40 +190,40 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         ZwSaleOrder zwSaleOrder = optionalZwSaleOrder.get();
         // 此处需自己修改
         resources.setId(zwSaleOrder.getId());*/
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String substring = sss.substring(11, 13);
         String hour = sa.getStartDate().substring(11, 13);
         int i = Integer.parseInt(hour);
-        if (i>4){
+        if (i > 4) {
             try {
                 Date parse = simpleDateFormat.parse(sa.getStartDate());
-                Long time=parse.getTime()+(1000*60*60*24);
-                Date date=new Date(time);
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                Long time = parse.getTime() + (1000 * 60 * 60 * 24);
+                Date date = new Date(time);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 sa.setEstimatedTime(sdf.format(date));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             sa.setEstimatedTime(sa.getStartDate().substring(0, 10));
         }
         ZwSaleOrderDTO zwSaleOrderDTO = findById(sa.getId());
         UserDTO zwChannel = userService.findById(zwSaleOrderDTO.getZwChannelUserId());
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        Date date=new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
         UserDetails userDetails = SecurityUtils.getUserDetails();
         //User byUsername = userRepository.findByUsername(userDetails.getUsername());
         try {
-            sendModelMessage(zwChannel.getOpenId(),"亲爱的"+zwChannel.getUsername()+"，该订单有修改，请查收。",zwSaleOrderDTO.getZwSaleNumber(),"站外","修改记录",sdf.format(date),"修改人："+userDetails.getUsername(),"","");
+            sendModelMessage(zwChannel.getOpenId(), "亲爱的" + zwChannel.getUsername() + "，该订单有修改，请查收。", zwSaleOrderDTO.getZwSaleNumber(), "站外", "修改记录", sdf.format(date), "修改人：" + userDetails.getUsername(), "", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        zwSaleOrderRepository.update(sa.getId(),sa.getSite(),sa.getLink(),sa.getProductName(),sa.getDealSite(),sa.getDealPrice(),sa.getOriginalPrice(),sa.getCode(),sa.getCodeWork(),sa.getDiscount(),sa.getStartDate(),sa.getEndDate(),sa.getEstimatedTime());
-        ZwSaleOrderUpdate update=new ZwSaleOrderUpdate();
+        zwSaleOrderRepository.update(sa.getId(), sa.getSite(), sa.getLink(), sa.getProductName(), sa.getDealSite(), sa.getDealPrice(), sa.getOriginalPrice(), sa.getCode(), sa.getCodeWork(), sa.getDiscount(), sa.getStartDate(), sa.getEndDate(), sa.getEstimatedTime());
+        ZwSaleOrderUpdate update = new ZwSaleOrderUpdate();
         update.setZwSaleNumber(zwSaleOrderDTO.getZwSaleNumber());
-        update.setBefores(zwSaleOrderDTO.getSite()+"-"+zwSaleOrderDTO.getLink()+"-"+zwSaleOrderDTO.getProductName()+"-"+zwSaleOrderDTO.getDealSite()+"-"+zwSaleOrderDTO.getDealPrice()+"-"+zwSaleOrderDTO.getOriginalPrice()+"-"+zwSaleOrderDTO.getCode()+"-"+zwSaleOrderDTO.getCodeWork()+"-"+zwSaleOrderDTO.getDiscount()+"-"+zwSaleOrderDTO.getStartDate()+"-"+zwSaleOrderDTO.getEndDate()+"-"+zwSaleOrderDTO.getEstimatedTime());
+        update.setBefores(zwSaleOrderDTO.getSite() + "-" + zwSaleOrderDTO.getLink() + "-" + zwSaleOrderDTO.getProductName() + "-" + zwSaleOrderDTO.getDealSite() + "-" + zwSaleOrderDTO.getDealPrice() + "-" + zwSaleOrderDTO.getOriginalPrice() + "-" + zwSaleOrderDTO.getCode() + "-" + zwSaleOrderDTO.getCodeWork() + "-" + zwSaleOrderDTO.getDiscount() + "-" + zwSaleOrderDTO.getStartDate() + "-" + zwSaleOrderDTO.getEndDate() + "-" + zwSaleOrderDTO.getEstimatedTime());
         //ZwSaleOrderDTO now = findById(sa.getId());
-        update.setNows(sa.getSite()+"-"+sa.getLink()+"-"+sa.getProductName()+"-"+sa.getDealSite()+"-"+sa.getDealPrice()+"-"+sa.getOriginalPrice()+"-"+sa.getCode()+"-"+sa.getCodeWork()+"-"+sa.getDiscount()+"-"+sa.getStartDate()+"-"+sa.getEndDate()+"-"+sa.getEstimatedTime());
+        update.setNows(sa.getSite() + "-" + sa.getLink() + "-" + sa.getProductName() + "-" + sa.getDealSite() + "-" + sa.getDealPrice() + "-" + sa.getOriginalPrice() + "-" + sa.getCode() + "-" + sa.getCodeWork() + "-" + sa.getDiscount() + "-" + sa.getStartDate() + "-" + sa.getEndDate() + "-" + sa.getEstimatedTime());
         update.setUpdateUser(userDetails.getUsername());
         zwSaleOrderUpdateService.create(update);
     }
@@ -240,19 +240,15 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         requireNum.append(today);
         Map<String, Object> maps = new HashMap<>();
         maps.put("salesOrderNo", requireNum.toString());
-        String maxSalesOrderNo = zwSaleOrderRepository.getMaxSalesOrderNo(maps.get("salesOrderNo")+"%");
+        String maxSalesOrderNo = zwSaleOrderRepository.getMaxSalesOrderNo(maps.get("salesOrderNo") + "%");
         System.out.println(maxSalesOrderNo);
-        if (StringUtils.isBlank(maxSalesOrderNo))
-        {
+        if (StringUtils.isBlank(maxSalesOrderNo)) {
             requireNum.append("001");
-        }
-        else
-        {
+        } else {
             String lastStr = maxSalesOrderNo.substring(9);
             int lastNum = Integer.parseInt(lastStr) + 1;
             String lastNumStr = "" + lastNum;
-            if (lastNumStr.length() < 3)
-            {
+            if (lastNumStr.length() < 3) {
                 lastNumStr = "00" + lastNumStr;
                 lastNumStr = lastNumStr.substring(lastNumStr.length() - 3, lastNumStr.length());
             }
@@ -262,28 +258,28 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
     }
 
     @Override
-    public void upload(Long id, String accountImg, String accountOrder,String status) throws Exception {
-        Date date=new Date();
-        Timestamp timestamp=new Timestamp(date.getTime());
+    public void upload(Long id, String accountImg, String accountOrder, String status) throws Exception {
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
         ZwSaleOrderDTO resources = findById(id);
         UserDTO customer = userService.findById(resources.getCustomerId());
-        List<NameValuePair> list=new ArrayList<>();
-        list.add(new NameValuePair("paymentId",accountOrder));
-        list.add(new NameValuePair("wechatId",customer.getVxId()));
-        list.add(new NameValuePair("wechatName",customer.getUsername()));
-        list.add(new NameValuePair("buyerName",customer.getUsername()));
-        list.add(new NameValuePair("projectId","25"));
-        list.add(new NameValuePair("station",resources.getSite()));
-        list.add(new NameValuePair("quantity","1"));
-        list.add(new NameValuePair("actualAmount",new BigDecimal(resources.getRemark().substring(1))+""));
-        list.add(new NameValuePair("dealTime",new Date().toString()));
-        list.add(new NameValuePair("issueOrder","0"));
-        list.add(new NameValuePair("remark","在线下单"));
-        list.add(new NameValuePair("dataStatus","1"));
-        list.add(new NameValuePair("auditStatus","0"));
-        list.add(new NameValuePair("asinInfo",resources.getLink()));
-        list.add(new NameValuePair("rejectReason",resources.getInvitation()));
-        list.add(new NameValuePair("shopName","~"));
+        List<NameValuePair> list = new ArrayList<>();
+        list.add(new NameValuePair("paymentId", accountOrder));
+        list.add(new NameValuePair("wechatId", customer.getVxId()));
+        list.add(new NameValuePair("wechatName", customer.getUsername()));
+        list.add(new NameValuePair("buyerName", customer.getUsername()));
+        list.add(new NameValuePair("projectId", "25"));
+        list.add(new NameValuePair("station", resources.getSite()));
+        list.add(new NameValuePair("quantity", "1"));
+        list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
+        list.add(new NameValuePair("dealTime", new Date().toString()));
+        list.add(new NameValuePair("issueOrder", "0"));
+        list.add(new NameValuePair("remark", "在线下单"));
+        list.add(new NameValuePair("dataStatus", "1"));
+        list.add(new NameValuePair("auditStatus", "0"));
+        list.add(new NameValuePair("asinInfo", resources.getLink()));
+        list.add(new NameValuePair("rejectReason", resources.getInvitation()));
+        list.add(new NameValuePair("shopName", "~"));
         /*erpSalesOrder.setPaymentId(resources.getAccountOrder());
         erpSalesOrder.setWechatId(customer.getVxId());
         erpSalesOrder.setWechatName(customer.getUsername());
@@ -301,33 +297,33 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         erpSalesOrder.setAsinInfo(resources.getLink());
         erpSalesOrder.setRejectReason("mark");
         erpSalesOrder.setShopName("~");*/
-        if ("0".equals(resources.getStatus())){
+        if ("0".equals(resources.getStatus())) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder",list);
+                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder", list);
                 }
             }).start();
         }
-        zwSaleOrderRepository.upload(id, accountImg, accountOrder,timestamp,status);
+        zwSaleOrderRepository.upload(id, accountImg, accountOrder, timestamp, status);
     }
 
     @Override
     public void feedback(Long id, String[] effectImgs, String effect) {
-        ZwPostingEffect zwPostingEffect=new ZwPostingEffect();
+        ZwPostingEffect zwPostingEffect = new ZwPostingEffect();
         zwPostingEffect.setZwSaleId(id);
         zwPostingEffect.setPostingEffect(effect);
         zwPostingEffect.setSubmitTime(new Timestamp(new Date().getTime()));
         zwPostingEffectService.create(zwPostingEffect);
         ZwSaleOrderDTO byId = findById(id);
-        String postingImg ="";
-        if (byId!=null){
-            postingImg=byId.getPostingImg();
+        String postingImg = "";
+        if (byId != null) {
+            postingImg = byId.getPostingImg();
         }
         for (String effectImg : effectImgs) {
-            postingImg=postingImg+","+effectImg;
+            postingImg = postingImg + "," + effectImg;
         }
-        zwSaleOrderRepository.feedback(id,postingImg,effect,"2");
+        zwSaleOrderRepository.feedback(id, postingImg, effect, "2");
     }
 
     @Override
@@ -337,22 +333,23 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         }
 
     }
+
     @Override
     public void revoke(Long[] ids) {
         for (Long id : ids) {
-            zwSaleOrderRepository.revoke(id,"3");
+            zwSaleOrderRepository.revoke(id, "3");
         }
     }
 
     @Override
     public void updateChannelRemark(ZwSaleOrder resources) {
-        zwSaleOrderRepository.updateChannelRemark(resources.getId(),resources.getChannelRemark());
+        zwSaleOrderRepository.updateChannelRemark(resources.getId(), resources.getChannelRemark());
     }
 
     @Override
     public void signPayment(Long[] ids) {
         for (Long id : ids) {
-            zwSaleOrderRepository.signPayment(id,"1");
+            zwSaleOrderRepository.signPayment(id, "1");
         }
     }
 }

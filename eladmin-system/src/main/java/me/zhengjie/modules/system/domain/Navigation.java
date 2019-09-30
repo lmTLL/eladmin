@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-08-14
-*/
+ * @author groot
+ * @date 2019-08-14
+ */
 @Entity
 @Data
-@Table(name="navigation")
+@Table(name = "navigation")
 public class Navigation implements Serializable {
 
     // ID

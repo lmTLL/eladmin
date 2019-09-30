@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
-* @author groot
-* @date 2019-07-23
-*/
+ * @author groot
+ * @date 2019-07-23
+ */
 @Entity
 @Data
-@Table(name="follow_details")
+@Table(name = "follow_details")
 public class FollowDetails implements Serializable {
 
     @Id
@@ -35,7 +35,7 @@ public class FollowDetails implements Serializable {
     @Column(name = "start_date")
     private Timestamp startDate;
 
-    @Column(name = "asin",nullable = false)
+    @Column(name = "asin", nullable = false)
     private String asin;
 
     @Column(name = "site")

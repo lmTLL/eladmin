@@ -15,6 +15,7 @@ public interface GenConfigService {
 
     /**
      * find
+     *
      * @return
      */
     @Cacheable(key = "'1'")
@@ -22,6 +23,7 @@ public interface GenConfigService {
 
     /**
      * update
+     *
      * @param genConfig
      */
     @CacheEvict(allEntries = true)

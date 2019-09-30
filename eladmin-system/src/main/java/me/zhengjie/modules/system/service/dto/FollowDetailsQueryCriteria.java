@@ -4,11 +4,11 @@ import lombok.Data;
 import me.zhengjie.annotation.Query;
 
 /**
-* @author groot
-* @date 2019-07-23
-*/
+ * @author groot
+ * @date 2019-07-23
+ */
 @Data
-public class FollowDetailsQueryCriteria{
+public class FollowDetailsQueryCriteria {
 
     // 精确
     @Query

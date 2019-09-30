@@ -17,6 +17,7 @@ public interface JobService {
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -25,6 +26,7 @@ public interface JobService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -33,6 +35,7 @@ public interface JobService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -40,6 +43,7 @@ public interface JobService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -47,6 +51,7 @@ public interface JobService {
 
     /**
      * queryAll
+     *
      * @param criteria
      * @param pageable
      * @return

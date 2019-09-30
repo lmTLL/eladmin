@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-09-27
-*/
+ * @author groot
+ * @date 2019-09-27
+ */
 @Entity
 @Data
-@Table(name="zw_sale_order_update")
+@Table(name = "zw_sale_order_update")
 public class ZwSaleOrderUpdate implements Serializable {
 
     @Id
@@ -19,7 +19,7 @@ public class ZwSaleOrderUpdate implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "zw_sale_number",nullable = false)
+    @Column(name = "zw_sale_number", nullable = false)
     private String zwSaleNumber;
 
     @Column(name = "befores")

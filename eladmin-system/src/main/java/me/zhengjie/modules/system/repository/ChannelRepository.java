@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 public interface ChannelRepository extends JpaRepository<Channel, Long>, JpaSpecificationExecutor {
-    @Query(value = "select * from channel where open_id = ?1",nativeQuery = true)
+    @Query(value = "select * from channel where open_id = ?1", nativeQuery = true)
     List<Channel> findChannelByOpenId(String openId);
 }

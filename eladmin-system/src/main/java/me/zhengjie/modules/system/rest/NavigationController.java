@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-08-14
-*/
+ * @author groot
+ * @date 2019-08-14
+ */
 @RestController
 @RequestMapping("api")
 public class NavigationController {
@@ -27,29 +27,29 @@ public class NavigationController {
     @Log("查询Navigation")
     @GetMapping(value = "/navigation")
     @PreAuthorize("hasAnyRole('ADMIN','NAVIGATION_ALL','NAVIGATION_SELECT')")
-    public ResponseEntity getNavigations(NavigationQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(navigationService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getNavigations(NavigationQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(navigationService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("查询Navigation不分页")
     @GetMapping(value = "/navigationAll")
     //@PreAuthorize("hasAnyRole('ADMIN','NAVIGATION_ALL','NAVIGATION_SELECT')")
-    public ResponseEntity getNavigationsAll(NavigationQueryCriteria criteria){
-        return new ResponseEntity(navigationService.queryAll(criteria),HttpStatus.OK);
+    public ResponseEntity getNavigationsAll(NavigationQueryCriteria criteria) {
+        return new ResponseEntity(navigationService.queryAll(criteria), HttpStatus.OK);
     }
 
 
     @Log("新增Navigation")
     @PostMapping(value = "/navigation")
     @PreAuthorize("hasAnyRole('ADMIN','NAVIGATION_ALL','NAVIGATION_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody Navigation resources){
-        return new ResponseEntity(navigationService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody Navigation resources) {
+        return new ResponseEntity(navigationService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改Navigation")
     @PutMapping(value = "/navigation")
     @PreAuthorize("hasAnyRole('ADMIN','NAVIGATION_ALL','NAVIGATION_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody Navigation resources){
+    public ResponseEntity update(@Validated @RequestBody Navigation resources) {
         navigationService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -57,7 +57,7 @@ public class NavigationController {
     @Log("删除Navigation")
     @DeleteMapping(value = "/navigation/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','NAVIGATION_ALL','NAVIGATION_DELETE')")
-    public ResponseEntity delete(@PathVariable Integer id){
+    public ResponseEntity delete(@PathVariable Integer id) {
         navigationService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

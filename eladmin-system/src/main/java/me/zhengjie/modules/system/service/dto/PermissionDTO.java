@@ -5,33 +5,34 @@ import lombok.Data;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+
 /**
  * @author groot
  * @date 2019-07-09
  */
 @Data
-public class PermissionDTO implements Serializable{
+public class PermissionDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private Long pid;
+    private Long pid;
 
-	private String alias;
+    private String alias;
 
-	private Timestamp createTime;
+    private Timestamp createTime;
 
-	private List<PermissionDTO>  children;
+    private List<PermissionDTO> children;
 
-	@Override
-	public String toString() {
-		return "Permission{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", pid=" + pid +
-				", alias='" + alias + '\'' +
-				", createTime=" + createTime +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", pid=" + pid +
+                ", alias='" + alias + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

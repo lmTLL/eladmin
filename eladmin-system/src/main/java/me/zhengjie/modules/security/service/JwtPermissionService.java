@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class JwtPermissionService {
 
     /**
      * key的名称如有修改，请同步修改 UserServiceImpl 中的 update 方法
+     *
      * @param user
      * @return
      */

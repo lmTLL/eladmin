@@ -7,9 +7,9 @@ import java.sql.Timestamp;
 
 
 /**
-* @author groot
-* @date 2019-09-19
-*/
+ * @author groot
+ * @date 2019-09-19
+ */
 @Data
 public class ZwPostingEffectDTO implements Serializable {
 

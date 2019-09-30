@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-09-06
-*/
+ * @author groot
+ * @date 2019-09-06
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ZwChannelServiceImpl implements ZwChannelService {
@@ -36,20 +36,20 @@ public class ZwChannelServiceImpl implements ZwChannelService {
     private ZwChannelMapper zwChannelMapper;
 
     @Override
-    public Object queryAll(ZwChannelQueryCriteria criteria, Pageable pageable){
-        Page<ZwChannel> page = zwChannelRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(ZwChannelQueryCriteria criteria, Pageable pageable) {
+        Page<ZwChannel> page = zwChannelRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(zwChannelMapper::toDto));
     }
 
     @Override
-    public Object queryAll(ZwChannelQueryCriteria criteria){
-        return zwChannelMapper.toDto(zwChannelRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(ZwChannelQueryCriteria criteria) {
+        return zwChannelMapper.toDto(zwChannelRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public ZwChannelDTO findById(Long id) {
         Optional<ZwChannel> zwChannel = zwChannelRepository.findById(id);
-        ValidationUtil.isNull(zwChannel,"ZwChannel","id",id);
+        ValidationUtil.isNull(zwChannel, "ZwChannel", "id", id);
         return zwChannelMapper.toDto(zwChannel.get());
     }
 
@@ -65,7 +65,7 @@ public class ZwChannelServiceImpl implements ZwChannelService {
     @Transactional(rollbackFor = Exception.class)
     public void update(ZwChannel resources) {
         Optional<ZwChannel> optionalZwChannel = zwChannelRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalZwChannel,"ZwChannel","id",resources.getId());
+        ValidationUtil.isNull(optionalZwChannel, "ZwChannel", "id", resources.getId());
 
         ZwChannel zwChannel = optionalZwChannel.get();
         // 此处需自己修改

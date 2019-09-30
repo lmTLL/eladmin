@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class RedisServiceImpl implements RedisService {
     RedisTemplate redisTemplate;
 
     @Override
-    public Page<RedisVo> findByKey(String key, Pageable pageable){
+    public Page<RedisVo> findByKey(String key, Pageable pageable) {
         List<RedisVo> redisVos = new ArrayList<>();
-        if(!key.equals("*")){
+        if (!key.equals("*")) {
             key = "*" + key + "*";
         }
         for (Object s : redisTemplate.keys(key)) {
@@ -33,16 +34,15 @@ public class RedisServiceImpl implements RedisService {
             if (s.toString().indexOf("role::loadPermissionByUser") != -1 || s.toString().indexOf("user::loadUserByUsername") != -1) {
                 continue;
             }
-            RedisVo redisVo = new RedisVo(s.toString(),redisTemplate.opsForValue().get(s.toString()).toString());
+            RedisVo redisVo = new RedisVo(s.toString(), redisTemplate.opsForValue().get(s.toString()).toString());
             redisVos.add(redisVo);
         }
         Page<RedisVo> page = new PageImpl<RedisVo>(
-                PageUtil.toPage(pageable.getPageNumber(),pageable.getPageSize(),redisVos),
+                PageUtil.toPage(pageable.getPageNumber(), pageable.getPageSize(), redisVos),
                 pageable,
                 redisVos.size());
         return page;
     }
-
 
 
     @Override
@@ -60,13 +60,13 @@ public class RedisServiceImpl implements RedisService {
         try {
             String value = redisTemplate.opsForValue().get(key).toString();
             return value;
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
     @Override
     public void saveCode(String key, Object val) {
-        redisTemplate.opsForValue().set(key,val,2000);
+        redisTemplate.opsForValue().set(key, val, 2000);
     }
 }

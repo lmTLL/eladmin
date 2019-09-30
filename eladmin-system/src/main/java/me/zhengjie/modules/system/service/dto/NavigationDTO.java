@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 
 /**
-* @author groot
-* @date 2019-08-14
-*/
+ * @author groot
+ * @date 2019-08-14
+ */
 @Data
 public class NavigationDTO implements Serializable {
 

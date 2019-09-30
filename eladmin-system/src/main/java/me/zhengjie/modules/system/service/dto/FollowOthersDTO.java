@@ -26,6 +26,4 @@ public class FollowOthersDTO implements Serializable {
     private String fivePoints;
 
 
-
-
 }

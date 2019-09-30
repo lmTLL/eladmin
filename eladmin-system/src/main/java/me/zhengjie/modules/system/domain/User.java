@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name="user")
+@Table(name = "user")
 public class User implements Serializable {
 
     @Id
@@ -36,7 +36,7 @@ public class User implements Serializable {
     private String avatar;
 
 
-    @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}",message = "格式错误")
+    @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}", message = "格式错误")
     private String email;
 
     private String phone;
@@ -44,10 +44,10 @@ public class User implements Serializable {
     @NotNull
     private Boolean enabled;
     private String password;
-     private  String openId;
-     private String invitation;
+    private String openId;
+    private String invitation;
 
-     private String vxId;
+    private String vxId;
 
     @CreationTimestamp
     @Column(name = "create_time")
@@ -56,8 +56,8 @@ public class User implements Serializable {
     @Column(name = "last_password_reset_time")
     private Date lastPasswordResetTime;
 
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
 
     @OneToOne
@@ -89,5 +89,6 @@ public class User implements Serializable {
                 '}';
     }
 
-    public @interface Update {}
+    public @interface Update {
+    }
 }

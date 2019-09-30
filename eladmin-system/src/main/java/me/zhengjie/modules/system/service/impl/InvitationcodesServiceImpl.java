@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-07-05
-*/
+ * @author groot
+ * @date 2019-07-05
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class InvitationcodesServiceImpl implements InvitationcodesService {
@@ -34,20 +34,20 @@ public class InvitationcodesServiceImpl implements InvitationcodesService {
     private InvitationcodesMapper invitationcodesMapper;
 
     @Override
-    public Object queryAll(InvitationcodesQueryCriteria criteria, Pageable pageable){
-        Page<Invitationcodes> page = invitationcodesRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(InvitationcodesQueryCriteria criteria, Pageable pageable) {
+        Page<Invitationcodes> page = invitationcodesRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(invitationcodesMapper::toDto));
     }
 
     @Override
-    public Object queryAll(InvitationcodesQueryCriteria criteria){
-        return invitationcodesMapper.toDto(invitationcodesRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(InvitationcodesQueryCriteria criteria) {
+        return invitationcodesMapper.toDto(invitationcodesRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public InvitationcodesDTO findByInvitationCode(String invitationCode) {
         Optional<Invitationcodes> invitationcodes = invitationcodesRepository.findByInvitationCode(invitationCode);
-        ValidationUtil.isNull(invitationcodes,"Invitationcodes","invitation_code",invitationCode);
+        ValidationUtil.isNull(invitationcodes, "Invitationcodes", "invitation_code", invitationCode);
         return invitationcodesMapper.toDto(invitationcodes.get());
     }
 
@@ -61,7 +61,7 @@ public class InvitationcodesServiceImpl implements InvitationcodesService {
     @Transactional(rollbackFor = Exception.class)
     public void update(Invitationcodes resources) {
         Optional<Invitationcodes> optionalInvitationcodes = invitationcodesRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalInvitationcodes,"Invitationcodes","id",resources.getId());
+        ValidationUtil.isNull(optionalInvitationcodes, "Invitationcodes", "id", resources.getId());
 
         Invitationcodes invitationcodes = optionalInvitationcodes.get();
         // 此处需自己修改

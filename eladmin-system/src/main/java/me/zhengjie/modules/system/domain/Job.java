@@ -2,6 +2,7 @@ package me.zhengjie.modules.system.domain;
 
 import lombok.Data;
 import org.hibernate.annotations.*;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,7 +17,7 @@ import java.io.Serializable;
  */
 @Entity
 @Data
-@Table(name="job")
+@Table(name = "job")
 public class Job implements Serializable {
 
     /**
@@ -31,7 +32,7 @@ public class Job implements Serializable {
     /**
      * 名称
      */
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     @NotBlank
     private String name;
 
@@ -42,7 +43,7 @@ public class Job implements Serializable {
     /**
      * 状态
      */
-    @Column(name = "enabled",nullable = false)
+    @Column(name = "enabled", nullable = false)
     @NotNull
     private Boolean enabled;
 
@@ -57,5 +58,6 @@ public class Job implements Serializable {
     @CreationTimestamp
     private Timestamp createTime;
 
-    public @interface Update {}
+    public @interface Update {
+    }
 }

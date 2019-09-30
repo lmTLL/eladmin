@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-09-06
-*/
+ * @author groot
+ * @date 2019-09-06
+ */
 @Entity
 @Data
-@Table(name="zw_channel")
+@Table(name = "zw_channel")
 public class ZwChannel implements Serializable {
 
     // 站外渠道id
@@ -25,7 +25,7 @@ public class ZwChannel implements Serializable {
     private String zwChannelName;
 
     // openID
-    @Column(name = "open_id",nullable = false)
+    @Column(name = "open_id", nullable = false)
     private String openId;
 
     // 状态
@@ -37,6 +37,6 @@ public class ZwChannel implements Serializable {
     private String remark;
 
     // 对应的用户id
-    @Column(name = "user_id",nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 }

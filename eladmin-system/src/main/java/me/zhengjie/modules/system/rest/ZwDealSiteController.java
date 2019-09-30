@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-09-06
-*/
+ * @author groot
+ * @date 2019-09-06
+ */
 @RestController
 @RequestMapping("api")
 public class ZwDealSiteController {
@@ -27,21 +27,21 @@ public class ZwDealSiteController {
     @Log("查询ZwDealSite")
     @GetMapping(value = "/zwDealSite")
     @PreAuthorize("hasAnyRole('ADMIN','ZWDEALSITE_ALL','ZWDEALSITE_SELECT')")
-    public ResponseEntity getZwDealSites(ZwDealSiteQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(zwDealSiteService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getZwDealSites(ZwDealSiteQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(zwDealSiteService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("新增ZwDealSite")
     @PostMapping(value = "/zwDealSite")
     @PreAuthorize("hasAnyRole('ADMIN','ZWDEALSITE_ALL','ZWDEALSITE_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody ZwDealSite resources){
-        return new ResponseEntity(zwDealSiteService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody ZwDealSite resources) {
+        return new ResponseEntity(zwDealSiteService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改ZwDealSite")
     @PutMapping(value = "/zwDealSite")
     @PreAuthorize("hasAnyRole('ADMIN','ZWDEALSITE_ALL','ZWDEALSITE_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody ZwDealSite resources){
+    public ResponseEntity update(@Validated @RequestBody ZwDealSite resources) {
         zwDealSiteService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -49,7 +49,7 @@ public class ZwDealSiteController {
     @Log("删除ZwDealSite")
     @DeleteMapping(value = "/zwDealSite/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','ZWDEALSITE_ALL','ZWDEALSITE_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         zwDealSiteService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -58,9 +58,9 @@ public class ZwDealSiteController {
     @Log("根据站点查询ZwDealSite不分页")
     @GetMapping(value = "/zwDealSiteAll/{site}")
     //@PreAuthorize("hasAnyRole('ADMIN','ZWDEALSITE_ALL','ZWDEALSITE_SELECT')")
-    public ResponseEntity getZwDealSitesAll(@PathVariable String site){
+    public ResponseEntity getZwDealSitesAll(@PathVariable String site) {
         ZwDealSiteQueryCriteria zwDealSiteQueryCriteria = new ZwDealSiteQueryCriteria();
         zwDealSiteQueryCriteria.setSite(site);
-        return new ResponseEntity(zwDealSiteService.queryAll(zwDealSiteQueryCriteria),HttpStatus.OK);
+        return new ResponseEntity(zwDealSiteService.queryAll(zwDealSiteQueryCriteria), HttpStatus.OK);
     }
 }

@@ -13,19 +13,26 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Query {
 
-    /** Dong ZhaoYang 2017/8/7 基本对象的属性名 */
+    /**
+     * Dong ZhaoYang 2017/8/7 基本对象的属性名
+     */
     String propName() default "";
-    /** Dong ZhaoYang 2017/8/7 查询方式 */
+
+    /**
+     * Dong ZhaoYang 2017/8/7 查询方式
+     */
     Type type() default Type.EQUAL;
 
     /**
      * 连接查询的属性名，如User类中的dept
+     *
      * @return
      */
     String joinName() default "";
 
     /**
      * 默认左连接
+     *
      * @return
      */
     Join join() default Join.LEFT;
@@ -53,7 +60,9 @@ public @interface Query {
      * 适用于简单连接查询，复杂的请自定义该注解，或者使用sql查询
      */
     enum Join {
-        /** jie 2019-6-4 13:18:30 左连接 */
+        /**
+         * jie 2019-6-4 13:18:30 左连接
+         */
         LEFT
         /** jie 2019-6-4 13:18:30 右连接 */
         , RIGHT

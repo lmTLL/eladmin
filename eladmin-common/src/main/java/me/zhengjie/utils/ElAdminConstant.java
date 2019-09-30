@@ -2,6 +2,7 @@ package me.zhengjie.utils;
 
 /**
  * 常用静态常量
+ *
  * @author Zheng Jie
  * @date 2018-12-26
  */
@@ -14,7 +15,7 @@ public class ElAdminConstant {
     /**
      * 常用接口
      */
-    public static class Url{
+    public static class Url {
         public static final String SM_MS_URL = "https://sm.ms/api/upload";
     }
 }

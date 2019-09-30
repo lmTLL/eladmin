@@ -14,6 +14,7 @@ public interface LogService {
 
     /**
      * queryAll
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -22,6 +23,7 @@ public interface LogService {
 
     /**
      * queryAllByUser
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -30,6 +32,7 @@ public interface LogService {
 
     /**
      * 新增日志
+     *
      * @param joinPoint
      * @param log
      */
@@ -38,6 +41,7 @@ public interface LogService {
 
     /**
      * 查询异常详情
+     *
      * @param id
      * @return
      */

@@ -1,4 +1,5 @@
 package me.zhengjie.modules.system.service.impl;
+
 import me.zhengjie.modules.system.domain.AmzConfig;
 import me.zhengjie.modules.system.repository.AmzConfigRepository;
 import me.zhengjie.modules.system.service.AmzConfigService;
@@ -18,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-08-27
-*/
+ * @author groot
+ * @date 2019-08-27
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class AmzConfigServiceImpl implements AmzConfigService {
@@ -32,20 +33,20 @@ public class AmzConfigServiceImpl implements AmzConfigService {
     private AmzConfigMapper amzConfigMapper;
 
     @Override
-    public Object queryAll(AmzConfigQueryCriteria criteria, Pageable pageable){
-        Page<AmzConfig> page = amzConfigRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(AmzConfigQueryCriteria criteria, Pageable pageable) {
+        Page<AmzConfig> page = amzConfigRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(amzConfigMapper::toDto));
     }
 
     @Override
-    public Object queryAll(AmzConfigQueryCriteria criteria){
-        return amzConfigMapper.toDto(amzConfigRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(AmzConfigQueryCriteria criteria) {
+        return amzConfigMapper.toDto(amzConfigRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public AmzConfigDTO findById(Long id) {
         Optional<AmzConfig> amzConfig = amzConfigRepository.findById(id);
-        ValidationUtil.isNull(amzConfig,"AmzConfig","id",id);
+        ValidationUtil.isNull(amzConfig, "AmzConfig", "id", id);
         return amzConfigMapper.toDto(amzConfig.get());
     }
 
@@ -59,7 +60,7 @@ public class AmzConfigServiceImpl implements AmzConfigService {
     @Transactional(rollbackFor = Exception.class)
     public void update(AmzConfig resources) {
         Optional<AmzConfig> optionalAmzConfig = amzConfigRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalAmzConfig,"AmzConfig","id",resources.getId());
+        ValidationUtil.isNull(optionalAmzConfig, "AmzConfig", "id", resources.getId());
 
         AmzConfig amzConfig = optionalAmzConfig.get();
         // 此处需自己修改

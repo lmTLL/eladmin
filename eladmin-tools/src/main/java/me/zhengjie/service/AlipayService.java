@@ -15,6 +15,7 @@ public interface AlipayService {
 
     /**
      * 处理来自PC的交易请求
+     *
      * @param alipay
      * @param trade
      * @return
@@ -24,6 +25,7 @@ public interface AlipayService {
 
     /**
      * 处理来自手机网页的交易请求
+     *
      * @param alipay
      * @param trade
      * @return
@@ -33,6 +35,7 @@ public interface AlipayService {
 
     /**
      * 查询配置
+     *
      * @return
      */
     @Cacheable(key = "'1'")
@@ -40,6 +43,7 @@ public interface AlipayService {
 
     /**
      * 更新配置
+     *
      * @param alipayConfig
      * @return
      */

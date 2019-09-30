@@ -29,44 +29,44 @@ public class FollowOthersController {
     @Log("查询FollowOthers")
     @GetMapping(value = "/followOthers")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_SELECT')")
-    public ResponseEntity getfollowOtherss(FollowOthersQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity(followOthersService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getfollowOtherss(FollowOthersQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity(followOthersService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
 
     @Log("查询FollowOthers不分页")
     @GetMapping(value = "/followOthersAll/{asin}")
     //@PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_SELECT')")
-    public ResponseEntity getfollowOtherssAll(@PathVariable String asin){
-        FollowOthersQueryCriteria criteria=new FollowOthersQueryCriteria();
+    public ResponseEntity getfollowOtherssAll(@PathVariable String asin) {
+        FollowOthersQueryCriteria criteria = new FollowOthersQueryCriteria();
         criteria.setAsin(asin);
-        return new ResponseEntity(followOthersService.queryAll(criteria),HttpStatus.OK);
+        return new ResponseEntity(followOthersService.queryAll(criteria), HttpStatus.OK);
     }
 
     @Log("查询FollowOthers不分页")
     @GetMapping(value = "/followOthersAll/")
     //@PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_SELECT')")
-    public ResponseEntity getfollowOtherssAlls(@Validated @RequestBody AsinInfo resources){
-        AsinInfoQueryCriteria criteria=new AsinInfoQueryCriteria();
+    public ResponseEntity getfollowOtherssAlls(@Validated @RequestBody AsinInfo resources) {
+        AsinInfoQueryCriteria criteria = new AsinInfoQueryCriteria();
         criteria.setAsin(resources.getAsin());
         criteria.setTitleListen(resources.getTitleListen());
         criteria.setFollowListen(resources.getFollowListen());
         criteria.setPriceListen(resources.getPriceListen());
         criteria.setFivepointListen(resources.getFivepointListen());
-        return new ResponseEntity(followOthersService.queryAlls(criteria),HttpStatus.OK);
+        return new ResponseEntity(followOthersService.queryAlls(criteria), HttpStatus.OK);
     }
 
     @Log("新增FollowOthers")
     @PostMapping(value = "/followOthers")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody FollowOthers resources){
-        return new ResponseEntity(followOthersService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody FollowOthers resources) {
+        return new ResponseEntity(followOthersService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改FollowOthers")
     @PutMapping(value = "/followOthers")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody FollowOthers resources){
+    public ResponseEntity update(@Validated @RequestBody FollowOthers resources) {
         followOthersService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -74,7 +74,7 @@ public class FollowOthersController {
     @Log("删除FollowOthers")
     @DeleteMapping(value = "/followOthers/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','FOLLOWDETAILS_ALL','FOLLOWDETAILS_DELETE')")
-    public ResponseEntity delete(@PathVariable Integer id){
+    public ResponseEntity delete(@PathVariable Integer id) {
         followOthersService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

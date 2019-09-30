@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -31,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
     @Transactional(rollbackFor = Exception.class)
     public EmailConfig update(EmailConfig emailConfig, EmailConfig old) {
         try {
-            if(!emailConfig.getPass().equals(old.getPass())){
+            if (!emailConfig.getPass().equals(old.getPass())) {
                 // 对称加密
                 emailConfig.setPass(EncryptUtils.desEncrypt(emailConfig.getPass()));
             }
@@ -44,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public EmailConfig find() {
         Optional<EmailConfig> emailConfig = emailRepository.findById(1L);
-        if(emailConfig.isPresent()){
+        if (emailConfig.isPresent()) {
             return emailConfig.get();
         } else {
             return new EmailConfig();
@@ -53,8 +54,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void send(EmailVo emailVo, EmailConfig emailConfig){
-        if(emailConfig == null){
+    public void send(EmailVo emailVo, EmailConfig emailConfig) {
+        if (emailConfig == null) {
             throw new BadRequestException("请先配置，再操作");
         }
         /**
@@ -70,9 +71,9 @@ public class EmailServiceImpl implements EmailService {
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
-        account.setFrom(emailConfig.getUser()+"<"+emailConfig.getFromUser()+">");
+        account.setFrom(emailConfig.getUser() + "<" + emailConfig.getFromUser() + ">");
         //ssl方式发送
-        account.setStartttlsEnable(true);
+        account.setStarttlsEnable(true);
         String content = emailVo.getContent();
         /**
          * 发送
@@ -85,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
                     .setHtml(true)
                     .setUseGlobalSession(false)//关闭session
                     .send();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
     }

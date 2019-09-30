@@ -8,31 +8,34 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Pageable;
 
 /**
-* @author groot
-* @date 2019-09-11
-*/
+ * @author groot
+ * @date 2019-09-11
+ */
 @CacheConfig(cacheNames = "message")
 public interface MessageService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @CacheEvict(allEntries = true)
     Object queryAll(MessageQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @CacheEvict(allEntries = true)
     public Object queryAll(MessageQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -41,6 +44,7 @@ public interface MessageService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -49,6 +53,7 @@ public interface MessageService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -56,6 +61,7 @@ public interface MessageService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)

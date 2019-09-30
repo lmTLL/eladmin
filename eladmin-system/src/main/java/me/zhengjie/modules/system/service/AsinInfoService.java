@@ -10,31 +10,34 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 
 /**
-* @author groot
-* @date 2019-07-22
-*/
+ * @author groot
+ * @date 2019-07-22
+ */
 @CacheConfig(cacheNames = "asinInfo")
 public interface AsinInfoService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @CacheEvict(allEntries = true)
     Object queryAll(AsinInfoQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @CacheEvict(allEntries = true)
     public Object queryAll(AsinInfoQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -43,6 +46,7 @@ public interface AsinInfoService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -51,6 +55,7 @@ public interface AsinInfoService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -58,6 +63,7 @@ public interface AsinInfoService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -65,6 +71,7 @@ public interface AsinInfoService {
 
     /**
      * getByAsin
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -73,6 +80,7 @@ public interface AsinInfoService {
 
     /**
      * getToken
+     *
      * @param
      */
     @CacheEvict(allEntries = true)
@@ -80,8 +88,9 @@ public interface AsinInfoService {
 
     /**
      * getToken
+     *
      * @param
      */
     @CacheEvict(allEntries = true)
-    int updateCount( int count,Integer id);
+    int updateCount(int count, Integer id);
 }

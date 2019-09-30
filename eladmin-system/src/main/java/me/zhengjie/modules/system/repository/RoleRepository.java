@@ -16,6 +16,7 @@ public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificat
 
     /**
      * findByName
+     *
      * @param name
      * @return
      */
@@ -27,11 +28,12 @@ public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificat
 
     /**
      * 新增邀请码
+     *
      * @param InvitationCode 邀请码
-     * @param userid 增加人员id
+     * @param userid         增加人员id
      * @return
      */
     @Modifying
-    @Query(value = "insert into invitationCodes(userId,invitationCode) values (?2,?1)",nativeQuery = true)
-    int insertInvitationCode(String InvitationCode,String userid);
+    @Query(value = "insert into invitationCodes(userId,invitationCode) values (?2,?1)", nativeQuery = true)
+    int insertInvitationCode(String InvitationCode, String userid);
 }

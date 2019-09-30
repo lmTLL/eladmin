@@ -9,31 +9,34 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 @CacheConfig(cacheNames = "channel")
 public interface ChannelService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @Cacheable(keyGenerator = "keyGenerator")
     Object queryAll(ChannelQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @Cacheable(keyGenerator = "keyGenerator")
     public Object queryAll(ChannelQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -42,6 +45,7 @@ public interface ChannelService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -50,6 +54,7 @@ public interface ChannelService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -57,6 +62,7 @@ public interface ChannelService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)

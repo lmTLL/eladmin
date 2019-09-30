@@ -3,6 +3,7 @@ package me.zhengjie.modules.system.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Data
-@Table(name="dept")
+@Table(name = "dept")
 public class Dept implements Serializable {
 
     /**
@@ -31,7 +32,7 @@ public class Dept implements Serializable {
     /**
      * 名称
      */
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     @NotBlank
     private String name;
 
@@ -41,7 +42,7 @@ public class Dept implements Serializable {
     /**
      * 上级部门
      */
-    @Column(name = "pid",nullable = false)
+    @Column(name = "pid", nullable = false)
     @NotNull
     private Long pid;
 
@@ -53,5 +54,6 @@ public class Dept implements Serializable {
     @CreationTimestamp
     private Timestamp createTime;
 
-    public @interface Update {}
+    public @interface Update {
+    }
 }

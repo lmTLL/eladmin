@@ -10,31 +10,34 @@ import org.springframework.data.domain.Pageable;
 import java.text.ParseException;
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 @CacheConfig(cacheNames = "saleOrder")
 public interface SaleOrderService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @CacheEvict(allEntries = true)
     Object queryAll(SaleOrderQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @CacheEvict(allEntries = true)
     public Object queryAll(SaleOrderQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -43,6 +46,7 @@ public interface SaleOrderService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -51,6 +55,7 @@ public interface SaleOrderService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -58,6 +63,7 @@ public interface SaleOrderService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -65,34 +71,41 @@ public interface SaleOrderService {
 
     /**
      * sign
+     *
      * @param ids
      */
     @CacheEvict(allEntries = true)
-    void sign(Long[] ids,String signdate) throws ParseException;
+    void sign(Long[] ids, String signdate) throws ParseException;
 
     /**
      * sign
+     *
      * @param ids
      */
     @CacheEvict(allEntries = true)
     void signHandle(Long[] ids);
+
     /**
      * sign
+     *
      * @param ids
      * @param remark
      */
     @CacheEvict(allEntries = true)
-    void dissign(Long[] ids,String remark) throws Exception;
+    void dissign(Long[] ids, String remark) throws Exception;
+
     /**
      * cancel
+     *
      * @param ids
      * @param ids
      */
     @CacheEvict(allEntries = true)
-    void cancel(Long[] ids,String remark);
+    void cancel(Long[] ids, String remark);
 
     /**
      * cancel
+     *
      * @param ids
      * @param ids
      */
@@ -101,31 +114,36 @@ public interface SaleOrderService {
 
     /**
      * cancel
+     *
      * @param ids
      * @param ids
      */
     @CacheEvict(allEntries = true)
-    void disagree(Long[] ids,String remark) throws Exception;
+    void disagree(Long[] ids, String remark) throws Exception;
 
     /**
      * cancel
+     *
      * @param id
      * @param accountImg
      * @param accountOrder
      */
     @CacheEvict(allEntries = true)
-    void upload(Long id,String accountImg,String accountOrder,String status) throws Exception;
+    void upload(Long id, String accountImg, String accountOrder, String status) throws Exception;
 
     @CacheEvict(allEntries = true)
     void followBack(Long id) throws Exception;
+
     /**
      * 生成销售单号
+     *
      * @return
      */
     String getSalesOrderNo();
 
     /**
      * cancel
+     *
      * @param ids id集合
      */
     @CacheEvict(allEntries = true)

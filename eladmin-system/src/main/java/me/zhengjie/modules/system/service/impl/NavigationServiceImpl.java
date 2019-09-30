@@ -1,4 +1,5 @@
 package me.zhengjie.modules.system.service.impl;
+
 import me.zhengjie.modules.system.domain.Navigation;
 import me.zhengjie.modules.system.repository.NavigationRepository;
 import me.zhengjie.modules.system.service.NavigationService;
@@ -18,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-08-14
-*/
+ * @author groot
+ * @date 2019-08-14
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class NavigationServiceImpl implements NavigationService {
@@ -32,20 +33,20 @@ public class NavigationServiceImpl implements NavigationService {
     private NavigationMapper navigationMapper;
 
     @Override
-    public Object queryAll(NavigationQueryCriteria criteria, Pageable pageable){
-        Page<Navigation> page = navigationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(NavigationQueryCriteria criteria, Pageable pageable) {
+        Page<Navigation> page = navigationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(navigationMapper::toDto));
     }
 
     @Override
-    public Object queryAll(NavigationQueryCriteria criteria){
-        return navigationMapper.toDto(navigationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(NavigationQueryCriteria criteria) {
+        return navigationMapper.toDto(navigationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public NavigationDTO findById(Integer id) {
         Optional<Navigation> navigation = navigationRepository.findById(id);
-        ValidationUtil.isNull(navigation,"Navigation","id",id);
+        ValidationUtil.isNull(navigation, "Navigation", "id", id);
         return navigationMapper.toDto(navigation.get());
     }
 
@@ -59,7 +60,7 @@ public class NavigationServiceImpl implements NavigationService {
     @Transactional(rollbackFor = Exception.class)
     public void update(Navigation resources) {
         Optional<Navigation> optionalNavigation = navigationRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalNavigation,"Navigation","id",resources.getId());
+        ValidationUtil.isNull(optionalNavigation, "Navigation", "id", resources.getId());
 
         Navigation navigation = optionalNavigation.get();
         // 此处需自己修改

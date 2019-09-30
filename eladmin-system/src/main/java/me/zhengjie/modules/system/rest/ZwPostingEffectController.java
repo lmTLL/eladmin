@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-09-19
-*/
+ * @author groot
+ * @date 2019-09-19
+ */
 @RestController
 @RequestMapping("api")
 public class ZwPostingEffectController {
@@ -26,23 +26,23 @@ public class ZwPostingEffectController {
     @Log("查询ZwPostingEffect")
     @GetMapping(value = "/zwPostingEffect/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','ZWPOSTINGEFFECT_ALL','ZWPOSTINGEFFECT_SELECT')")
-    public ResponseEntity getZwPostingEffects(@PathVariable Long id){
-        ZwPostingEffectQueryCriteria criteria=new ZwPostingEffectQueryCriteria();
+    public ResponseEntity getZwPostingEffects(@PathVariable Long id) {
+        ZwPostingEffectQueryCriteria criteria = new ZwPostingEffectQueryCriteria();
         criteria.setZwSaleId(id);
-        return new ResponseEntity(zwPostingEffectService.queryAll(criteria),HttpStatus.OK);
+        return new ResponseEntity(zwPostingEffectService.queryAll(criteria), HttpStatus.OK);
     }
 
     @Log("新增ZwPostingEffect")
     @PostMapping(value = "/zwPostingEffect")
     @PreAuthorize("hasAnyRole('ADMIN','ZWPOSTINGEFFECT_ALL','ZWPOSTINGEFFECT_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody ZwPostingEffect resources){
-        return new ResponseEntity(zwPostingEffectService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody ZwPostingEffect resources) {
+        return new ResponseEntity(zwPostingEffectService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改ZwPostingEffect")
     @PutMapping(value = "/zwPostingEffect")
     @PreAuthorize("hasAnyRole('ADMIN','ZWPOSTINGEFFECT_ALL','ZWPOSTINGEFFECT_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody ZwPostingEffect resources){
+    public ResponseEntity update(@Validated @RequestBody ZwPostingEffect resources) {
         zwPostingEffectService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -50,7 +50,7 @@ public class ZwPostingEffectController {
     @Log("删除ZwPostingEffect")
     @DeleteMapping(value = "/zwPostingEffect/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','ZWPOSTINGEFFECT_ALL','ZWPOSTINGEFFECT_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         zwPostingEffectService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

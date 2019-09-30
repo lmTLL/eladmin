@@ -19,6 +19,7 @@ public interface QiNiuService {
 
     /**
      * 查询文件
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -28,6 +29,7 @@ public interface QiNiuService {
 
     /**
      * 查配置
+     *
      * @return
      */
     @Cacheable(cacheNames = "qiNiuConfig", key = "'1'")
@@ -35,6 +37,7 @@ public interface QiNiuService {
 
     /**
      * 修改配置
+     *
      * @param qiniuConfig
      * @return
      */
@@ -43,6 +46,7 @@ public interface QiNiuService {
 
     /**
      * 上传文件
+     *
      * @param file
      * @param qiniuConfig
      */
@@ -51,6 +55,7 @@ public interface QiNiuService {
 
     /**
      * 查询文件
+     *
      * @param id
      * @return
      */
@@ -59,6 +64,7 @@ public interface QiNiuService {
 
     /**
      * 下载文件
+     *
      * @param content
      * @param config
      * @return
@@ -67,6 +73,7 @@ public interface QiNiuService {
 
     /**
      * 删除文件
+     *
      * @param content
      * @param config
      * @return
@@ -76,6 +83,7 @@ public interface QiNiuService {
 
     /**
      * 同步数据
+     *
      * @param config
      */
     @CacheEvict(allEntries = true)
@@ -83,6 +91,7 @@ public interface QiNiuService {
 
     /**
      * 删除文件
+     *
      * @param ids
      * @return
      */

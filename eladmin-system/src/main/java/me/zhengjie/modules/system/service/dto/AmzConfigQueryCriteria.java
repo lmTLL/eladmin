@@ -4,9 +4,9 @@ import lombok.Data;
 import me.zhengjie.annotation.Query;
 
 /**
-* @author groot
-* @date 2019-08-27
-*/
+ * @author groot
+ * @date 2019-08-27
+ */
 @Data
 public class AmzConfigQueryCriteria {
 

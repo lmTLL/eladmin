@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 
 /**
-* @author groot
-* @date 2019-09-27
-*/
+ * @author groot
+ * @date 2019-09-27
+ */
 @Data
 public class ZwSaleOrderUpdateDTO implements Serializable {
 

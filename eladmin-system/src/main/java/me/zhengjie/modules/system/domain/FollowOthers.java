@@ -12,8 +12,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Data
-@Table(name="follow_others")
-public class FollowOthers implements Serializable{
+@Table(name = "follow_others")
+public class FollowOthers implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class FollowOthers implements Serializable{
     @Column(name = "start_date")
     private Timestamp startDate;
 
-    @Column(name = "asin",nullable = false)
+    @Column(name = "asin", nullable = false)
     private String asin;
 
 }

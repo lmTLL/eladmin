@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 @RestController
 @RequestMapping("api")
 public class ChannelController {
@@ -31,25 +31,25 @@ public class ChannelController {
     @Log("查询Channel")
     @GetMapping(value = "/channel")
     @PreAuthorize("hasAnyRole('ADMIN','CHANNEL_ALL','CHANNEL_SELECT')")
-    public ResponseEntity getChannels(ChannelQueryCriteria criteria, Pageable pageable){
+    public ResponseEntity getChannels(ChannelQueryCriteria criteria, Pageable pageable) {
         Object o = channelService.queryAll(criteria, pageable);
         System.out.println(o.toString());
-        return new ResponseEntity(channelService.queryAll(criteria,pageable),HttpStatus.OK);
+        return new ResponseEntity(channelService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @Log("新增Channel")
     @PostMapping(value = "/channel")
     @PreAuthorize("hasAnyRole('ADMIN','CHANNEL_ALL','CHANNEL_CREATE')")
-    public ResponseEntity create(@Validated @RequestBody Channel resources){
+    public ResponseEntity create(@Validated @RequestBody Channel resources) {
         UserDTO byOpenId = userService.findByOpenId(resources.getOpenId());
         resources.setUserId(byOpenId.getId());
-        return new ResponseEntity(channelService.create(resources),HttpStatus.CREATED);
+        return new ResponseEntity(channelService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改Channel")
     @PutMapping(value = "/channel")
     @PreAuthorize("hasAnyRole('ADMIN','CHANNEL_ALL','CHANNEL_EDIT')")
-    public ResponseEntity update(@Validated @RequestBody Channel resources){
+    public ResponseEntity update(@Validated @RequestBody Channel resources) {
         UserDTO byOpenId = userService.findByOpenId(resources.getOpenId());
         resources.setUserId(byOpenId.getId());
         channelService.update(resources);
@@ -59,7 +59,7 @@ public class ChannelController {
     @Log("删除Channel")
     @DeleteMapping(value = "/channel/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','CHANNEL_ALL','CHANNEL_DELETE')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         channelService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -67,8 +67,8 @@ public class ChannelController {
     @Log("查询Channel所有不分页")
     @GetMapping(value = "/channelAll")
     //@PreAuthorize("hasAnyRole('ADMIN','CHANNEL_ALL','CHANNEL_SELECT')")
-    public ResponseEntity getChannelsAll(ChannelQueryCriteria criteria){
+    public ResponseEntity getChannelsAll(ChannelQueryCriteria criteria) {
         criteria.setEnabled("1");
-        return new ResponseEntity(channelService.queryAll(criteria),HttpStatus.OK);
+        return new ResponseEntity(channelService.queryAll(criteria), HttpStatus.OK);
     }
 }

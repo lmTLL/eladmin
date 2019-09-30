@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-09-27
-*/
+ * @author groot
+ * @date 2019-09-27
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ZwSaleOrderUpdateServiceImpl implements ZwSaleOrderUpdateService {
@@ -33,20 +33,20 @@ public class ZwSaleOrderUpdateServiceImpl implements ZwSaleOrderUpdateService {
     private ZwSaleOrderUpdateMapper zwSaleOrderUpdateMapper;
 
     @Override
-    public Object queryAll(ZwSaleOrderUpdateQueryCriteria criteria, Pageable pageable){
-        Page<ZwSaleOrderUpdate> page = zwSaleOrderUpdateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(ZwSaleOrderUpdateQueryCriteria criteria, Pageable pageable) {
+        Page<ZwSaleOrderUpdate> page = zwSaleOrderUpdateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(zwSaleOrderUpdateMapper::toDto));
     }
 
     @Override
-    public Object queryAll(ZwSaleOrderUpdateQueryCriteria criteria){
-        return zwSaleOrderUpdateMapper.toDto(zwSaleOrderUpdateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(ZwSaleOrderUpdateQueryCriteria criteria) {
+        return zwSaleOrderUpdateMapper.toDto(zwSaleOrderUpdateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public ZwSaleOrderUpdateDTO findById(Long id) {
         Optional<ZwSaleOrderUpdate> zwSaleOrderUpdate = zwSaleOrderUpdateRepository.findById(id);
-        ValidationUtil.isNull(zwSaleOrderUpdate,"ZwSaleOrderUpdate","id",id);
+        ValidationUtil.isNull(zwSaleOrderUpdate, "ZwSaleOrderUpdate", "id", id);
         return zwSaleOrderUpdateMapper.toDto(zwSaleOrderUpdate.get());
     }
 
@@ -60,7 +60,7 @@ public class ZwSaleOrderUpdateServiceImpl implements ZwSaleOrderUpdateService {
     @Transactional(rollbackFor = Exception.class)
     public void update(ZwSaleOrderUpdate resources) {
         Optional<ZwSaleOrderUpdate> optionalZwSaleOrderUpdate = zwSaleOrderUpdateRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalZwSaleOrderUpdate,"ZwSaleOrderUpdate","id",resources.getId());
+        ValidationUtil.isNull(optionalZwSaleOrderUpdate, "ZwSaleOrderUpdate", "id", resources.getId());
 
         ZwSaleOrderUpdate zwSaleOrderUpdate = optionalZwSaleOrderUpdate.get();
         // 此处需自己修改

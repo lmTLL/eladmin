@@ -17,6 +17,7 @@ public interface QuartzJobService {
 
     /**
      * queryAll quartzJob
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -26,6 +27,7 @@ public interface QuartzJobService {
 
     /**
      * queryAll quartzLog
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -34,6 +36,7 @@ public interface QuartzJobService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -42,6 +45,7 @@ public interface QuartzJobService {
 
     /**
      * update
+     *
      * @param resources
      * @return
      */
@@ -50,6 +54,7 @@ public interface QuartzJobService {
 
     /**
      * del
+     *
      * @param quartzJob
      */
     @CacheEvict(allEntries = true)
@@ -57,6 +62,7 @@ public interface QuartzJobService {
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -65,6 +71,7 @@ public interface QuartzJobService {
 
     /**
      * 更改定时任务状态
+     *
      * @param quartzJob
      */
     @CacheEvict(allEntries = true)
@@ -72,6 +79,7 @@ public interface QuartzJobService {
 
     /**
      * 立即执行定时任务
+     *
      * @param quartzJob
      */
     void execution(QuartzJob quartzJob);

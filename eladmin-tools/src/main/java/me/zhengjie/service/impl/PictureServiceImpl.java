@@ -29,7 +29,7 @@ public class PictureServiceImpl implements PictureService {
     @Autowired
     private PictureRepository pictureRepository;
 
-    private String filesPath="d:/files";
+    private String filesPath = "d:/files";
 
     public static final String SUCCESS = "success";
 
@@ -38,8 +38,8 @@ public class PictureServiceImpl implements PictureService {
     public static final String MSG = "msg";
 
     @Override
-    public Object queryAll(PictureQueryCriteria criteria, Pageable pageable){
-        return PageUtil.toPage(pictureRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable));
+    public Object queryAll(PictureQueryCriteria criteria, Pageable pageable) {
+        return PageUtil.toPage(pictureRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable));
     }
 
     @Override
@@ -66,9 +66,9 @@ public class PictureServiceImpl implements PictureService {
 
         JSONObject jsonObject = JSONUtil.parseObj(result);*/
         Picture picture = new Picture();
-        picture.setFilename(FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename())+"."+FileUtil.getExtensionName(multipartFile.getOriginalFilename()));
+        picture.setFilename(FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()) + "." + FileUtil.getExtensionName(multipartFile.getOriginalFilename()));
         picture.setUsername(username);
-        picture.setUrl(requestURL.substring(0,requestURL.indexOf("/api"))+"/statics"+pathName);
+        picture.setUrl(requestURL.substring(0, requestURL.indexOf("/api")) + "/statics" + pathName);
         //picture.setSize(FileUtil.getSize(Integer.valueOf(picture.getSize())));
         /*if(!jsonObject.get(CODE).toString().equals(SUCCESS)){
             System.out.println(jsonObject);
@@ -90,7 +90,7 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public Picture findById(Long id) {
         Optional<Picture> picture = pictureRepository.findById(id);
-        ValidationUtil.isNull(picture,"Picture","id",id);
+        ValidationUtil.isNull(picture, "Picture", "id", id);
         return picture.get();
     }
 
@@ -98,9 +98,9 @@ public class PictureServiceImpl implements PictureService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Picture picture) {
         try {
-            String result= HttpUtil.get(picture.getDelete());
+            String result = HttpUtil.get(picture.getDelete());
             pictureRepository.delete(picture);
-        } catch(Exception e){
+        } catch (Exception e) {
             pictureRepository.delete(picture);
         }
 

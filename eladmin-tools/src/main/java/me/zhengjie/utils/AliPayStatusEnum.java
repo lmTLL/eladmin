@@ -2,10 +2,11 @@ package me.zhengjie.utils;
 
 /**
  * 支付状态
+ *
  * @author zhengjie
  * @date 2018/08/01 16:45:43
  */
-public enum  AliPayStatusEnum {
+public enum AliPayStatusEnum {
 
     /**
      * 交易成功

@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-07-22
-*/
+ * @author groot
+ * @date 2019-07-22
+ */
 @Entity
 @Data
-@Table(name="token")
+@Table(name = "token")
 public class Token implements Serializable {
 
     @Id

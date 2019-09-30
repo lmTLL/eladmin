@@ -5,6 +5,7 @@ import me.zhengjie.annotation.Query;
 
 /**
  * 日志查询类
+ *
  * @author Zheng Jie
  * @date 2019-6-4 09:23:07
  */

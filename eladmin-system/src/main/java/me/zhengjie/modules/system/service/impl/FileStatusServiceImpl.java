@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
-* @author groot
-* @date 2019-07-24
-*/
+ * @author groot
+ * @date 2019-07-24
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class FileStatusServiceImpl implements FileStatusService {
@@ -35,20 +35,20 @@ public class FileStatusServiceImpl implements FileStatusService {
     private FileStatusMapper fileStatusMapper;
 
     @Override
-    public Object queryAll(FileStatusQueryCriteria criteria, Pageable pageable){
-        Page<FileStatus> page = fileStatusRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(FileStatusQueryCriteria criteria, Pageable pageable) {
+        Page<FileStatus> page = fileStatusRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(fileStatusMapper::toDto));
     }
 
     @Override
-    public Object queryAll(FileStatusQueryCriteria criteria){
-        return fileStatusMapper.toDto(fileStatusRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public Object queryAll(FileStatusQueryCriteria criteria) {
+        return fileStatusMapper.toDto(fileStatusRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public FileStatusDTO findById(Long id) {
         Optional<FileStatus> fileStatus = fileStatusRepository.findById(id);
-        ValidationUtil.isNull(fileStatus,"FileStatus","id",id);
+        ValidationUtil.isNull(fileStatus, "FileStatus", "id", id);
         return fileStatusMapper.toDto(fileStatus.get());
     }
 
@@ -56,7 +56,7 @@ public class FileStatusServiceImpl implements FileStatusService {
     @Transactional(rollbackFor = Exception.class)
     public FileStatusDTO create(FileStatus resources) {
         Snowflake snowflake = IdUtil.createSnowflake(1, 1);
-        resources.setId(snowflake.nextId()); 
+        resources.setId(snowflake.nextId());
         return fileStatusMapper.toDto(fileStatusRepository.save(resources));
     }
 
@@ -64,7 +64,7 @@ public class FileStatusServiceImpl implements FileStatusService {
     @Transactional(rollbackFor = Exception.class)
     public void update(FileStatus resources) {
         Optional<FileStatus> optionalFileStatus = fileStatusRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalFileStatus,"FileStatus","id",resources.getId());
+        ValidationUtil.isNull(optionalFileStatus, "FileStatus", "id", resources.getId());
 
         FileStatus fileStatus = optionalFileStatus.get();
         // 此处需自己修改

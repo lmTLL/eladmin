@@ -22,6 +22,7 @@ public interface RoleService {
 
     /**
      * get
+     *
      * @param id
      * @return
      */
@@ -30,6 +31,7 @@ public interface RoleService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -38,6 +40,7 @@ public interface RoleService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -45,6 +48,7 @@ public interface RoleService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
@@ -53,6 +57,7 @@ public interface RoleService {
     /**
      * key的名称如有修改，请同步修改 UserServiceImpl 中的 update 方法
      * findByUsers_Id
+     *
      * @param id
      * @return
      */
@@ -64,6 +69,7 @@ public interface RoleService {
 
     /**
      * updatePermission
+     *
      * @param resources
      * @param roleDTO
      */
@@ -72,6 +78,7 @@ public interface RoleService {
 
     /**
      * updateMenu
+     *
      * @param resources
      * @param roleDTO
      */
@@ -83,6 +90,7 @@ public interface RoleService {
 
     /**
      * queryAll
+     *
      * @param pageable
      * @return
      */
@@ -90,16 +98,19 @@ public interface RoleService {
 
     /**
      * queryAll
+     *
      * @param pageable
      * @param criteria
      * @return
      */
     Object queryAll(CommonQueryCriteria criteria, Pageable pageable);
+
     /**
      * addInvitationCode
+     *
      * @param invitationCode
      * @param id
      * @return
      */
-    int addInvitationCode(String invitationCode,String id);
+    int addInvitationCode(String invitationCode, String id);
 }

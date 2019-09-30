@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-07-26
-*/
+ * @author groot
+ * @date 2019-07-26
+ */
 @Entity
 @Data
-@Table(name="key_msg")
+@Table(name = "key_msg")
 public class KeyMsg implements Serializable {
 
     @Id

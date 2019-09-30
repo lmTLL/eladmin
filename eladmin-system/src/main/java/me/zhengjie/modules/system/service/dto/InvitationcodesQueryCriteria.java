@@ -8,7 +8,7 @@ import me.zhengjie.annotation.Query;
  * @date 2019-07-09
  */
 @Data
-public class InvitationcodesQueryCriteria{
+public class InvitationcodesQueryCriteria {
 
     // 精确
     @Query

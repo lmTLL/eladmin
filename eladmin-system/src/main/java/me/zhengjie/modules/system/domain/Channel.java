@@ -1,16 +1,17 @@
 package me.zhengjie.modules.system.domain;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* @author groot
-* @date 2019-07-09
-*/
+ * @author groot
+ * @date 2019-07-09
+ */
 @Entity
 @Data
-@Table(name="channel")
+@Table(name = "channel")
 public class Channel implements Serializable {
 
     // 渠道id

@@ -19,11 +19,12 @@ public class ExportTextUtil {
 
     /**
      * 导出文本文件
+     *
      * @param response
      * @param jsonString
      * @param fileName
      */
-    public static void writeToTxt(HttpServletResponse response,String jsonString,String fileName) {//设置响应的字符集
+    public static void writeToTxt(HttpServletResponse response, String jsonString, String fileName) {//设置响应的字符集
         response.setCharacterEncoding("utf-8");
         //设置响应内容的类型
         response.setContentType("text/plain");
@@ -48,25 +49,27 @@ public class ExportTextUtil {
             buff.flush();
             buff.close();
         } catch (Exception e) {
-            LOGGER.error("导出文件文件出错，e:{}",e);
-        } finally {try {
-            buff.close();
-            outStr.close();
-        } catch (Exception e) {
-            LOGGER.error("关闭流对象出错 e:{}",e);
-        }
+            LOGGER.error("导出文件文件出错，e:{}", e);
+        } finally {
+            try {
+                buff.close();
+                outStr.close();
+            } catch (Exception e) {
+                LOGGER.error("关闭流对象出错 e:{}", e);
+            }
         }
     }
 
     /**
      * 如果字符串对象为 null，则返回空字符串，否则返回去掉字符串前后空格的字符串
+     *
      * @param str
      * @return
      */
     public static String delNull(String str) {
-        String returnStr="";
+        String returnStr = "";
         if (StringUtils.isNotBlank(str)) {
-            returnStr=str.trim();
+            returnStr = str.trim();
         }
         return returnStr;
     }

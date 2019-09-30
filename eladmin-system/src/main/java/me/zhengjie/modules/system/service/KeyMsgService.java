@@ -10,31 +10,34 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 
 /**
-* @author groot
-* @date 2019-07-26
-*/
+ * @author groot
+ * @date 2019-07-26
+ */
 @CacheConfig(cacheNames = "keyMsg")
 public interface KeyMsgService {
 
     /**
-    * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * queryAll 分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     @CacheEvict(allEntries = true)
     Object queryAll(KeyMsgQueryCriteria criteria, Pageable pageable);
 
     /**
-    * queryAll 不分页
-    * @param criteria
-    * @return
-    */
+     * queryAll 不分页
+     *
+     * @param criteria
+     * @return
+     */
     @CacheEvict(allEntries = true)
     public Object queryAll(KeyMsgQueryCriteria criteria);
 
     /**
      * findById
+     *
      * @param id
      * @return
      */
@@ -43,6 +46,7 @@ public interface KeyMsgService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -51,6 +55,7 @@ public interface KeyMsgService {
 
     /**
      * update
+     *
      * @param resources
      */
     @CacheEvict(allEntries = true)
@@ -58,6 +63,7 @@ public interface KeyMsgService {
 
     /**
      * delete
+     *
      * @param id
      */
     @CacheEvict(allEntries = true)
