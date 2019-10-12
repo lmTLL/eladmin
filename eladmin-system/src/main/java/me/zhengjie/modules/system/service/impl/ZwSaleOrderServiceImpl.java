@@ -147,7 +147,7 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
         list.add(new NameValuePair("dealTime", new Date().toString()));
         list.add(new NameValuePair("issueOrder", "0"));
-        list.add(new NameValuePair("remark", "在线下单"));
+        list.add(new NameValuePair("remark", "在线下单-"+resources.getZwSaleNumber()));
         list.add(new NameValuePair("dataStatus", "1"));
         list.add(new NameValuePair("auditStatus", "0"));
         list.add(new NameValuePair("asinInfo", resources.getLink()));
@@ -274,7 +274,7 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
         list.add(new NameValuePair("dealTime", new Date().toString()));
         list.add(new NameValuePair("issueOrder", "0"));
-        list.add(new NameValuePair("remark", "在线下单"));
+        list.add(new NameValuePair("remark", "在线下单-"+resources.getZwSaleNumber()));
         list.add(new NameValuePair("dataStatus", "1"));
         list.add(new NameValuePair("auditStatus", "0"));
         list.add(new NameValuePair("asinInfo", resources.getLink()));

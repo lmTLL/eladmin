@@ -95,7 +95,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
         //list.add(new NameValuePair("dealTime",new Date().toString()));
         list.add(new NameValuePair("issueOrder", "0"));
-        list.add(new NameValuePair("remark", "在线下单"));
+        list.add(new NameValuePair("remark", "在线下单-"+resources.getSaleNumber()));
         list.add(new NameValuePair("dataStatus", "1"));
         list.add(new NameValuePair("auditStatus", "0"));
         list.add(new NameValuePair("asinInfo", resources.getAsin()));
@@ -119,13 +119,16 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         erpSalesOrder.setRejectReason("mark");
         erpSalesOrder.setShopName("~");*/
         System.out.println(resources.getStatus());
-        if ("2".equals(resources.getStatus())) {
+        if ("2".equals(resources.getStatus())&&!"s".equals(resources.getStatus())) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder", list);
                 }
             }).start();
+        }
+        if ("s".equals(resources.getStatus())){
+            resources.setStatus("1");
         }
         return saleOrderMapper.toDto(saleOrderRepository.save(resources));
     }
@@ -361,7 +364,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
         list.add(new NameValuePair("dealTime", new Date().toString()));
         list.add(new NameValuePair("issueOrder", "0"));
-        list.add(new NameValuePair("remark", "在线下单"));
+        list.add(new NameValuePair("remark", "在线下单-"+resources.getSaleNumber()));
         list.add(new NameValuePair("dataStatus", "1"));
         list.add(new NameValuePair("auditStatus", "0"));
         list.add(new NameValuePair("asinInfo", resources.getAsin()));

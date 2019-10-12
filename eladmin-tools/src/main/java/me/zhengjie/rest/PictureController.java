@@ -62,8 +62,13 @@ public class PictureController {
         for (int i = 0; i < wordsResult.length(); i++) {
             JSONObject jsonObject = wordsResult.getJSONObject(i);
             String words = jsonObject.get("words").toString();
+            //System.out.println(words);
             if (words.equals("订单") || words.equals("订单号")) {
                 index = i;
+                break;
+            }
+            if (words.startsWith("订单号")){
+                index = i-1;
                 break;
             }
             //JSONObject jsonObject = wordsResult.getJSONObject(15);
@@ -80,6 +85,20 @@ public class PictureController {
         if (jsonObject != null) {
             if (jsonObject.get("words") != null) {
                 words = jsonObject.get("words").toString();
+            }
+        }
+        words= words.replace("订单号","");
+        if (words.length()<28){
+            try {
+                jsonObject = wordsResult.getJSONObject(index + 2);
+            } catch (Exception e) {
+
+            }
+            if (jsonObject != null) {
+                if (jsonObject.get("words") != null) {
+                    //words = jsonObject.get("words").toString();
+                    words=words+jsonObject.get("words").toString();
+                }
             }
         }
         System.out.println(words);

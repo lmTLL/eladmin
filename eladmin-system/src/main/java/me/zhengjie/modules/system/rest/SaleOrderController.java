@@ -3,6 +3,7 @@ package me.zhengjie.modules.system.rest;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import me.zhengjie.aop.log.Log;
+import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.modules.system.domain.*;
 import me.zhengjie.modules.system.repository.ChannelRepository;
 import me.zhengjie.modules.system.repository.SaleOrderRepository;
@@ -13,8 +14,14 @@ import me.zhengjie.modules.system.service.ChannelService;
 import me.zhengjie.modules.system.service.SaleOrderService;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.*;
+import me.zhengjie.utils.FileUtil;
 import me.zhengjie.utils.SecurityUtils;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -30,12 +37,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
+import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -275,7 +283,7 @@ public class SaleOrderController {
             newOrder.setExcel(old.getExcel());
             newOrder.setInvitation(old.getInvitation());
             newOrder.setCustomerNickname(old.getCustomerNickname());
-            newOrder.setStatus("1");
+            newOrder.setStatus("s");
             newOrder.setNewOrder("0");
             newOrder.setChannelUserId(channel.getUserId());
             SaleOrderDTO saleOrderDTO = saleOrderService.create(newOrder);
@@ -461,6 +469,24 @@ public class SaleOrderController {
         excelExport(fileName, files, data, response, request);
     }
 
+    @GetMapping("/saleOrder/ExcelsDownload")
+    @ApiOperation(value = "根据asin生成Excel")
+    public void getExcelExports(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //Timestamp startTime = byId.getStartTime();
+        //String accessToken = WechatController.token;
+        SimpleDateFormat sdf1 = new SimpleDateFormat("MM.dd");
+        String format = sdf1.format(new Date());
+        //String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId;
+        //Map<String, Object> map = httpClientGet(url);
+        //Object nickname = map.get("nickname");
+        String[] files = {"微信昵称", "跟卖类型(FBM/FBA/VC)", "Asin/链接", "站点国家", "跟卖售价", "跟卖时间(晚上/全天)", "跟卖方店铺链接", "跟卖店铺名", "是否品牌备案", "质保时间"};
+        List<Object[]> data = new ArrayList<>();
+        String fileName = null;
+        fileName = format + "-打跟卖-" + "跟卖类型(FBM/FBA/VC)" + "-" + "Asin" + "-" + "跟卖店铺名" + "-" + "质保时间" + "-" + "客服名" + "-" + "微信昵称";
+        //data.add(objects);
+        excelExport(fileName, files, data, response, request);
+    }
+
     @GetMapping("/saleOrder/getSalePaymentCode")
     @ApiOperation(value = "生成支付备注")
     @ResponseBody
@@ -622,6 +648,106 @@ public class SaleOrderController {
     @PreAuthorize("hasAnyRole('ADMIN','SALEORDER_ALL','SALEORDER_SIGNPAYMENT')")
     public ResponseEntity signPayment(@RequestBody Long[] ids) {
         saleOrderService.signPayment(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @Log("excel导入订单")
+    @PostMapping(value = "/saleOrder/excelSaleOrder/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','SALEORDER_ALL','SALEORDER_IMPORT')")
+    public Object excelSaleOrder(@RequestParam MultipartFile file, HttpServletResponse response,@PathVariable Long id) throws Exception {
+        PrintWriter writer = response.getWriter();
+        /*if (1>0){
+            return "nuss";
+        }*/
+        System.out.println(id);
+        File f = null;
+        if(file.equals("")||file.getSize()<=0){
+            file = null;
+        }else{
+            InputStream ins = file.getInputStream();
+            f=new File(file.getOriginalFilename());
+            FileUtil.inputStreamToFile(ins, f);
+        }
+
+        //JSONObject jsonObject= weChatMaterialService.getMediaId("image",f);
+        //writer.print(jsonObject);
+        writer.flush();
+        writer.close();
+        File del = new File(f.toURI());
+        //del.delete();
+        //System.out.println(jsonObject);
+        System.out.println(del.getName());
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(new FileInputStream(del));
+        HSSFSheet sheet = hssfWorkbook.getSheetAt(0);
+        int lastRowNum = sheet.getLastRowNum();
+        UserDetails userDetails = SecurityUtils.getUserDetails();
+        User byUsername = userRepository.findByUsername(userDetails.getUsername());
+        User invitation = userRepository.findByUsername(byUsername.getInvitation());
+        System.out.println(lastRowNum);
+        for (int i = 1; i <= lastRowNum; i++) {//遍历每一行
+            //3.获得要解析的行
+            HSSFRow row = sheet.getRow(i);
+            //4.获得每个单元格中的内容（String）
+            String customerNickname = row.getCell(0).getStringCellValue();
+            String followType = row.getCell(1).getStringCellValue();
+            String asin = row.getCell(2).getStringCellValue();
+            String site = row.getCell(3).getStringCellValue();
+            row.getCell(4).setCellType(CellType.STRING);
+            String followPrice = row.getCell(4).getStringCellValue();
+            String followTime = row.getCell(5).getStringCellValue();
+            String followShopUrl = row.getCell(6).getStringCellValue();
+            String followShopName = row.getCell(7).getStringCellValue();
+            String assuranceTime = row.getCell(9).getStringCellValue();
+            SaleOrder saleOrder=new SaleOrder();
+            saleOrder.setProjectName("打跟卖");
+            saleOrder.setSite(site);
+            saleOrder.setAsin(asin);
+            saleOrder.setFollowType(followType);
+            saleOrder.setFollowPrice(new BigDecimal(followPrice));
+            saleOrder.setFollowTime(followTime);
+            saleOrder.setFollowShopUrl(followShopUrl);
+            saleOrder.setFollowShopName(followShopName);
+            saleOrder.setAssuranceTime(assuranceTime);
+            saleOrder.setStartTime(new Timestamp(new Date().getTime()));
+            saleOrder.setCustomerId(byUsername.getId());
+            ChannelDTO channel = channelService.findById(id);
+            //UserDTO channelUser = userService.findById(channel.getUserId());
+            saleOrder.setChannelId(channel.getId());
+            saleOrder.setExcel("http://eladmin.asinone.vip/api/saleOrder/Excels?nickName=" + customerNickname + "&invitation=" + byUsername.getInvitation() + "&id=");
+            saleOrder.setChannelName(channel.getChannelName());
+            saleOrder.setInvitation(byUsername.getInvitation());
+            saleOrder.setCustomerNickname(customerNickname);
+            saleOrder.setAccountTime(new Timestamp(new Date().getTime()));
+            saleOrder.setStatus("2");
+            saleOrder.setRemark("￥"+channel.getPrice());
+            saleOrder.setNewOrder("0");
+            saleOrder.setChannelUserId(channel.getUserId());
+            saleOrder.setFinancePayment("0");
+            saleOrder.setAccountOrder("excel导入");
+            System.out.println(saleOrder);
+            SaleOrderDTO resources = saleOrderService.create(saleOrder);
+            if (resources.getAccountOrder() != null && !"".equals(resources.getAccountOrder())) {
+                Map<String, Object> channelmap = wechatController.getUserInfoByOpenid(channel.getOpenId());
+                Object nickname = channelmap.get("nickname");
+                String nickName = null;
+                if (nickname != null) {
+                    nickName = nickname.toString();
+                } else {
+                    nickName = "";
+                }
+                //WechatController.httpClientPost(messageUrl, jsonTestMessage);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date=new Date();
+                System.out.println(resources.getSaleNumber().substring(9));
+                sendModelMessage(channel.getOpenId(), "亲爱的" + nickName + "，你有一个新的跟卖需要处理，请查收。", resources.getSaleNumber(), "赶跟卖", "待处理", sdf.format(date) + "\n点击详情可下载跟卖Excel", "请收到该通知后，在此公众号里回复「" + resources.getSaleNumber().substring(7) + "」。", "http://eladmin.asinone.vip/api/saleOrder/Excels?nickName=" + resources.getCustomerNickname() + "&id=" + id + "&invitation=" + resources.getInvitation(), "#FF0000");
+                //mike
+                sendModelMessage("oXhzV1NEM5Leb1II8PbXxBcgIFjk", "亲爱的" + nickName + "，你有一个新的跟卖需要处理，请查收。", resources.getSaleNumber(), "赶跟卖", "待处理", sdf.format(date), "销售:" + resources.getInvitation() + "\n点击详情可下载跟卖Excel", "http://eladmin.asinone.vip/api/saleOrder/Excels?nickName=" + resources.getCustomerNickname() + "&id=" + id + "&invitation=" + resources.getInvitation(), "");
+                //linda
+                sendModelMessage("oXhzV1CPrtODB3TFWdq2-zjqineE", "亲爱的" + nickName + "，你有一个新的跟卖需要处理，请查收。", resources.getSaleNumber(), "赶跟卖", "待处理", sdf.format(date), "销售:" + resources.getInvitation() + "\n点击详情可下载跟卖Excel", "http://eladmin.asinone.vip/api/saleOrder/Excels?nickName=" + resources.getCustomerNickname() + "&id=" + id + "&invitation=" + resources.getInvitation(), "");
+                sendModelMessage(invitation.getOpenId(), "亲爱的" + nickName + "，你有一个新的跟卖需要处理，请查收。", resources.getSaleNumber(), "赶跟卖", "待处理", sdf.format(date), "点击详情可下载跟卖Excel", "http://eladmin.asinone.vip/api/saleOrder/Excels?nickName=" + resources.getCustomerNickname() + "&id=" + id + "&invitation=" + resources.getInvitation(), "");
+                //sendMessage(channel.getOpenId(),"亲爱的"+nickName+"，你有一个新的跟卖需要处理，请查收。<a href='http://47.112.136.123:8000/api/saleOrder/Excel?openId="+customerOpenId+"&id="+id+"&invitation="+invitation+"'>点击下载Excel</a>");
+            }
+        }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

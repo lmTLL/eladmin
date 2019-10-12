@@ -394,7 +394,7 @@ public class WechatController {
                         }
                     }
                 }
-                if ("oXhzV1NEM5Leb1II8PbXxBcgIFjk".equals(openId) || "oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId) || "oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId) || "oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)) {
+                if ("oXhzV1NEM5Leb1II8PbXxBcgIFjk".equals(openId) || "oXhzV1B52PHJKXQ_c9zN_EbM8wkU".equals(openId) || "oXhzV1KgW4QCwULOkhm4sD2mMmO8".equals(openId) || "oXhzV1KB4kPAdpJiarAFgiJun9FE".equals(openId)|| "oXhzV1CPrtODB3TFWdq2-zjqineE".equals(openId)) {
                     new Thread(
                             new Runnable() {
                                 @Override
