@@ -261,6 +261,31 @@ public class WechatController {
             }
         }
         if ("text".equals(callbackMap.get("MsgType"))) {
+
+            if ("资料".equals(callbackMap.get("Content"))){
+                sendMessage(openId,"数据化选品-百晓生课程https://v.youku.com/v_show/id_XNDI4MjQzNjEzNg==.html?spm=a2h3j.8428770.3416059.1\n" +
+                        "下载链接：https://pan.baidu.com/s/1-SIC9V0Vt9oW0D-8B4BuyA\n" +
+                        "提取码：335j 复制这段内容后打开百度网盘手机App，操作更方便哦\n" +
+                        "\n" +
+                        "数据选品简介：百晓生开发教程，教如何用数据选品方法开发爆款                      百晓生软件教程-百晓生课程https://v.youku.com/v_show/id_XNDI4MjQzNzI3Ng==.html?spm=a2h3j.8428770.3416059.1 \n" +
+                        "播放密码：baixiaotanga18\n" +
+                        "下载链接：https://pan.baidu.com/s/14GLP3SFqmSNRPvsKHm6Wyw提取码：0q24\n" +
+                        "软件教程：百晓生软件选品，教keepa、js、谷歌趋势等软件使用，如何用软件进行选品。                       \n" +
+                        "\n" +
+                        "优先推荐：百晓生天眼-百晓生课程\n" +
+                        "百晓生课程https://v.youku.com/v_show/id_XNDMwMjgwNjYyMA==.html?spm=a2h0j.11185381.listitem_page1.5!2~A\n" +
+                        "播放密码：baixiaotangb319\n" +
+                        "下载链接：链接：https://pan.baidu.com/s/1c0ZWpNDNBWD15VHia0JGMg 提取码：bka6\n" +
+                        "天眼课程：百晓生cpc课，教如何用CPC打造爆款。                        \n" +
+                        "\n" +
+                        "千人大会视频https://v.youku.com/v_show/id_XNDI4MjQzNjYzNg==.html?spm=a2h3j.8428770.3416059.1\n" +
+                        "下载链接：链接：https://pan.baidu.com/s/122VGaPkoXYJjV94W36Awjw\n" +
+                        "提取码：9eez\n" +
+                        "复制这段内容后打开百度网盘手机App，操作更方便哦\n" +
+                        "千人大会：百晓堂千人大会年终盛典，有百晓生、雨泽、李宁、南春、价之链等上市公司运营经理干货分享，包含开发、运营、爬虫、黑科技等内容");
+            }
+
+
             if (callbackMap.get("Content").startsWith("DGM")) {
                 UserDTO byOpenId = userService.findByOpenId(openId);
                 if (byOpenId != null) {

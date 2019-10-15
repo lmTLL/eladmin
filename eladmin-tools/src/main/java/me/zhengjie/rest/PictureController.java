@@ -88,7 +88,7 @@ public class PictureController {
             }
         }
         words= words.replace("订单号","");
-        if (words.length()<28){
+        if (words.length()<=30){
             try {
                 jsonObject = wordsResult.getJSONObject(index + 2);
             } catch (Exception e) {
@@ -97,7 +97,12 @@ public class PictureController {
             if (jsonObject != null) {
                 if (jsonObject.get("words") != null) {
                     //words = jsonObject.get("words").toString();
-                    words=words+jsonObject.get("words").toString();
+                    try {
+                        int words1 = Integer.parseInt(jsonObject.get("words").toString());
+                        words=words+words1;
+                    }catch (Exception e){
+
+                    }
                 }
             }
         }
