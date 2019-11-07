@@ -30,7 +30,7 @@ public class SaleOrderDTO implements Serializable {
     private String followType;
 
     // 跟卖售价
-    private BigDecimal followPrice;
+    private String followPrice;
 
     // 跟卖时间
     private String followTime;

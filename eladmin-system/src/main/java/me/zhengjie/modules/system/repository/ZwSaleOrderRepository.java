@@ -26,8 +26,8 @@ public interface ZwSaleOrderRepository extends JpaRepository<ZwSaleOrder, Long>,
      */
     @Transactional
     @Modifying
-    @Query(value = "update zw_sale_order set account_order=?3 ,account_img=?2,status=?5,account_time=?4 where id=?1 ", nativeQuery = true)
-    void upload(Long id, String accountImg, String accountOrder, Timestamp accountTime, String status);
+    @Query(value = "update zw_sale_order set account_order=?3 ,account_img=?2,status=?5,account_time=?4,estimated_time=?6 where id=?1 ", nativeQuery = true)
+    void upload(Long id, String accountImg, String accountOrder, Timestamp accountTime, String status,String estimatedTime);
 
     /**
      * 效果反馈

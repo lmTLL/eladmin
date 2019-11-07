@@ -86,21 +86,38 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         //String substring = sss.substring(11, 13);
         String hour = resources.getStartDate().substring(11, 13);
         String day = resources.getStartDate().substring(8, 10);
+        String month = resources.getStartDate().substring(5, 7);
         int i = Integer.parseInt(hour);
         int i1 = Integer.parseInt(day);
+        int i3 = Integer.parseInt(month);
         String format = simpleDateFormat.format(new Date());
         String substring = format.substring(8, 10);
+        String substring2 = format.substring(5, 7);
         int i2 = Integer.parseInt(substring);
-        if (i > 4 && i1 >= i2) {
-            try {
-                Date parse = simpleDateFormat.parse(resources.getStartDate());
-                Long time = parse.getTime() + (1000 * 60 * 60 * 24);
-                Date date = new Date(time);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                resources.setEstimatedTime(sdf.format(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
+        int i4 = Integer.parseInt(substring2);
+        if (i1 >= i2&&i3>=i4) {
+            if (i > 3 ){
+                try {
+                    Date parse = simpleDateFormat.parse(resources.getStartDate());
+                    Long time = parse.getTime() + (1000 * 60 * 60 * 24);
+                    Date date = new Date(time);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    resources.setEstimatedTime(sdf.format(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                try {
+                    Date parse = simpleDateFormat.parse(resources.getStartDate());
+                    Long time = parse.getTime();
+                    Date date = new Date(time);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    resources.setEstimatedTime(sdf.format(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
+
         } else {
             Date date = new Date();
             resources.setEstimatedTime(simpleDateFormat.format(date).substring(0, 10));
@@ -135,6 +152,38 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
             resources.setStatus("0");
         }
         resources.setZwSaleNumber(getSalesOrderNo());
+        Map<String,String> map=new HashMap();
+        map.put("Facebook红人","180");
+        map.put("Dealnews","1150");
+        map.put("Dealwiki","1050");
+        map.put("Slickdeals/L5","350");
+        map.put("1Sale/1000 RMB","850");
+        map.put("1Sale/1300 RMB","1000");
+        map.put("Bensbargain","950");
+        map.put("Dealsplus/kinja/Deal2buy/Reddit 合发","350");
+        map.put("Retailmenot","280");
+        map.put("smartcunks","280");
+        map.put("Redflagedeals","280");
+        map.put("Dealbunny","500");
+        map.put("dealgott.de","580");
+        map.put("dealdoctor.de","580");
+        map.put("chinagadget","580");
+        map.put("mytopdeals","580");
+        map.put("monsterdeal","580");
+        map.put("schnaeppchenfuchs.com 红人贴","320");
+        map.put("serialdealer.fr","500");
+        map.put("dealbuzz.fr","500");
+        map.put("dealabs 红人","330");
+        map.put("28万粉丝Page","360");
+        map.put("latestdeals ","900");
+        map.put("nolodejesescapar","340");
+        map.put("Chollometro","340");
+        map.put("gekiyasu-gekiyasu","180");
+        map.put("web-price","180");
+        map.put("gekiyasu-lab","180");
+        map.put("ozbargain 红人帖","320");
+        map.put("telegram群","360");
+        map.put("mein-deal","680");
         // ErpSalesOrder erpSalesOrder=new ErpSalesOrder();
         List<NameValuePair> list = new ArrayList<>();
         list.add(new NameValuePair("paymentId", resources.getAccountOrder()));
@@ -144,6 +193,7 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         list.add(new NameValuePair("projectId", "25"));
         list.add(new NameValuePair("station", resources.getSite()));
         list.add(new NameValuePair("quantity", "1"));
+        list.add(new NameValuePair("costUnitPrice", map.get(resources.getDealSite())));
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
         list.add(new NameValuePair("dealTime", new Date().toString()));
         list.add(new NameValuePair("issueOrder", "0"));
@@ -190,7 +240,7 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         ZwSaleOrder zwSaleOrder = optionalZwSaleOrder.get();
         // 此处需自己修改
         resources.setId(zwSaleOrder.getId());*/
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String substring = sss.substring(11, 13);
         String hour = sa.getStartDate().substring(11, 13);
         int i = Integer.parseInt(hour);
@@ -206,6 +256,46 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
             }
         } else {
             sa.setEstimatedTime(sa.getStartDate().substring(0, 10));
+        }*/
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //String substring = sss.substring(11, 13);
+        String hour = sa.getStartDate().substring(11, 13);
+        String day = sa.getStartDate().substring(8, 10);
+        String month = sa.getStartDate().substring(5, 7);
+        int i = Integer.parseInt(hour);
+        int i1 = Integer.parseInt(day);
+        int i3 = Integer.parseInt(month);
+        String format = simpleDateFormat.format(new Date());
+        String substring = format.substring(8, 10);
+        String substring2 = format.substring(5, 7);
+        int i2 = Integer.parseInt(substring);
+        int i4 = Integer.parseInt(substring2);
+        if (i1 >= i2&&i3>=i4) {
+            if (i > 3 ){
+                try {
+                    Date parse = simpleDateFormat.parse(sa.getStartDate());
+                    Long time = parse.getTime() + (1000 * 60 * 60 * 24);
+                    Date date = new Date(time);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    sa.setEstimatedTime(sdf.format(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                try {
+                    Date parse = simpleDateFormat.parse(sa.getStartDate());
+                    Long time = parse.getTime();
+                    Date date = new Date(time);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    sa.setEstimatedTime(sdf.format(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            Date date = new Date();
+            sa.setEstimatedTime(simpleDateFormat.format(date).substring(0, 10));
         }
         ZwSaleOrderDTO zwSaleOrderDTO = findById(sa.getId());
         UserDTO zwChannel = userService.findById(zwSaleOrderDTO.getZwChannelUserId());
@@ -264,11 +354,86 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
         ZwSaleOrderDTO resources = findById(id);
         UserDTO customer = userService.findById(resources.getCustomerId());
         List<NameValuePair> list = new ArrayList<>();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //String substring = sss.substring(11, 13);
+        String hour = resources.getStartDate().substring(11, 13);
+        String day = resources.getStartDate().substring(8, 10);
+        String month = resources.getStartDate().substring(5, 7);
+        int i = Integer.parseInt(hour);
+        int i1 = Integer.parseInt(day);
+        int i3 = Integer.parseInt(month);
+        String format = simpleDateFormat.format(new Date());
+        String substring = format.substring(8, 10);
+        String substring2 = format.substring(5, 7);
+        int i2 = Integer.parseInt(substring);
+        int i4 = Integer.parseInt(substring2);
+        if (i1 >= i2&&i3>=i4) {
+            if (i > 3 ){
+                try {
+                    Date parse = simpleDateFormat.parse(resources.getStartDate());
+                    Long time = parse.getTime() + (1000 * 60 * 60 * 24);
+                    Date date1 = new Date(time);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    resources.setEstimatedTime(sdf.format(date1));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                try {
+                    Date parse = simpleDateFormat.parse(resources.getStartDate());
+                    Long time = parse.getTime();
+                    Date date1 = new Date(time);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    resources.setEstimatedTime(sdf.format(date1));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            Date dates = new Date();
+            resources.setEstimatedTime(simpleDateFormat.format(dates).substring(0, 10));
+        }
+
+        Map<String,String> map=new HashMap();
+        map.put("Facebook红人","180");
+        map.put("Dealnews","1150");
+        map.put("Dealwiki","1050");
+        map.put("Slickdeals/L5","350");
+        map.put("1Sale/1000 RMB","850");
+        map.put("1Sale/1300 RMB","1000");
+        map.put("Bensbargain","950");
+        map.put("Dealsplus/kinja/Deal2buy/Reddit 合发","350");
+        map.put("Retailmenot","280");
+        map.put("smartcunks","280");
+        map.put("Redflagedeals","280");
+        map.put("Dealbunny","500");
+        map.put("dealgott.de","580");
+        map.put("dealdoctor.de","580");
+        map.put("chinagadget","580");
+        map.put("mytopdeals","580");
+        map.put("monsterdeal","580");
+        map.put("schnaeppchenfuchs.com 红人贴","320");
+        map.put("serialdealer.fr","500");
+        map.put("dealbuzz.fr","500");
+        map.put("dealabs 红人","330");
+        map.put("28万粉丝Page","360");
+        map.put("latestdeals ","900");
+        map.put("nolodejesescapar","340");
+        map.put("Chollometro","340");
+        map.put("gekiyasu-gekiyasu","180");
+        map.put("web-price","180");
+        map.put("gekiyasu-lab","180");
+        map.put("ozbargain 红人帖","320");
+        map.put("telegram群","360");
+        map.put("mein-deal","680");
         list.add(new NameValuePair("paymentId", accountOrder));
         list.add(new NameValuePair("wechatId", customer.getVxId()));
         list.add(new NameValuePair("wechatName", customer.getUsername()));
         list.add(new NameValuePair("buyerName", customer.getUsername()));
         list.add(new NameValuePair("projectId", "25"));
+        list.add(new NameValuePair("costUnitPrice", map.get(resources.getDealSite())));
         list.add(new NameValuePair("station", resources.getSite()));
         list.add(new NameValuePair("quantity", "1"));
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
@@ -305,7 +470,7 @@ public class ZwSaleOrderServiceImpl implements ZwSaleOrderService {
                 }
             }).start();
         }
-        zwSaleOrderRepository.upload(id, accountImg, accountOrder, timestamp, status);
+        zwSaleOrderRepository.upload(id, accountImg, accountOrder, timestamp, status,resources.getEstimatedTime());
     }
 
     @Override

@@ -62,7 +62,6 @@ import static me.zhengjie.utils.ExcelUtil.excelExport;
 @RestController
 @RequestMapping("api")
 public class SaleOrderController {
-
     @Autowired
     private SaleOrderService saleOrderService;
     @Autowired
@@ -278,7 +277,7 @@ public class SaleOrderController {
             if ("0".equals(channel.getProductCost())) {
                 newOrder.setRemark("￥" + channel.getPrice());
             } else {
-                newOrder.setRemark("￥" + (old.getFollowPrice().multiply(map.get(old.getSite())).add(new BigDecimal(channel.getPrice() + ""))));
+                //newOrder.setRemark("￥" + (old.getFollowPrice().multiply(map.get(old.getSite())).add(new BigDecimal(channel.getPrice() + ""))));
             }
             newOrder.setExcel(old.getExcel());
             newOrder.setInvitation(old.getInvitation());
@@ -654,18 +653,18 @@ public class SaleOrderController {
     @Log("excel导入订单")
     @PostMapping(value = "/saleOrder/excelSaleOrder/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','SALEORDER_ALL','SALEORDER_IMPORT')")
-    public Object excelSaleOrder(@RequestParam MultipartFile file, HttpServletResponse response,@PathVariable Long id) throws Exception {
+    public Object excelSaleOrder(@RequestParam MultipartFile file, HttpServletResponse response, @PathVariable Long id) throws Exception {
         PrintWriter writer = response.getWriter();
         /*if (1>0){
             return "nuss";
         }*/
         System.out.println(id);
         File f = null;
-        if(file.equals("")||file.getSize()<=0){
+        if (file.equals("") || file.getSize() <= 0) {
             file = null;
-        }else{
+        } else {
             InputStream ins = file.getInputStream();
-            f=new File(file.getOriginalFilename());
+            f = new File(file.getOriginalFilename());
             FileUtil.inputStreamToFile(ins, f);
         }
 
@@ -698,12 +697,13 @@ public class SaleOrderController {
             String followShopUrl = row.getCell(6).getStringCellValue();
             String followShopName = row.getCell(7).getStringCellValue();
             String assuranceTime = row.getCell(9).getStringCellValue();
-            SaleOrder saleOrder=new SaleOrder();
+            SaleOrder saleOrder = new SaleOrder();
             saleOrder.setProjectName("打跟卖");
             saleOrder.setSite(site);
             saleOrder.setAsin(asin);
             saleOrder.setFollowType(followType);
-            saleOrder.setFollowPrice(new BigDecimal(followPrice));
+            //saleOrder.setFollowPrice(new BigDecimal(followPrice));
+            saleOrder.setFollowPrice(followPrice);
             saleOrder.setFollowTime(followTime);
             saleOrder.setFollowShopUrl(followShopUrl);
             saleOrder.setFollowShopName(followShopName);
@@ -719,7 +719,7 @@ public class SaleOrderController {
             saleOrder.setCustomerNickname(customerNickname);
             saleOrder.setAccountTime(new Timestamp(new Date().getTime()));
             saleOrder.setStatus("2");
-            saleOrder.setRemark("￥"+channel.getPrice());
+            saleOrder.setRemark("￥" + channel.getPrice());
             saleOrder.setNewOrder("0");
             saleOrder.setChannelUserId(channel.getUserId());
             saleOrder.setFinancePayment("0");
@@ -737,7 +737,7 @@ public class SaleOrderController {
                 }
                 //WechatController.httpClientPost(messageUrl, jsonTestMessage);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date=new Date();
+                Date date = new Date();
                 System.out.println(resources.getSaleNumber().substring(9));
                 sendModelMessage(channel.getOpenId(), "亲爱的" + nickName + "，你有一个新的跟卖需要处理，请查收。", resources.getSaleNumber(), "赶跟卖", "待处理", sdf.format(date) + "\n点击详情可下载跟卖Excel", "请收到该通知后，在此公众号里回复「" + resources.getSaleNumber().substring(7) + "」。", "http://eladmin.asinone.vip/api/saleOrder/Excels?nickName=" + resources.getCustomerNickname() + "&id=" + id + "&invitation=" + resources.getInvitation(), "#FF0000");
                 //mike

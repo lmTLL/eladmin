@@ -95,7 +95,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/vCode").anonymous()
                 // 支付宝回调
                 .antMatchers("/api/aliPay/return").anonymous()
+                .antMatchers("/api/scpSaleOrder/list").anonymous()
+                .antMatchers("/api/scpSaleOrder/sign/**").anonymous()
                 .antMatchers("/api/aliPay/notify").anonymous()
+                .antMatchers("/api/prizesUser/updateNum").anonymous()
+                .antMatchers("/api/prizes/addPrizes").anonymous()
+                .antMatchers("/api/prizesUser/addNum").anonymous()
+                .antMatchers("/api/scpSaleOrder/ExcelsDownload").anonymous()
+                .antMatchers("/api/dzSaleOrder/ExcelsDownload").anonymous()
 
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
@@ -105,6 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // swagger end
                 //微信接口
                 .antMatchers("/weChat/callback").anonymous()
+                .antMatchers("/MP_verify_27cPHIW5VRtHcomQ.txt").anonymous()
                 //微信二维码
                 .antMatchers("/mpLogin").anonymous()
                 .antMatchers("/checkLogin/**").anonymous()

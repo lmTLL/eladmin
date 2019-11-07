@@ -52,6 +52,24 @@ public class ErpSalesOrder {
     private BigDecimal allProfit;
     private String payUser;
     private Integer reviewed;
+    private Long[] ids;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long[] getIds() {
+        return ids;
+    }
+
+    public void setIds(Long[] ids) {
+        this.ids = ids;
+    }
 
     public Integer getReviewed() {
         return reviewed;

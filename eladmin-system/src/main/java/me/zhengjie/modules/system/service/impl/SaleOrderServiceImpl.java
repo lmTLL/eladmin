@@ -1,5 +1,6 @@
 package me.zhengjie.modules.system.service.impl;
 
+import io.lettuce.core.ScriptOutputType;
 import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.SaleOrder;
 import me.zhengjie.modules.system.domain.User;
@@ -90,6 +91,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         list.add(new NameValuePair("wechatName", customer.getUsername()));
         list.add(new NameValuePair("buyerName", customer.getUsername()));
         list.add(new NameValuePair("projectId", "12"));
+        list.add(new NameValuePair("costUnitPrice","300"));
         list.add(new NameValuePair("station", resources.getSite()));
         list.add(new NameValuePair("quantity", "1"));
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
@@ -359,6 +361,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         list.add(new NameValuePair("wechatName", customer.getUsername()));
         list.add(new NameValuePair("buyerName", customer.getUsername()));
         list.add(new NameValuePair("projectId", "12"));
+        list.add(new NameValuePair("costUnitPrice", "300"));
         list.add(new NameValuePair("station", resources.getSite()));
         list.add(new NameValuePair("quantity", "1"));
         list.add(new NameValuePair("actualAmount", new BigDecimal(resources.getRemark().substring(1)) + ""));
@@ -370,28 +373,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         list.add(new NameValuePair("asinInfo", resources.getAsin()));
         list.add(new NameValuePair("rejectReason", customer.getInvitation()));
         list.add(new NameValuePair("shopName", "~"));
-        /*erpSalesOrder.setPaymentId(resources.getAccountOrder());
-        erpSalesOrder.setWechatId(customer.getVxId());
-        erpSalesOrder.setWechatName(customer.getUsername());
-        erpSalesOrder.setBuyerName(customer.getUsername());
-        erpSalesOrder.setProjectId(25);
-        erpSalesOrder.setStation(resources.getSite());
-        erpSalesOrder.setQuantity(1);
-        erpSalesOrder.setActualAmount(new BigDecimal(resources.getRemark().substring(1)));
-        erpSalesOrder.setDealTime(new Date());
-        erpSalesOrder.setIssueOrder(0);
-        erpSalesOrder.setPaymentStatus(1);
-        erpSalesOrder.setRemark("在线下单");
-        erpSalesOrder.setDataStatus(1);
-        erpSalesOrder.setAuditStatus(0);
-        erpSalesOrder.setAsinInfo(resources.getLink());
-        erpSalesOrder.setRejectReason("mark");
-        erpSalesOrder.setShopName("~");*/
+        System.out.println(resources.getStatus());
         if ("1".equals(resources.getStatus())) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder", list);
+                    Map<String, Object> map = httpClientPostParam("http://39.98.168.25:8082/salesOrders/erpOrder", list);
+                    System.out.println(map);
                 }
             }).start();
         }

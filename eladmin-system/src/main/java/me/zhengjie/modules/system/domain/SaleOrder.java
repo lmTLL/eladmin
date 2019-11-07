@@ -41,7 +41,7 @@ public class SaleOrder implements Serializable {
 
     // 跟卖售价
     @Column(name = "follow_price")
-    private BigDecimal followPrice;
+    private String followPrice;
 
     // 跟卖时间
     @Column(name = "follow_time")
