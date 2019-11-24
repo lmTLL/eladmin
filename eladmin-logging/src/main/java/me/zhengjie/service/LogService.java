@@ -36,7 +36,7 @@ public interface LogService {
      * @param joinPoint
      * @param log
      */
-    @Async
+    @Async //异步方法标示使用
     void save(String username, String ip, ProceedingJoinPoint joinPoint, Log log);
 
     /**

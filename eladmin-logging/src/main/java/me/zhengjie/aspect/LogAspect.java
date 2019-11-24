@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author Zheng Jie
  * @date 2018-11-24
  */
-@Component
-@Aspect
+@Component //把普通pojo实例化到spring容器中
+@Aspect  //把当前类标识为一个切面供容器读取
 @Slf4j
 public class LogAspect {
 

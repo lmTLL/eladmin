@@ -29,6 +29,11 @@ public class GenConfigController {
         return new ResponseEntity(genConfigService.find(), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param genConfig
+     * @return
+     */
     @PutMapping(value = "/genConfig")
     public ResponseEntity emailConfig(@Validated @RequestBody GenConfig genConfig) {
         return new ResponseEntity(genConfigService.update(genConfig), HttpStatus.OK);

@@ -25,7 +25,7 @@ public class LogController {
     private LogService logService;
 
     @GetMapping(value = "/logs")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')") //控制访问权限
     public ResponseEntity getLogs(LogQueryCriteria criteria, Pageable pageable) {
         criteria.setLogType("INFO");
         return new ResponseEntity(logService.queryAll(criteria, pageable), HttpStatus.OK);

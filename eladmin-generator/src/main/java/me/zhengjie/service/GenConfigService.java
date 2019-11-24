@@ -26,6 +26,6 @@ public interface GenConfigService {
      *
      * @param genConfig
      */
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true)//清空缓存配置
     GenConfig update(GenConfig genConfig);
 }
